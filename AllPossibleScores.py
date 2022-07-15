@@ -11,25 +11,27 @@ def CalcAllScoresFaster(rules, cards):
     return list(set(result))
 
 
-#based on the 1-13 value for the cards, and the rules following blackjack rules.
-#gives a full list of all the possible score permutations
+if __name__ == '__main__':    
 
-test_cards = [1, 11]
+    #based on the 1-13 value for the cards, and the rules following blackjack rules.
+    #gives a full list of all the possible score permutations
 
-rules = {
-    1: (1,11),
-    2: (2),
-    3: (3),
-    4: (4),
-    5: (5),
-    6: (6),
-    7: (7),
-    8: (8),
-    9: (9),
-    10: (10),
-    11: (10),
-    12: (10),
-    13: (10)
-}
+    test_cards = [1, 11]
 
-print("All Scores: ", CalcAllScoresFaster(rules, test_cards))
+    rules = {
+        1: (1,11),
+        2: (2),
+        3: (3),
+        4: (4),
+        5: (5),
+        6: (6),
+        7: (7),
+        8: (8),
+        9: (9),
+        10: (10),
+        11: (10),
+        12: (10),
+        13: (10)
+    }
+
+    print("All Scores: ", CalcAllScoresFaster(rules, test_cards))
