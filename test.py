@@ -1,8 +1,9 @@
 from Card import Card
-from Card_List import Card_List
-from Draw import Draw
-from Hand import Hand
-from Pot import Pot
+from card_list.Card_List import Card_List
+from card_list.Discard import Discard
+from card_list.Draw import Draw
+from card_list.Hand import Hand
+from card_list.Pot import Pot
 
 if __name__ == '__main__':
     # Card List
@@ -46,3 +47,18 @@ if __name__ == '__main__':
     print(hand)
     hand.sort_rank()
     print(hand)
+
+    # Discard
+    discard = Discard([])
+    discard.get_top_card()
+    discard.add_card(draw.pop_card())
+    print(discard.get_top_card())
+    discard.add_card(draw.pop_card())
+    print(discard.get_top_card())
+    discard.add_card(draw.pop_card())
+    print(discard.get_top_card())
+    discard.add_card(draw.pop_card())
+    print(discard.get_top_card())
+    discard.add_card(draw.pop_card())
+    print(discard)
+

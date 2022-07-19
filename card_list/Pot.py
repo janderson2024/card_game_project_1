@@ -1,4 +1,4 @@
-from Card_List import Card_List
+from card_list.Card_List import Card_List
 
 
 class Pot(Card_List):
