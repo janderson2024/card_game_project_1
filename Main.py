@@ -13,7 +13,7 @@ if __name__ == '__main__':
     #print(game.stock)
     #print(player_list[0])
 
-    game.deal_to_players(game.stock, player_list)
+    game.deal_to_players(player_list)
     print("shuffle and deal to players: ")
 
     print(game.stock)

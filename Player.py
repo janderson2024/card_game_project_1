@@ -4,6 +4,9 @@ class Player:
         self.label = label
         self.win_count = 0
 
+    def get_number_of_cards(self):
+        return len(deck)
+
     def __str__(self):
         return self.label + ': ' + ' '.join([str(card) for card in self.deck])
 

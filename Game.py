@@ -9,7 +9,11 @@ class Game(ABC):
 		return Player(player_label)
 
 	@abstractmethod
-	def deal_to_players(self, cards, players):
+	def start_game(self):
+		pass	
+
+	@abstractmethod
+	def deal_to_players(self, players):
 		pass
 
 
@@ -17,6 +21,10 @@ class Game(ABC):
 	def is_card_valid(self, card):
 		#return either true or false based on the rules of the game
 		#to be implemented by each game
+		pass
+
+	@abstractmethod
+	def on_card_played(self, card):
 		pass
 
 	@abstractmethod
