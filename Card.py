@@ -16,10 +16,10 @@ class Card:
 
     def __str__(self):
         if self.rank == 'L' or self.rank == 'H':
-            suit = ''
+            suit = '*'
         else:
             suit = self.suit
-        return f"[{suit}{self.rank}]" if self.displayable else "[  ]"
+        return f"[{suit}{self.rank}]" if self.displayable else "[;°Д°]"
 
     def __eq__(self, other):
         if isinstance(other, Card):
