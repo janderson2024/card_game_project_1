@@ -1,14 +1,16 @@
 import random
 
+from card_list.Hand import Hand
+
 class Player:
     def __init__(self, label, is_ai=False):
         self.is_ai = is_ai
-        self.deck = []
+        self.hand = Hand([])
         self.label = label
         self.win_count = 0
 
     def __str__(self):
-        return self.label + ': ' + ' '.join([f"{str(num)}) {str(card)}" for num, card in enumerate(self.deck, start=1)])
+        return self.label + ': ' + str(self.hand)
         
     def get_label(self):
         return self.label
@@ -19,22 +21,25 @@ class Player:
     def round_winner(self):
         self.win_count = self.win_count + 1
 
+    def get_amount_of_cards(self):
+        return len(self.hand)
+
+    def add_card(self, card):
+        self.hand.add_card(card)
+
     def add_cards(self, cards):
         for card in cards:
-            self.deck.append(card)
-
-    def get_card_num(self):
-        return len(self.deck)
+            self.add_card(card)
 
     def play_card(self, number =-1):
         if self.is_ai:
-            number = random.randint(0, len(self.deck) - 1)
-        tempcard = self.deck[number]
-        del self.deck[number]
+            number = random.randint(0, len(self.hand) - 1)
+        tempcard = self.hand[number]
+        del self.hand[number]
         return tempcard
 
-    def reset_deck(self):
-        self.deck = []
+    def reset_hand(self):
+        self.hand = []
 
     #test code :
     # user = Player("Player 1")

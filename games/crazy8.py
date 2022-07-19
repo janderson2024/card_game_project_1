@@ -25,7 +25,7 @@ class crazy8(Game):
 	def deal_to_players(self, players):
 		for _ in range(self.DEAL_COUNT):
 			for player in players:
-				player.deck.append(self.stock.pop_card()) #TODO create a getTopCard and popTopCard
+				player.add_card(self.stock.pop_card())
 
 	def is_card_valid(self, card):
 		if card.rank is "8":
@@ -45,7 +45,7 @@ class crazy8(Game):
 
 
 	def check_player_win(self, player):
-		if len(player.deck) == 0:
+		if player.get_amount_of_cards() == 0:
 			return True
 		else:
 			return False

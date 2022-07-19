@@ -18,7 +18,7 @@ def game_testing(game, player_list):
 
     print(game.check_player_win(player_list[0]))
 
-    player_list[0].reset_deck()
+    player_list[0].reset_hand()
     print(player_list[0])
     print(game.check_player_win(player_list[0]))
     game.on_round_won(player_list[0])
