@@ -29,7 +29,7 @@ class Card:
         return False
 
     def __lt__(self, other):
-            return self.rank < other.rank
+        return self.rank < other.rank
 
     def set_display(self):
         self.displayable = not self.displayable
