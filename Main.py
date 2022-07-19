@@ -1,4 +1,6 @@
 from Card import Card
+from Player import Player
+
 
 if __name__ == '__main__':
     #TODO: make the import of the game not hardcoded
