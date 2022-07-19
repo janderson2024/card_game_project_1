@@ -44,3 +44,5 @@ if __name__ == '__main__':
     print(hand)
     hand.sort_suit()
     print(hand)
+    hand.sort_rank()
+    print(hand)
