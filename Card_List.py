@@ -38,14 +38,25 @@ class Card_List:
     def get_card_list(self):
         return self
 
-    def set_52(self):
+    def set_52_lo(self):
         self.card_list = []
         for suit in range(4):
             for rank in range(13):
                 self.add_card(Card(suit, rank))
 
-    def set_54(self):
-        self.set_52()
-        self.add_card(Card(4, 13))
+    def set_54_lo(self):
+        self.set_52_lo()
         self.add_card(Card(4, 14))
+        self.add_card(Card(4, 15))
+
+    def set_52_hi(self):
+        self.card_list = []
+        for suit in range(4):
+            for rank in range(1, 14):
+                self.add_card(Card(suit, rank))
+
+    def set_54_hi(self):
+        self.set_52_hi()
+        self.add_card(Card(4, 14))
+        self.add_card(Card(4, 15))
 
