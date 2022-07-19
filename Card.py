@@ -2,7 +2,7 @@
 class Card:
     displayable = True
     suits = ['\u2660', '\u2665', '\u2663', '\u2666', '\u2605']
-    ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "L", "H"]
+    ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "L", "H"]
     
     def __init__(self, suit, rank):
         self.suit = suit
@@ -20,7 +20,4 @@ class Card:
         self.displayable = display
 
     def __lt__(self, other):
-        if self.rank == other.rank:
-            return self.suit < other.suit
-        else:
-            return self.rank < other.rank
+        return self.rank < other.rank
