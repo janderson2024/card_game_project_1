@@ -1,5 +1,8 @@
+import random
+
 class Player:
-    def __init__(self, label):
+    def __init__(self, label, is_ai=False):
+        self.is_ai = is_ai
         self.deck = []
         self.label = label
         self.win_count = 0
@@ -20,7 +23,12 @@ class Player:
         for card in cards:
             self.deck.append(card)
 
-    def play_card(self, number):
+    def get_card_num(self):
+        return len(self.deck)
+
+    def play_card(self, number =-1):
+        if self.is_ai:
+            number = random.randint(0, len(self.deck) - 1)
         tempcard = self.deck[number]
         del self.deck[number]
         return tempcard
@@ -34,3 +42,9 @@ class Player:
     # print(user)
     # print(user.play_card(1))
     # print(user)
+
+    # ai1 = Player("AI1", True)
+    # ai1.add_cards([Card(1,1), Card(1,2), Card(1,3), Card(1,4), Card(1,5), Card(1,6)])
+    # print(ai1)
+    # ai1.play_card()
+    # print(ai1)
