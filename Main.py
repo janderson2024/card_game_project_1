@@ -1,30 +1,6 @@
 from Card import Card
 from Player import Player
-
-def game_testing(game, player_list):
-    print(game.discard)
-
-    test_card = Card(1, 8, displayable=True)
-    print(test_card)
-
-    print("is card valid: ", game.is_card_valid(test_card))
-
-    game.on_card_played(test_card)
-
-    print(game.discard)
-
-    print("------")
-    print(player_list[0])
-
-    print(game.check_player_win(player_list[0]))
-
-    player_list[0].reset_hand()
-    print(player_list[0])
-    print(game.check_player_win(player_list[0]))
-    game.on_round_won(player_list[0])
-
-    print(player_list[0].win_count)
-
+from User_Input import getUserInput
 
 if __name__ == '__main__':
     #TODO: make the import of the game not hardcoded
@@ -41,14 +17,43 @@ if __name__ == '__main__':
         player_list.append(game.getNewPlayer("AI #" +str(num)))
 
 
-    game.deal_to_players(player_list)
-    print("shuffle and deal to players: ")
+    playing = True
+    while playing:    
+        game.deal_to_players(player_list)
 
-    print(game.stock)
-    for player in player_list:
-        print(player)
+        game.start_game()
 
-    game.start_game()
+        current_player = 0
 
-    game_testing(game, player_list)
-    
+        playing_round = True
+
+        while playing_round:
+            player = player_list[current_player]
+
+            player.clear_hand()
+
+            
+            #played_card = player.play_card(game.is_card_valid)
+            #game.on_card_play(played__card)
+
+            if game.check_player_win(player):
+                playing_round = False
+
+                game.on_round_won(player)
+                for player in player_list:
+                    player.clear_hand()
+                
+            else:
+                current_player = (current_player+1) % 4
+
+        if game.get_max_round() < game.get_current_round():
+            action, _ = getUserInput(["yes", "y", "no", "n"], "Do you want to play again?")
+            if action in ["yes", "y"]:
+                game.reset_game()
+            else:
+                playing = False
+
+
+
+
+    print("Thank you for playing!")

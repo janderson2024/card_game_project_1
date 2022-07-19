@@ -11,6 +11,8 @@ class crazy8(Game):
 
 	def __init__(self):
 		self.PLAYER_COUNT = 4
+		#self.MAX_ROUNDS = 13 for ex.
+
 
 		self.stock = Draw([])
 		self.stock.set_52_lo()
@@ -20,13 +22,13 @@ class crazy8(Game):
 
 
 	def start_game(self):
+		print("Starting game of Crazy8's!")
 		self.discard.add_card(self.stock.pop_card())
-		self.round_counter = 1
 
 	def deal_to_players(self, players):
 		for _ in range(self.DEAL_COUNT):
 			for player in players:
-				player.add_card(self.stock.pop_card())
+				player.add_card_to_hand(self.stock.pop_card())
 
 	def is_card_valid(self, card):
 		if card.rank == "8":
@@ -54,3 +56,14 @@ class crazy8(Game):
 	def on_round_won(self, player):
 		player.round_winner()
 		self.round_counter += 1
+
+		self.stock = Draw([])
+		self.stock.set_52_lo()
+		self.stock.shuffle()
+
+		self.discard = Discard([])
+
+	def reset_game(self):
+		round_counter = 1
+
+		

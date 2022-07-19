@@ -1,5 +1,3 @@
-
-
 def getUserInput(possible_inputs, start_prompt):
 	possible_inputs = [str(input) for input in possible_inputs]
 	help_response = "Valid Inputs are: " + str(possible_inputs)

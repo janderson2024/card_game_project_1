@@ -12,5 +12,6 @@ class Hand(Card_List):
         # TODO Should depend on game
         return self.get_card_list()
 
+
     def __str__(self):
         return ", ".join([f"{str(num)}) {str(card)}" for num, card in enumerate(self.card_list, start=1)])

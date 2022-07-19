@@ -3,6 +3,9 @@ from Player import Player
 
 class Game(ABC):
 	PLAYER_COUNT = 0
+	MAX_ROUNDS = 1
+
+	round_counter = 1
 
 	def getNewPlayer(self, player_label, is_ai=False):
 		#method that can be polymorphized by the game if the game has a different type of player
@@ -10,6 +13,12 @@ class Game(ABC):
 
 	def get_player_count(self):
 		return self.PLAYER_COUNT
+
+	def get_current_round(self):
+		return self.round_counter
+
+	def get_max_round(self):
+		return self.MAX_ROUNDS
 
 
 	@abstractmethod
@@ -46,4 +55,8 @@ class Game(ABC):
 	def on_round_won(self, player):
 		#logic here will be run after a round is won. Useful to "reset" the
 		#cards after the end of the round, or to check win logic for a round based game
+		pass
+
+	@abstractmethod
+	def reset_game(self):
 		pass

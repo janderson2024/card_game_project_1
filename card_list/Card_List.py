@@ -29,6 +29,9 @@ class Card_List:
         for card in cards.card_list:
             self.card_list.remove(card)
 
+    def rem_all_cards(self):
+        self.card_list = []
+
     def num_cards_left(self):
         return len(self)
 

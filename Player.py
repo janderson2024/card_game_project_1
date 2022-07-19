@@ -24,10 +24,10 @@ class Player:
     def get_amount_of_cards(self):
         return len(self.hand)
 
-    def add_card(self, card):
+    def add_card_to_hand(self, card):
         self.hand.add_card(card)
 
-    def add_cards(self, cards):
+    def add_cards_to_hand(self, cards):
         for card in cards:
             self.add_card(card)
 
@@ -38,8 +38,8 @@ class Player:
         del self.hand[number]
         return tempcard
 
-    def reset_hand(self):
-        self.hand = []
+    def clear_hand(self):
+        self.hand.rem_all_cards()
 
     #test code :
     # user = Player("Player 1")
