@@ -39,7 +39,7 @@ class Card_List:
         random.shuffle(self.card_list)
 
     def get_card_list(self):
-        return self
+        return self.card_list
 
     def set_52_lo(self):
         self.card_list = []
