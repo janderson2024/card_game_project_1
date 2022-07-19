@@ -14,7 +14,7 @@ if __name__ == '__main__':
     player_list.append(game.getNewPlayer("Player"))
 
     for num in range(1, game.get_player_count()):
-        player_list.append(game.getNewPlayer("AI #" +str(num)))
+        player_list.append(game.getNewPlayer("AI #" +str(num), is_ai=True))
 
 
     playing = True
@@ -30,14 +30,14 @@ if __name__ == '__main__':
         while playing_round:
             player = player_list[current_player]
 
-            player.clear_hand()
+            played_card = player.play_card(game)
+            if played_card is not None:
+                game.on_card_played(played_card)
 
-            
-            #played_card = player.play_card(game.is_card_valid)
-            #game.on_card_play(played__card)
 
             if game.check_player_win(player):
                 playing_round = False
+                print(player.label, " has won!")
 
                 game.on_round_won(player)
                 for player in player_list:
