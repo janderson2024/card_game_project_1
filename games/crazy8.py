@@ -28,7 +28,7 @@ class crazy8(Game):
 				player.deck.append(self.stock.pop_card()) #TODO create a getTopCard and popTopCard
 
 	def is_card_valid(self, card):
-		if card.rank == 8:
+		if card.rank is "8":
 			return True
 
 		top_card = self.discard.get_top_card()
@@ -45,7 +45,7 @@ class crazy8(Game):
 
 
 	def check_player_win(self, player):
-		if player.get_number_of_cards() == 0:
+		if len(player.deck) == 0:
 			return True
 		else:
 			return False

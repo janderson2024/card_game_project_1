@@ -27,7 +27,7 @@ if __name__ == '__main__':
 
     print(game.discard)
 
-    test_card = Card(1, 1, displayable=True)
+    test_card = Card(1, 8, displayable=True)
     print(test_card)
 
     print("is card valid: ", game.is_card_valid(test_card))
@@ -40,3 +40,10 @@ if __name__ == '__main__':
     print(player_list[0])
 
     print(game.check_player_win(player_list[0]))
+
+    player_list[0].reset_deck()
+    print(player_list[0])
+    print(game.check_player_win(player_list[0]))
+    game.on_round_won(player_list[0])
+
+    print(player_list[0].win_count)

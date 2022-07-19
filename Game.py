@@ -10,10 +10,15 @@ class Game(ABC):
 
 	@abstractmethod
 	def start_game(self):
+		#used for beginning game logic before the first card is played, but after the cards are dealt
+		#Ex: flipping the first card into the discard
+		#to be implemented by each game
 		pass	
 
 	@abstractmethod
 	def deal_to_players(self, players):
+		#used for each game to deal cards to the players
+		#to be implemented by each game
 		pass
 
 
