@@ -20,7 +20,6 @@ class Game(ABC):
 	def get_max_round(self):
 		return self.MAX_ROUNDS
 
-
 	@abstractmethod
 	def start_game(self):
 		#used for beginning game logic before the first card is played, but after the cards are dealt
@@ -34,6 +33,9 @@ class Game(ABC):
 		#to be implemented by each game
 		pass
 
+	@abstractmethod
+	def draw_card(self):
+		pass
 
 	@abstractmethod
 	def is_card_valid(self, card):

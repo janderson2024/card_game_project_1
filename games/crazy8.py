@@ -30,6 +30,12 @@ class crazy8(Game):
 			for player in players:
 				player.add_card_to_hand(self.stock.pop_card())
 
+	def draw_card(self):
+		if len(self.stock) > 0:
+			return self.stock.pop_card()
+		else:
+			return None
+
 	def is_card_valid(self, card):
 		if card.rank == "8":
 			return True
