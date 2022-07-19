@@ -2,11 +2,15 @@ from abc import ABC, abstractmethod
 from Player import Player
 
 class Game(ABC):
+	PLAYER_COUNT = 0
 
-
-	def getNewPlayer(self, player_label):
+	def getNewPlayer(self, player_label, is_ai=False):
 		#method that can be polymorphized by the game if the game has a different type of player
-		return Player(player_label)
+		return Player(player_label, is_ai)
+
+	def get_player_count(self):
+		return self.PLAYER_COUNT
+
 
 	@abstractmethod
 	def start_game(self):

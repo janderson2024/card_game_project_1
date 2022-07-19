@@ -7,20 +7,21 @@ from card_list.Discard import Discard
 
 class crazy8(Game):
 	DEAL_COUNT = 5
-
-	round_counter = 1
-
 	
 
 	def __init__(self):
+		self.PLAYER_COUNT = 4
+
 		self.stock = Draw([])
 		self.stock.set_52_lo()
 		self.stock.shuffle()
+
 		self.discard = Discard([])
+
 
 	def start_game(self):
 		self.discard.add_card(self.stock.pop_card())
-		pass
+		self.round_counter = 1
 
 	def deal_to_players(self, players):
 		for _ in range(self.DEAL_COUNT):
@@ -28,7 +29,7 @@ class crazy8(Game):
 				player.add_card(self.stock.pop_card())
 
 	def is_card_valid(self, card):
-		if card.rank is "8":
+		if card.rank == "8":
 			return True
 
 		top_card = self.discard.get_top_card()

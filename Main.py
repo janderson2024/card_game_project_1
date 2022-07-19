@@ -35,9 +35,10 @@ if __name__ == '__main__':
 
 
     player_list = []
+    player_list.append(game.getNewPlayer("Player"))
 
-    for num in range(4):
-        player_list.append(game.getNewPlayer(str(num)))
+    for num in range(1, game.get_player_count()):
+        player_list.append(game.getNewPlayer("AI #" +str(num)))
 
 
     game.deal_to_players(player_list)
