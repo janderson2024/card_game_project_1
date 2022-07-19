@@ -1,5 +1,5 @@
 def getUserInput(possible_inputs, start_prompt):
-	possible_inputs = [str(input) for input in possible_inputs]
+	possible_inputs = [str(input) for input in possible_inputs] + ["help"]
 	help_response = "Valid Inputs are: " + str(possible_inputs)
 
 	
@@ -13,17 +13,17 @@ def getUserInput(possible_inputs, start_prompt):
 		user_input.lower()
 		user_input = user_input.split()
 
-		cmd = user_input[0]
-		arguments = user_input[1:]
+		if len(user_input) > 0:
+			cmd = user_input[0]
+			arguments = user_input[1:]
 
-		if cmd == "help":
-			print(help_response)
-
-		if cmd in possible_inputs:
-			if len(arguments) == 0:
-				return (cmd, None)
-			return (cmd, arguments[0])
-			valid_input = True
+			if cmd == "help":
+				print(help_response)
+			elif cmd in possible_inputs:
+				if len(arguments) == 0:
+					return (cmd, None)
+				return (cmd, arguments[0])
+				valid_input = True
 
 if __name__ == "__main__":
 
