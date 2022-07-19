@@ -2,7 +2,7 @@ import sys
 sys.path.insert(0, '..')
 
 from Game import Game
-from Card_List import Card_List
+from card_list.Card_List import Card_List
 
 class crazy8(Game):
 	DEAL_COUNT = 5
