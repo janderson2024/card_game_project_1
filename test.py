@@ -1,5 +1,7 @@
 from Card import Card
 from Card_List import Card_List
+from Draw import Draw
+from Hand import Hand
 from Pot import Pot
 
 if __name__ == '__main__':
@@ -30,4 +32,15 @@ if __name__ == '__main__':
     print(pot)
     print(pot.get_highest_card())
 
-    # Hand
+    # Draw and Hand
+    draw = Draw([])
+    draw.set_52_hi()
+    hand = Hand([])
+    hand.add_card(draw.pop_card())
+    hand.add_card(draw.pop_card())
+    hand.add_card(draw.pop_card())
+    hand.add_card(draw.pop_card())
+    hand.add_card(draw.pop_card())
+    print(hand)
+    hand.sort_suit()
+    print(hand)

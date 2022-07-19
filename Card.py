@@ -6,11 +6,9 @@ class Card:
     ranks = [None, "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "L", "H"]
     
     def __init__(self, suit, rank, color='red', displayable=True):
-        # self.suit = suit
-        # self.rank = rank
-        # self.suit_text = self.update_suit_text()
         self.suit = self.suits[int(suit)]
         self.rank = self.ranks[int(rank)]
+        self.value = rank
         self.suit_text = self.suit_text[int(suit)]
         self.color = self.update_color(color)
         self.image = self.update_face_image()
@@ -29,7 +27,7 @@ class Card:
         return False
 
     def __lt__(self, other):
-        return self.rank < other.rank
+        return self.value < other.value
 
     def set_display(self):
         self.displayable = not self.displayable
