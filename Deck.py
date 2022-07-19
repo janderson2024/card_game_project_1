@@ -1,5 +1,8 @@
 import random
 
+from Card import Card
+
+
 class Deck:
     def __init__(self):
         self.deck = []
@@ -18,4 +21,4 @@ class Deck:
         return self.deck.pop()
     
     def shuffle(self):
-        random.shuffle(self,deck)
+        random.shuffle(self.deck)
