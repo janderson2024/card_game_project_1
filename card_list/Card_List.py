@@ -4,8 +4,6 @@ from Card import Card
 
 
 class Card_List:
-    card_list = []
-
     def __init__(self, cards):
         self.card_list = cards
 
@@ -19,7 +17,7 @@ class Card_List:
         self.card_list.append(card)
 
     def add_cards(self, cards):
-        for card in cards.card_list:
+        for card in cards:
             self.card_list.append(card)
 
     def rem_card(self, card):

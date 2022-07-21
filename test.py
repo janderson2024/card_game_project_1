@@ -21,7 +21,7 @@ if __name__ == '__main__':
     card_list.rem_cards(cards)
     print(card_list)
     print(len(card_list), card_list.num_cards_left())
-    cards = card_list.get_card_list()
+    cards.add_cards(card_list.get_card_list())
     print(cards)
 
     # Pot
