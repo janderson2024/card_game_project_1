@@ -2,6 +2,8 @@ from Card import Card
 from Player import Player
 from User_Input import getUserInput
 
+#DEPRECIATED. THIS IS THE OLD WORK, AND WE ARE SWITCHING TO A NEW CLASS FORMAT
+
 if __name__ == '__main__':
     #TODO: make the import of the game not hardcoded
     #ask what game to play
