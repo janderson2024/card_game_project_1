@@ -1,13 +1,14 @@
 import tkinter
-import Card
+import CardLib.Card
 from tkinter import *
 from PIL import Image, ImageTk
 
+BASE_IMG_PATH = "CardLib/card_images/standard/"
 
 def flip_card(card):
     card.set_display()
     card_image = card.image
-    image = Image.open(f'card_images/{card_image}').convert("RGBA")
+    image = Image.open(f'{BASE_IMG_PATH + card_image}').convert("RGBA")
     resize_image = image.resize((250, 363))
     img = ImageTk.PhotoImage(resize_image)
     card_space.configure(image=img)
@@ -22,14 +23,14 @@ def flip_card(card):
 
 if __name__ == '__main__':
     # card1 = Card.Card('\u2660', "A")
-    card1 = Card.Card(2, 7)
+    card1 = CardLib.Card(3, 7)
 
     app = tkinter.Tk()
     app.title('Card Tester')
     app.configure(background='green')
 
     card_image = card1.image
-    image = Image.open(f'card_images/{card_image}').convert("RGBA")
+    image = Image.open(f'{BASE_IMG_PATH + card_image}').convert("RGBA")
     resize_image = image.resize((250, 363))
     img = ImageTk.PhotoImage(resize_image)
     card_space = Label(app, image=img, background='green')

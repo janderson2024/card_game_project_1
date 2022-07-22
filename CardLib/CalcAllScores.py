@@ -1,7 +1,7 @@
 import itertools
 
-def CalcAllScoresFaster(rules, cards):
-    cards_values = [rules[card] for card in cards]
+def calculate_all_possible_scores(scoring_rules, cards):
+    cards_values = [scoring_rules[card] for card in cards]
     
     score = sum([value for value in cards_values if type(value) is int])
     poss_perms = [value for value in cards_values if type(value) is tuple]

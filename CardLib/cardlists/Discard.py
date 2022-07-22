@@ -1,4 +1,4 @@
-from card_list.Card_List import Card_List
+from CardLib import Card_List
 
 
 class Discard(Card_List):
@@ -7,4 +7,3 @@ class Discard(Card_List):
             return None
         else:
             return self.card_list[-1]
-

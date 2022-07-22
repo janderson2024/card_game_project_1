@@ -1,59 +1,23 @@
-from Card import Card
-from Player import Player
-from User_Input import getUserInput
+import importlib
+import os
 
-if __name__ == '__main__':
-    #TODO: make the import of the game not hardcoded
-    #ask what game to play
-    from games import crazy8
-    game = crazy8.crazy8()
+GAMES_FOLDER = "games/"
 
-
-
-    player_list = []
-    player_list.append(game.getNewPlayer("Player"))
-
-    for num in range(1, game.get_player_count()):
-        player_list.append(game.getNewPlayer("AI #" +str(num), is_ai=True))
+def get_all_game_files():
+	files_in_games = os.listdir(GAMES_FOLDER)
+	games = [file[:-3] for file in files_in_games if file.endswith(".py")]
+	return games
 
 
-    playing = True
-    while playing:    
-        game.deal_to_players(player_list)
+from CardLib import get_user_input
 
-        game.start_game()
+all_games = get_all_game_files()
 
-        current_player = 0
+user_input, _ = get_user_input(all_games, "Please select which game you would like to play")
 
-        playing_round = True
+module_to_import = "games." + user_input
+#module_to_import = "games.crazy8" FOR TESTING
 
-        while playing_round:
-            player = player_list[current_player]
+game = importlib.import_module(module_to_import)
 
-            played_card = player.play_card(game)
-            if played_card is not None:
-                game.on_card_played(played_card)
-
-
-            if game.check_player_win(player):
-                playing_round = False
-                print(player.label, " has won!")
-
-                game.on_round_won(player)
-                for player in player_list:
-                    player.clear_hand()
-                
-            else:
-                current_player = (current_player+1) % 4
-
-        if game.get_max_round() < game.get_current_round():
-            action, _ = getUserInput(["yes", "y", "no", "n"], "Do you want to play again?")
-            if action in ["yes", "y"]:
-                game.reset_game()
-            else:
-                playing = False
-
-
-
-
-    print("Thank you for playing!")
+game.start_game()

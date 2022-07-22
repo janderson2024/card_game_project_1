@@ -1,4 +1,3 @@
-
 class Card:
     displayable = True
     suits = [None, '\u2666', '\u2665', '\u2663', '\u2660']

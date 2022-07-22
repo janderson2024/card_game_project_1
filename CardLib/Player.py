@@ -1,6 +1,6 @@
 import random
 
-from card_list.Hand import Hand
+from CardLib import Hand
 
 class Player:
     def __init__(self, label, is_ai=False):
@@ -40,16 +40,3 @@ class Player:
 
     def clear_hand(self):
         self.hand.rem_all_cards()
-
-    #test code :
-    # user = Player("Player 1")
-    # user.add_cards([Card(1,1), Card(1,2), Card(1,3)])
-    # print(user)
-    # print(user.play_card(1))
-    # print(user)
-
-    # ai1 = Player("AI1", True)
-    # ai1.add_cards([Card(1,1), Card(1,2), Card(1,3), Card(1,4), Card(1,5), Card(1,6)])
-    # print(ai1)
-    # ai1.play_card()
-    # print(ai1)

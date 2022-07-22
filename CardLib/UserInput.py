@@ -1,5 +1,5 @@
-def getUserInput(possible_inputs, start_prompt):
-	possible_inputs = [str(input) for input in possible_inputs] + ["help"]
+def get_user_input(possible_inputs, start_prompt):
+	possible_inputs = [str(input) for input in possible_inputs]
 	help_response = "Valid Inputs are: " + str(possible_inputs)
 
 	
@@ -41,14 +41,14 @@ if __name__ == "__main__":
 	player_hand = ["[1c]", "[4p]", "[10s]"]
 
 	#if you need the possible arguement
-	action, card_num = getUserInput(["play", "hand", "draw", "exit"], "Your Turn to play")
+	action, card_num = get_user_input(["play", "hand", "draw", "exit"], "Your Turn to play")
 
 	if action == "play":
 		possible_card_nums = [str(num) for num in range(1, len(player_hand)+1)]
 		if card_num is None or card_num not in possible_card_nums:
 
 			#if you dont care and only want that command
-			card_num, _ = getUserInput(possible_card_nums, "Pick a card num to play")
+			card_num, _ = get_user_input(possible_card_nums, "Pick a card num to play")
 
 	
 	print(action, "  ", card_num)
