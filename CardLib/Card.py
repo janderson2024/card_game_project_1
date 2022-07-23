@@ -12,13 +12,11 @@ class Card:
         self.color = self.update_color(color)
         self.image = self.update_face_image()
         self.displayable = displayable
+        if self.rank == 'L' or self.rank == 'H':
+            self.suit = '*'
 
     def __str__(self):
-        if self.rank == 'L' or self.rank == 'H':
-            suit = '*'
-        else:
-            suit = self.suit
-        return f"[{suit}{self.rank}]" if self.displayable else "[;°Д°]"
+        return f"[{self.suit}{self.rank}]" if self.displayable else "[;°Д°]"
 
     def __eq__(self, other):
         if isinstance(other, Card):
