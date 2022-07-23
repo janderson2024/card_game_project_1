@@ -7,12 +7,11 @@ WINNING_SCORE = 300
 def start_game():
     player_list, player_count, scores = setup_game()
     while is_no_winner(scores):
+        spades_broken = False
         player_list = setup_round(player_list, player_count)
         bids = get_bids(player_list)
-        for player in player_list:
-            print(player.hand)
-        print(bids)
-        scores[0] = 300
+        dealer = bids.index(max(bids))
+        scores[0] = WINNING_SCORE
 
 
 def setup_game():
@@ -52,19 +51,21 @@ def get_bid(player):
     if player.is_ai:
         strengths = [get_strength(card) for card in hand.card_list]
         strength = int(sum(strengths) // 1)
+        if hand.num_cards_left() > 9:
+            strength += 1
         if strength < 1:
             strength = 1
         return strength
     else:
         return int(CardLib.get_user_input([str(num + 1) for num in range(hand.num_cards_left())],
-                                      str(hand) + "\nHow many tricks would you like to bid?")[0])
+                                          str(hand) + "\nHow many tricks would you like to bid?")[0])
 
 
 def get_strength(card):
     if card.value >= 14:
         return 1
     elif card.value >= 12:
-        return .5
+        return .4
     elif card.suit_text == "spades":
         return .25
     else:
