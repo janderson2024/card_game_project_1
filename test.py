@@ -61,4 +61,3 @@ if __name__ == '__main__':
     print(discard.get_top_card())
     discard.add_card(draw.pop_card())
     print(discard)
-

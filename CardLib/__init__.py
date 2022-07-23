@@ -1,6 +1,6 @@
 from .Card import Card
 
-from .cardlists.Card_List import Card_List
+from .cardlists.CardList import CardList
 from .cardlists.Hand import Hand
 from .cardlists.Draw import Draw
 from .cardlists.Discard import Discard
@@ -13,7 +13,7 @@ from .CalcAllScores import calculate_all_possible_scores
 
 __all__ = [
     "Card",
-    "Card_List",
+    "CardList",
     "Hand",
     "Draw",
     "Discard",
