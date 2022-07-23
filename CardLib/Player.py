@@ -34,8 +34,8 @@ class Player:
     def play_card(self, number =-1):
         if self.is_ai:
             number = random.randint(0, len(self.hand) - 1)
-        tempcard = self.hand[number]
-        del self.hand[number]
+        tempcard = self.hand.get_card_at(number)
+        self.hand.rem_card(tempcard)
         return tempcard
 
     def clear_hand(self):
