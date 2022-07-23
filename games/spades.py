@@ -37,7 +37,9 @@ def setup_round(player_list, player_count):
         CardLib.fill_deck_standard_52(pack, ace_high=True)
     elif player_count == 6:
         CardLib.fill_deck_standard_54(pack, ace_high=True)
+    pack.shuffle()
     pack, player_list = CardLib.deal_to_players(pack, player_list, pack.num_cards_left() // player_count)
+    [player.hand.sort_suit() for player in player_list]
     return player_list
 
 
@@ -47,13 +49,15 @@ def get_bids(player_list):
 
 def get_bid(player):
     hand = player.hand
-    hand = hand.sort_suit()
     if player.is_ai:
-        values = [get_strength(card) for card in hand.card_list]
-        return sum(values) // 1
+        strengths = [get_strength(card) for card in hand.card_list]
+        strength = int(sum(strengths) // 1)
+        if strength < 1:
+            strength = 1
+        return strength
     else:
-        return CardLib.get_user_input([str(num + 1) for num in range(hand.num_cards_left())],
-                                      str(hand) + "\nHow many tricks would you like to bid?")
+        return int(CardLib.get_user_input([str(num + 1) for num in range(hand.num_cards_left())],
+                                      str(hand) + "\nHow many tricks would you like to bid?")[0])
 
 
 def get_strength(card):
