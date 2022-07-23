@@ -5,7 +5,7 @@ from CardLib import Card
 
 class CardList:
 	
-    def __init__(self, cards):
+    def __init__(self, cards=[]):
         self.card_list = cards
 
     def __len__(self):
