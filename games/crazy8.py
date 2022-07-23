@@ -47,94 +47,86 @@ class Crazy8():
 
 		self.setup_decks()
 
-
 	def on_card_played(self, card):
 		self.discard.add_card(card)
 
+	def get_valid_cards(self, player):
+		return player.hand.get_all_valid_cards(self.is_card_valid)
 
-
-def get_valid_cards(game, player):
-	return player.hand.get_all_valid_cards(game.is_card_valid)
-
-
-def get_AI_turn(game, player):
-	valid_cards = get_valid_cards(game, player)
-	while len(valid_cards) == 0:
-		drew_card = game.draw_card()
-
-		if drew_card is None:
-			return None
-
-		player.add_card_to_hand(drew_card)
-		valid_cards = get_valid_cards(game, player)
-
-	card_num = randint(0, len(valid_cards)-1)
-	card_to_play = valid_cards.get_card_at(card_num)
-
-	player.hand.rem_card(card_to_play)
-
-	return card_to_play
-    
-
-
-def get_user_turn(game, player):
-	valid_cards = get_valid_cards(game, player)
-	print("--------------------")
-	print("The last discard is: ", game.discard.get_top_card())
-
-	played_valid = False
-	while not played_valid:
-		action, card_num = CardLib.get_user_input(["play", "hint", "draw", "skip", "end"], "Your Cards: " + str(player.hand))
-
-		if action == "play":
-			possible_card_nums = [str(num) for num in range(1, len(player.hand)+1)]
-
-			if card_num is None or card_num not in possible_card_nums:
-				card_num, _ = CardLib.get_user_input(possible_card_nums, "Pick a card num to play")
-
-			picked_card = player.hand.get_card_at(int(card_num)-1)
-
-			if valid_cards.is_card_in(picked_card):
-				player.hand.rem_card(picked_card)
-				played_valid = True
-				return picked_card
-			else:
-				print("That card doesn't follow the game rules!")
-
-		if action == "hint":
-			if(len(valid_cards) > 0):
-				print("Hint: you can play these: ", str(valid_cards))
-			else:
-				print("Hint: you need to draw")
-
-		if action == "draw":
-			drew_card = game.draw_card()
+	def get_AI_turn(self, player):
+		valid_cards = self.get_valid_cards(player)
+		while len(valid_cards) == 0:
+			drew_card = self.draw_card()
 
 			if drew_card is None:
-				print("The Draw pile is Empty! Cannot draw new card")
-			else:
-				player.add_card_to_hand(drew_card)
-				valid_cards = get_valid_cards(game, player)
+				return None
 
-				print("Drew : ", drew_card)
+			player.add_card_to_hand(drew_card)
+			valid_cards = self.get_valid_cards(player)
 
-		if action == "skip":
-			played_valid = True
-			return None
+		card_num = randint(0, len(valid_cards)-1)
+		card_to_play = valid_cards.get_card_at(card_num)
 
-		if action  == "end":
-			print("Thanks for playing!")
-			exit()
+		player.hand.rem_card(card_to_play)
 
+		return card_to_play
 
+	def get_user_turn(self, player):
+		valid_cards = self.get_valid_cards(player)
+		print("--------------------")
+		print("The last discard is: ", self.discard.get_top_card())
 
-def on_player_turn(game, player):
-	if player.is_ai:
-		played_card = get_AI_turn(game, player)
-	else:
-		played_card = get_user_turn(game, player)
+		played_valid = False
+		while not played_valid:
+			action, card_num = CardLib.get_user_input(["play", "hint", "draw", "skip", "end"], "Your Cards: " + str(player.hand))
 
-	return played_card
+			if action == "play":
+				possible_card_nums = [str(num) for num in range(1, len(player.hand)+1)]
+
+				if card_num is None or card_num not in possible_card_nums:
+					card_num, _ = CardLib.get_user_input(possible_card_nums, "Pick a card num to play")
+
+				picked_card = player.hand.get_card_at(int(card_num)-1)
+
+				if valid_cards.is_card_in(picked_card):
+					player.hand.rem_card(picked_card)
+					played_valid = True
+					return picked_card
+				else:
+					print("That card doesn't follow the game rules!")
+
+			if action == "hint":
+				if(len(valid_cards) > 0):
+					print("Hint: you can play these: ", str(valid_cards))
+				else:
+					print("Hint: you need to draw")
+
+			if action == "draw":
+				drew_card = self.draw_card()
+
+				if drew_card is None:
+					print("The Draw pile is Empty! Cannot draw new card")
+				else:
+					player.add_card_to_hand(drew_card)
+					valid_cards = self.get_valid_cards(player)
+
+					print("Drew : ", drew_card)
+
+			if action == "skip":
+				played_valid = True
+				return None
+
+			if action  == "end":
+				print("Thanks for playing!")
+				exit()
+
+	def on_player_turn(self, player):
+		if player.is_ai:
+			played_card = self.get_AI_turn(player)
+		else:
+			played_card = self.get_user_turn(player)
+
+		return played_card
 
 
 def main_loop(game, player_list):
@@ -150,7 +142,7 @@ def main_loop(game, player_list):
 			player = player_list[current_player]
 
 
-			played_card = on_player_turn(game, player)
+			played_card = game.on_player_turn(player)
 
 
 			if played_card is not None:

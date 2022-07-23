@@ -48,7 +48,7 @@ def fill_deck_standard_52(deck, ace_high=False):
     return deck
 
 def fill_deck_standard_54(deck, ace_high=False):
-    deck = fill_deck_standard_54(deck, ace_high)
+    deck = fill_deck_standard_52(deck, ace_high)
     deck.add_card(Card(0, 15))
     deck.add_card(Card(0, 16))
     return deck
