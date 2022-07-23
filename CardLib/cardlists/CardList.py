@@ -3,7 +3,7 @@ import random
 from CardLib import Card
 
 
-class Card_List:
+class CardList:
 	
     def __init__(self, cards):
         self.card_list = cards

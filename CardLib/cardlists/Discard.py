@@ -1,7 +1,7 @@
-from CardLib import Card_List
+from CardLib import CardList
 
 
-class Discard(Card_List):
+class Discard(CardList):
     def get_top_card(self):
         if not self.card_list:
             return None

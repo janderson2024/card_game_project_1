@@ -1,7 +1,7 @@
-from CardLib import Card_List
+from CardLib import CardList
 
 
-class Pot(Card_List):
+class Pot(CardList):
 
     def get_highest_card(self):
         return max(self.card_list)
