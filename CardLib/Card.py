@@ -3,6 +3,7 @@ class Card:
     suits = [None, '\u2666', '\u2665', '\u2663', '\u2660']
     suit_text = [None, 'diamonds', 'hearts', 'clubs', 'spades']
     ranks = [None, "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "L", "H"]
+    string_card_back = "[;°Д°]"
     
     def __init__(self, suit, rank, color='red', displayable=True):
         self.suit = self.suits[int(suit)]
@@ -16,7 +17,7 @@ class Card:
             self.suit = '*'
 
     def __str__(self):
-        return f"[{self.suit}{self.rank}]" if self.displayable else "[;°Д°]"
+        return f"[{self.suit}{self.rank}]" if self.displayable else string_card_back
 
     def __eq__(self, other):
         if isinstance(other, Card):
