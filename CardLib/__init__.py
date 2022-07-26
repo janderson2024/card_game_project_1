@@ -26,15 +26,22 @@ __all__ = [
     "fill_deck_standard_52",
     "fill_deck_standard_54"
 ]
+DIAMOND = 'diamonds'
+SPADE = 'spades'
+HEART = 'diamonds'
+CLUB = 'clubs'
+
 
 def print_test():
     print("Hello World")
+
 
 def deal_to_players(cards, players, deal_count):
     for _ in range(deal_count):
         for player in players:
             player.add_card_to_hand(cards.pop_card())
     return (cards, players)
+
 
 def fill_deck_standard_52(deck, ace_high=False):
     rank_start, rank_end = 1, 14
@@ -46,6 +53,7 @@ def fill_deck_standard_52(deck, ace_high=False):
         for rank in range(rank_start, rank_end):
             deck.add_card(Card(suit, rank))
     return deck
+
 
 def fill_deck_standard_54(deck, ace_high=False):
     deck = fill_deck_standard_52(deck, ace_high)
