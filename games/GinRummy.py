@@ -54,9 +54,11 @@ class GinRummy():
 
     def draw_card(self, player):
         self.shown_card = self.deck.pop_card()
+        time.sleep(1)
         print(f"Deck: {self.shown_card}\n")
+        time.sleep(1)
         print(f"{self.sort_hand(player)}\n")
-        print("Your turn:")
+        print("f\n{player.label}'s turn:")
         print([str(option) for option in self.PLAY_OPTIONS if option != "draw"])
         player_in = input(">>")
         self.PLAY_OPTIONS[player_in](self, player)
@@ -100,12 +102,54 @@ class GinRummy():
         print("That was not a valid option, try again!")
         return self.get_choice(header)
 
+
+    def reshuffle_deck(self):
+        self.deck = cl.fill_deck_standard_52(cl.Draw())
+        for user in self.player_list:
+            self.deck.card_list = [card for card in self.deck.card_list if card not in user.hand.card_list]
+        self.deck.shuffle()
+        self.shown_card = self.deck.card_list.pop()
+        print("Reshuffled a new deck!")
+
+
+    def rem_rank_matches(self, cards):
+        card_list = []
+        for card in cards:
+            card_list.append((card, card.value))
+
+        for card in card_list:
+            counter = 0
+            checker = card[1]
+            for item in card_list:
+                counter += item.count(checker)
+            if counter > 2:
+                card_list = [tempcard for tempcard in card_list if tempcard[1] != checker]
+                return self.rem_rank_matches([card_pair[0] for card_pair in card_list])
+        return [card_pair[0] for card_pair in card_list]
+    
+
+    def rem_straight_matches(self, card_list):
+        card_list = sorted(card_list, key=lambda card: (0 - card.value, card.suit), reverse=True)
+        start = False
+        counter = 1
+        for num, card in enumerate(card_list):
+            if num + 1 < len(card_list) and card.value + 1 == card_list[num + 1].value and card.suit == card_list[num + 1].suit:
+                if not start:
+                    start = True
+                    start_num = num
+                counter += 1
+            elif counter > 2:
+                return self.rem_straight_matches(card_list[0:start_num] + card_list[num + 1:len(card_list)])
+            else:
+                start = False
+                counter = 1
+        return card_list
+    
     # Called directly by main loop
 
     def player_turn(self, player):
         if not self.deck.card_list:
-            self.deck = cl.fill_deck_standard_52(cl.Draw())
-            self.deck.shuffle()
+            self.reshuffle_deck()
 
         if not player.is_ai:
             time.sleep(1)
@@ -118,39 +162,13 @@ class GinRummy():
         else:
             time.sleep(1)
             self.pick_up_card(player)
-
+                
 
     def check_win(self, player):
-        card_list = []
-        for card in player.hand.card_list:
-            card_list.append((card, card.rank))
-        # print([f"{str(tempcard[0])}, {str(tempcard[1])}" for tempcard in card_list])
-
-        # TODO for checking win conditions:
-        # check if cards are in rank grouping and the rest are in a straight
-        # then check if cards are in a straight and the rest are in rank grouping
-        # this way all possible combinations can be covered
-        
-        for card in card_list:
-            counter = 0
-            checker = card[1]
-            for item in card_list:
-                counter += item.count(checker)
-            if counter > 2:
-                card_list = [tempcard for tempcard in card_list if tempcard[1] != checker]
-
-        # remainder of cards are ones used for straights
-        card_list.sort()
-        number = 0
-        for card_pair in card_list:
-            if number == 0:
-                number = int(card_pair[0].value)
-            elif str(number + 1) == card_pair[1]:
-                    number += 1
-            else:
-                return False
-        return True
-        # print([f"{str(tempcard[0])}, {str(tempcard[1])}" for tempcard in card_list])
+        card_list = player.hand.card_list
+        card_list = self.rem_straight_matches(card_list)
+        card_list = self.rem_rank_matches(card_list)
+        return True if not card_list else False
 
 
 def start_game():
@@ -164,7 +182,7 @@ def start_game():
             # player.add_card_to_hand(cl.Card(1,1))
             # player.add_card_to_hand(cl.Card(2,1))
             # player.add_card_to_hand(cl.Card(3,1))
-            # player.add_card_to_hand(cl.Card(4,1))
+            # player.add_card_to_hand(cl.Card(2,2))
             # player.add_card_to_hand(cl.Card(2,3))
             # player.add_card_to_hand(cl.Card(2,4))
             # player.add_card_to_hand(cl.Card(2,5))
