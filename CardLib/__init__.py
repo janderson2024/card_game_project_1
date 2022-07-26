@@ -26,10 +26,13 @@ __all__ = [
     "fill_deck_standard_52",
     "fill_deck_standard_54"
 ]
-DIAMOND = 'diamonds'
-SPADE = 'spades'
-HEART = 'diamonds'
-CLUB = 'clubs'
+
+DIAMOND = '\u2666'
+HEART = '\u2665'
+CLUB = '\u2663'
+SPADE = '\u2660'
+
+JOKER = '*'
 
 
 def print_test():
