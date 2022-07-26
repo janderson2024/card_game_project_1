@@ -173,7 +173,7 @@ class Uno():
 
 				picked_card = player.hand.get_card_at(int(card_num)-1)
 
-				if valid_cards.is_card_in(picked_card):
+				if valid_cards.contains(picked_card):
 					player.hand.rem_card(picked_card)
 					played_valid = True
 					return picked_card
