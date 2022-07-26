@@ -44,5 +44,5 @@ class CardList:
     def get_card_list(self) -> [Card]:
         return self.card_list
 
-    def is_card_in(self, card) -> bool:
+    def contains(self, card) -> bool:
         return card in self.card_list
