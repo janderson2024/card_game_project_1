@@ -11,13 +11,16 @@ def get_all_game_files():
 
 from CardLib import get_user_input
 
-all_games = get_all_game_files()
+all_games = get_all_game_files() + ["exit"]
 
 user_input, _ = get_user_input(all_games, "Please select which game you would like to play")
 
-module_to_import = "games." + user_input
-#module_to_import = "games.crazy8" FOR TESTING
+if user_input == "exit":
+	exit()
+else:
+	module_to_import = "games." + user_input
+	#module_to_import = "games.crazy8" FOR TESTING
 
-game = importlib.import_module(module_to_import)
+	game = importlib.import_module(module_to_import)
 
-game.start_game()
+	game.start_game()
