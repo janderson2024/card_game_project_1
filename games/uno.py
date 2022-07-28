@@ -110,9 +110,9 @@ class Uno():
 	def on_card_played(self, card, player):
 		skipped = False
 		cards_to_add = 0
-		actions = ["skp", "+2", "+4"]
+
 		if card.has_action:
-			if card.action in actions:
+			if card.action in ["skp", "+2", "+4"]:
 				skipped = True
 			if card.action == "+2":
 				cards_to_add = 2
@@ -159,7 +159,7 @@ class Uno():
 	def get_user_turn(self, player):
 		valid_cards = self.get_valid_cards(player)
 		print("--------------------")
-		print("The last discard is: ", self.discard.get_top_card())
+		print("The last discard was: ", self.discard.get_top_card())
 
 		played_valid = False
 		while not played_valid:
