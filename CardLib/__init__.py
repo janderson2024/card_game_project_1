@@ -4,7 +4,6 @@ from .cardlists.CardList import CardList
 from .cardlists.Hand import Hand
 from .cardlists.Draw import Draw
 from .cardlists.Discard import Discard
-from .cardlists.Pot import Pot
 
 from .Player import Player
 from .UserInput import get_user_input
@@ -21,7 +20,6 @@ __all__ = [
     "Hand",
     "Draw",
     "Discard",
-    "Pot",
     "Player",
     "get_user_input",
     "calculate_all_possible_scores",

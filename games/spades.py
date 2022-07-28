@@ -94,12 +94,12 @@ def do_hand(leader: int, player_list: [Player], player_count: int, spades_broken
 
 
 def do_round(leader: int, player_list: [Player], player_count: int, spades_broken: bool) -> (int, [Player], bool):
-    pot = Round([])
+    pot = CardLib.CardList([])
     while pot.num_cards_left() < player_count:
         pot, player_list[leader], spades_broken = get_play(pot, player_list[leader], spades_broken)
         print("---Player " + str(leader + 1) + "--: Played " + str(pot.get_card_at(-1)))
         leader = next_player(leader, player_count)
-    winning_card = pot.get_winning_card()
+    winning_card = get_winning_card(pot.card_list)
     leader = pot.get_card_list().index(winning_card) + leader
     if leader >= player_count:
         leader -= player_count
@@ -107,7 +107,7 @@ def do_round(leader: int, player_list: [Player], player_count: int, spades_broke
     return leader, player_list, spades_broken
 
 
-def get_play(pot: Round, player: Player, spades_broken: bool):
+def get_play(pot: CardList, player: Player, spades_broken: bool):
     valid_plays = get_valid_plays(pot, player.hand, spades_broken)
     if player.is_ai:
         play = get_ai_play(pot, valid_plays)
@@ -126,7 +126,7 @@ def get_play(pot: Round, player: Player, spades_broken: bool):
     return pot, player, spades_broken
 
 
-def get_valid_plays(pot: Round, hand: Hand, spades_broken: bool) -> Hand:
+def get_valid_plays(pot: CardList, hand: Hand, spades_broken: bool) -> Hand:
     cards = CardLib.Hand([])
     if pot.num_cards_left() == 0:
         if spades_broken:
@@ -141,7 +141,7 @@ def get_valid_plays(pot: Round, hand: Hand, spades_broken: bool) -> Hand:
     return cards
 
 
-def get_ai_play(pot: Round, valid_plays: CardList) -> Card:
+def get_ai_play(pot: CardList, valid_plays: CardList) -> Card:
     return valid_plays.get_card_at(randint(0, valid_plays.num_cards_left() - 1))
 
 
@@ -154,10 +154,12 @@ def next_player(leader: int, player_count: int) -> int:
 
 def get_winning_card(card_list):
     lead_suit = card_list[0].suit
-    if len(card_list) == 0:
-        return CardLib.get_highest_card([card for card in card_list if card.suit == lead_suit])
+    spades = [card for card in card_list if card.suit == CardLib.SPADE or card.suit == CardLib.JOKER]
+    if len(spades) == 0:
+        return CardLib.get_highest_card(
+            [card for card in card_list if card.suit == lead_suit])
     else:
-        return CardLib.get_highest_card([card for card in card_list if card.suit == CardLib.SPADE or card.suit == CardLib.JOKER])
+        return CardLib.get_highest_card(spades)
 
 
 def get_scores(bids: [int], tricks: [int]) -> [int]:
