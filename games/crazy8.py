@@ -24,17 +24,8 @@ class Crazy8:
             return None
 
     def is_card_valid(self, card):
-        if card.rank == "8":
-            return True
-
         top_card = self.discard.get_top_card()
-
-        if card.suit == top_card.suit:
-            return True
-        if card.rank == top_card.rank:
-            return True
-
-        return False
+        return card.rank == "8" or (card.suit == top_card.suit or card.rank == top_card.rank)
 
     def check_player_win(self, player):
         return player.get_amount_of_cards() == 0
@@ -160,7 +151,7 @@ def main_loop(game, player_list):
 
         action, _ = CardLib.get_user_input(["yes", "no"], "Do you want to play again?")
 
-        if action is "no":
+        if action == "no":
             playing = False
 
     print("Thank you for playing!")
