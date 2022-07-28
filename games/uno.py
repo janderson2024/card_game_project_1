@@ -159,7 +159,7 @@ class Uno():
 	def get_user_turn(self, player):
 		valid_cards = self.get_valid_cards(player)
 		print("--------------------")
-		print("The last discard is: ", self.discard.get_top_card())
+		print("The last discard was: ", self.discard.get_top_card())
 
 		played_valid = False
 		while not played_valid:
