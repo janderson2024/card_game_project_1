@@ -26,7 +26,8 @@ __all__ = [
     "print_test",
     "deal_to_players",
     "fill_deck_standard_52",
-    "fill_deck_standard_54"
+    "fill_deck_standard_54",
+    "get_highest_card"
 ]
 
 DIAMOND = '\u2666'
