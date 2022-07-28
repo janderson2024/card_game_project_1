@@ -181,7 +181,7 @@ class Uno():
 					print("That card doesn't follow the game rules!")
 
 			if action == "hint":
-				if(len(valid_cards) > 0):
+				if len(valid_cards) > 0:
 					print("Hint: you can play these: ", str(valid_cards))
 				else:
 					print("Hint: you need to draw")
