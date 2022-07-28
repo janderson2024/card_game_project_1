@@ -110,9 +110,9 @@ class Uno():
 	def on_card_played(self, card, player):
 		skipped = False
 		cards_to_add = 0
-		actions = ["skp", "+2", "+4"]
+
 		if card.has_action:
-			if card.action in actions:
+			if card.action in ["skp", "+2", "+4"]:
 				skipped = True
 			if card.action == "+2":
 				cards_to_add = 2
