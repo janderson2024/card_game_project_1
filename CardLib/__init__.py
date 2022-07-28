@@ -11,6 +11,11 @@ from .UserInput import get_user_input
 from .CalcAllScores import calculate_all_possible_scores
 
 __all__ = [
+    "DIAMOND",
+    "HEART",
+    "CLUB",
+    "SPADE",
+    "JOKER",
     "Card",
     "CardList",
     "Hand",
