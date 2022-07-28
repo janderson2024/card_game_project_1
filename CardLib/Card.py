@@ -8,6 +8,7 @@ class Card:
     def __init__(self, suit, rank, color='red', displayable=True):
         self.suit = self.suits[int(suit)]
         self.rank = self.ranks[int(rank)]
+        self.suit_val = suit
         self.value = rank
         self.suit_text = self.suit_text[int(suit)]
         self.color = self.update_color(color)
