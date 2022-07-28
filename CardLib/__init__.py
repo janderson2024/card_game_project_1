@@ -10,7 +10,6 @@ from .Player import Player
 from .UserInput import get_user_input
 from .CalcAllScores import calculate_all_possible_scores
 
-
 __all__ = [
     "Card",
     "CardList",
@@ -48,7 +47,7 @@ def deal_to_players(cards, players, deal_count):
 
 def fill_deck_standard_52(deck, ace_high=False):
     rank_start, rank_end = 1, 14
-    if ace_high :
+    if ace_high:
         rank_start += 1
         rank_end += 1
 
@@ -63,3 +62,7 @@ def fill_deck_standard_54(deck, ace_high=False):
     deck.add_card(Card(0, 15))
     deck.add_card(Card(0, 16))
     return deck
+
+
+def get_highest_card(card_list):
+    return max(card_list)

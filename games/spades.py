@@ -1,25 +1,11 @@
 import CardLib
 from random import randint
 
-from CardLib.cardlists import Pot
 from CardLib.cardlists import CardList
 from CardLib.cardlists import Hand
 from CardLib import Card, Player
 
 WINNING_SCORE = 100
-
-
-class Round(CardLib.Pot):
-    def get_winning_card(self):
-        lead_suit = self.get_card_at(0).suit
-        lead_suit_cards = CardLib.Pot(
-            [card for card in self.card_list if card.suit == lead_suit])
-        spades = CardLib.Pot(
-            [card for card in self.card_list if card.suit == CardLib.SPADE or card.suit == CardLib.JOKER])
-        if spades.num_cards_left() == 0:
-            return lead_suit_cards.get_highest_card()
-        else:
-            return spades.get_highest_card()
 
 
 def start_game():
@@ -99,7 +85,7 @@ def get_strength(card: Card) -> float:
 
 
 def do_hand(leader: int, player_list: [Player], player_count: int, spades_broken: bool) -> [int]:
-    tricks = [0 for player in range(player_count)]
+    tricks = [0 for _ in range(player_count)]
     while player_list[0].hand.num_cards_left() > 0:
         print("----Tricks---: " + str(tricks))
         leader, player_list, spades_broken = do_round(leader, player_list, player_count, spades_broken)
@@ -166,16 +152,20 @@ def next_player(leader: int, player_count: int) -> int:
         return leader + 1
 
 
+def get_winning_card(card_list):
+    lead_suit = card_list[0].suit
+    if len(card_list) == 0:
+        return CardLib.get_highest_card([card for card in card_list if card.suit == lead_suit])
+    else:
+        return CardLib.get_highest_card([card for card in card_list if card.suit == CardLib.SPADE or card.suit == CardLib.JOKER])
+
+
 def get_scores(bids: [int], tricks: [int]) -> [int]:
-    return [score(bid, trick) for (bid, trick) in zip(bids, tricks)]
+    return [calc_score(bid, trick) for (bid, trick) in zip(bids, tricks)]
 
 
-def score(bid: int, trick: int) -> int:
+def calc_score(bid: int, trick: int) -> int:
     if bid <= trick:
         return bid * 10 + (trick - bid)
     else:
         return 0
-
-
-
-
