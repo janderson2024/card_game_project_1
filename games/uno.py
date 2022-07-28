@@ -264,9 +264,7 @@ def main_loop(game, player_list):
 
 		action, _ = CardLib.get_user_input(["yes", "no"], "Do you want to play again?")
 			
-		if action in ["yes"]:
-			playing_round = True
-		else:
+		if action is "no":
 			playing = False
 
 	print("Thank you for playing!")
