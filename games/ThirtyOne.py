@@ -11,9 +11,6 @@ class ThirtyOne:
     def __init__(self):
         self.setup_decks()
 
-    def __init__(self):
-        self.setup_decks()
-
     def setup_decks(self):
         self.stock = CardLib.Draw([])
         self.stock = CardLib.fill_deck_standard_52(self.stock)
@@ -48,7 +45,7 @@ class ThirtyOne:
         drew_card = widow.hand.card_list[select_widow - 1]
         del widow.hand.card_list[select_widow - 1]
         player.add_card_to_hand(drew_card)
-        select_card = randint(1,3)
+        select_card = randint(1, 3)
 
         place_card = player.hand.get_card_at(int(select_card) - 1)
         del player.hand.card_list[select_card - 1]
@@ -123,7 +120,7 @@ class ThirtyOne:
                                                                     "Which card would you like to place "
                                                                     "back into the widow?")
                 select_card = int(select_action)
-                place_card = player.hand.get_card_at(select_card-1)
+                place_card = player.hand.get_card_at(select_card - 1)
                 player.add_card_to_hand(drew_card)
                 del player.hand.card_list[select_card - 1]
                 widow.add_card_to_hand(place_card)
@@ -235,11 +232,11 @@ def main_loop(game, player_list):
 def start_game():
     game = ThirtyOne()
     print("  _______ _    _ _      _            ____              ")
-    print(" |__   __| |  | (_)    | |          / __ \             ")
+    print(" |__   __| |  | (_)    | |          / __ \\             ")
     print("    | |  | |__| |_ _ __| |_ _   _  | |  | |_ __   ___  ")
-    print("    | |  |  __  | | '__| __| | | | | |  | | '_ \ / _ \ ")
+    print("    | |  |  __  | | '__| __| | | | | |  | | '_ \\ / _ \\ ")
     print("    | |  | |  | | | |  | |_| |_| | | |__| | | | |  __/ ")
-    print("    |_|  |_|  |_|_|_|   \__|\__, |  \____/|_| |_|\___| ")
+    print("    |_|  |_|  |_|_|_|   \\__|\\__, |  \\____/|_| |_|\\___| ")
     print("                             __/ |                     ")
     print("                            |___/                      ")
     print("Lets Play Thirty One!")
