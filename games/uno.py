@@ -82,7 +82,7 @@ class Uno:
 
     def is_card_valid(self, card):
         top_card = self.discard.get_top_card()
-		return card.color == "Black" or (card.color == top_card.color or card.value == top_card.value)
+        return card.color == "Black" or (card.color == top_card.color or card.value == top_card.value)
 
     def check_player_win(self, player):
         return player.get_amount_of_cards() == 0
