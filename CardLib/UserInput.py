@@ -21,9 +21,10 @@ def get_user_input(possible_inputs, start_prompt):
 				print(help_response)
 			elif cmd in possible_inputs:
 				if len(arguments) == 0:
+					valid_input = True
 					return (cmd, None)
-				return (cmd, arguments[0])
 				valid_input = True
+				return (cmd, arguments[0])
 
 if __name__ == "__main__":
 
