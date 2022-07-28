@@ -55,12 +55,10 @@ class GinRummy():
     def draw_card(self, player):
         self.shown_card = self.deck.pop_card()
         time.sleep(1)
-        print(f"Deck: {self.shown_card}\n")
+        print((f"\n{player.label}'s turn:"))
         time.sleep(1)
-        print(f"{self.sort_hand(player)}\n")
-        print("f\n{player.label}'s turn:")
-        print([str(option) for option in self.PLAY_OPTIONS if option != "draw"])
-        player_in = input(">>")
+        print(f"\nDeck: {self.shown_card}")
+        player_in = self.get_choice(f"\n{self.sort_hand(player)}", False)
         self.PLAY_OPTIONS[player_in](self, player)
     PLAY_OPTIONS['draw'] = draw_card
 
@@ -93,12 +91,18 @@ class GinRummy():
         return player
 
 
-    def get_choice(self, header):
+    def get_choice(self, header, Draw=True):
         print(header)
-        print([str(option) for option in self.PLAY_OPTIONS])
-        player_in = input(">>")
-        if player_in in self.PLAY_OPTIONS:
-            return player_in
+        if Draw:
+            print([str(option) for option in self.PLAY_OPTIONS])
+            player_in = input(">>")
+            if player_in in self.PLAY_OPTIONS and player_in != "Draw":
+                return player_in
+        else: 
+            print([str(option) for option in self.PLAY_OPTIONS if option != "draw"])
+            player_in = input(">>")
+            if player_in in self.PLAY_OPTIONS:
+                return player_in
         print("That was not a valid option, try again!")
         return self.get_choice(header)
 
