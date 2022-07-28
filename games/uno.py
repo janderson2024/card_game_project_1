@@ -81,17 +81,8 @@ class Uno:
         return self.stock.pop_card()
 
     def is_card_valid(self, card):
-        if card.color == "Black":
-            return True
-
         top_card = self.discard.get_top_card()
-
-        if card.color == top_card.color:
-            return True
-        if card.value == top_card.value:
-            return True
-
-        return False
+		return card.color == "Black" or (card.color == top_card.color or card.value == top_card.value)
 
     def check_player_win(self, player):
         return player.get_amount_of_cards() == 0
