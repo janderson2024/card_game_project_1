@@ -96,10 +96,7 @@ class Uno:
 		return False
 
 	def check_player_win(self, player):
-		if player.get_amount_of_cards() == 0:
-			return True
-		else:
-			return False
+		return player.get_amount_of_cards() == 0:
 
 	def on_round_won(self, player):
 		player.round_winner()
