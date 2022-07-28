@@ -136,7 +136,7 @@ class Uno:
 	def get_valid_cards(self, player):
 		return player.hand.get_all_valid_cards(self.is_card_valid)
 
-	def get_AI_turn(self, player):
+	def get_ai_turn(self, player):
 		valid_cards = self.get_valid_cards(player)
 		if len(valid_cards) == 0:
 			drew_card = self.draw_card()
@@ -207,7 +207,7 @@ class Uno:
 
 	def on_player_turn(self, player):
 		if player.is_ai:
-			played_card = self.get_AI_turn(player)
+			played_card = self.get_ai_turn(player)
 		else:
 			played_card = self.get_user_turn(player)
 
