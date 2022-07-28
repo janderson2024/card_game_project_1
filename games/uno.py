@@ -25,7 +25,7 @@ class UnoCard(CardLib.Card):
 			return self.color == other.color and self.value == other.value
 		return False
 
-class Uno():
+class Uno:
 	DEAL_COUNT = 7
 	PLAYER_COUNT = 4
 
