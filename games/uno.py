@@ -163,7 +163,7 @@ class Uno:
 
 		played_valid = False
 		while not played_valid:
-			action, card_num = CardLib.get_user_input(["play", "hint", "draw", "end"], "Your Cards: " + str(player.hand))
+			action, card_num = CardLib.get_user_input(["play", "hint", "draw", "exit"], "Your Cards: " + str(player.hand))
 
 			if action == "play":
 				possible_card_nums = [str(num) for num in range(1, len(player.hand)+1)]
@@ -201,7 +201,7 @@ class Uno:
 				played_valid = True
 				return None
 
-			if action  == "end":
+			if action  == "exit":
 				print("Thanks for playing!")
 				exit()
 
@@ -280,8 +280,7 @@ def start_game():
 	print("Lets Play Uno!")
 
 
-	player_list = []
-	player_list.append(CardLib.Player("Player"))
+	player_list = [CardLib.Player("Player")]
 
 
 	for num in range(1, game.PLAYER_COUNT):
