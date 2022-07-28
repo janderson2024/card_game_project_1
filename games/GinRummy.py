@@ -2,12 +2,6 @@ import CardLib as cl
 import random
 import time
 
-# from games.GinRummy import GinRummy
-# game = GinRummy(1)
-# game.start_game()
-
-# TODO: make rules so cards are unplayable, make ai work and play random valid cards, determine winner of the game
-
 class GinRummy():
     PLAYER_COUNT = 4
     DEAL_COUNT = 7
@@ -53,16 +47,21 @@ class GinRummy():
 
 
     def draw_card(self, player):
-        self.shown_card = self.deck.pop_card()
-        time.sleep(1)
-        print((f"\n{player.label}'s turn:"))
-        time.sleep(1)
-        print(f"\nDeck: {self.shown_card}")
-        time.sleep(1)
-        player_in = self.get_choice(f"\n{self.sort_hand(player)}", False)
-        self.PLAY_OPTIONS[player_in](self, player)
+        player.add_card_to_hand(self.deck.pop_card())
+        print(player)
+        print("Choose a card to remove:")
+        player_in = int(input(">>"))
+        self.remove_card(player, player_in)
     PLAY_OPTIONS['draw'] = draw_card
 
+    def remove_card(self, player, player_in):
+        if player_in in range(1, player.get_amount_of_cards() + 1):
+                self.shown_card = player.play_card(player_in - 1)
+                print(f"Your new hand:\n{self.sort_hand(player)}\n")
+        else:
+            print("That was not a valid option, try again!")
+            return self.remove_card(player)
+        
 
     def pick_up_card(self, player):
         picked_up_card = self.shown_card
@@ -71,13 +70,7 @@ class GinRummy():
             print(player)
             print("Choose a card to remove:")
             player_in = int(input(">>"))
-
-            if player_in in range(1, player.get_amount_of_cards() + 1):
-                self.shown_card = player.play_card(player_in - 1)
-                print(f"Your new hand:\n{self.sort_hand(player)}\n")
-            else:
-                print("That was not a valid option, try again!")
-                return self.pick_up_card(player)
+            self.remove_card(player, player_in)
         else:
             new_shown_card = player.play_card()
             print(f"{player.label} picked up {picked_up_card} and put down {new_shown_card}")
@@ -92,24 +85,17 @@ class GinRummy():
         return player
 
 
-    def get_choice(self, header, Draw=True):
+    def get_choice(self, header, options):
         print(header)
-        if Draw:
-            print([str(option) for option in self.PLAY_OPTIONS])
-            player_in = input(">>")
-            if player_in in self.PLAY_OPTIONS :
-                return player_in
-        elif not Draw: 
-            print([str(option) for option in self.PLAY_OPTIONS if option != "draw"])
-            player_in = input(">>")
-            if player_in in self.PLAY_OPTIONS and player_in != "draw":
-                return player_in
+        print([str(option) for option in options])
+        player_in = input(">>")
+        if player_in in options :
+            return player_in
         print("That was not a valid option, try again!")
-        return self.get_choice(header)
+        return self.get_choice(header, options)
 
 
     def reshuffle_deck(self):
-        self.deck = cl.fill_deck_standard_52(cl.Draw())
         for user in self.player_list:
             self.deck.card_list = [card for card in self.deck.card_list if card not in user.hand.card_list]
         self.deck.shuffle()
@@ -149,7 +135,11 @@ class GinRummy():
                 start = False
                 counter = 1
         return card_list
-    
+
+    def ai_turn(self, player):
+        # assign weight to each possible option ex: picking up a 3 has a weight of 2 when 2 3s are in hand already
+        return
+
     # Called directly by main loop
 
     def player_turn(self, player):
@@ -162,7 +152,7 @@ class GinRummy():
             time.sleep(1)
             print(f"\nDeck: {self.shown_card}")
             time.sleep(1)
-            player_input = self.get_choice(f"\n{self.sort_hand(player)}")
+            player_input = self.get_choice(f"\n{self.sort_hand(player)}", self.PLAY_OPTIONS)
             self.PLAY_OPTIONS[player_input](self, player)
         else:
             time.sleep(1)
@@ -175,6 +165,44 @@ class GinRummy():
         card_list = self.rem_rank_matches(card_list)
         return True if not card_list else False
 
+    def check_win2(self, card_list):
+        deck_matrix = [
+#       A(lo)   2      3      4      5      6      7      8      9      10     J      Q      K      A(hi)
+        [False, False, False, False, False, False, False, False, False, False, False, False, False, False],    # Diamonds
+        [False, False, False, False, False, False, False, False, False, False, False, False, False, False],    # Hearts
+        [False, False, False, False, False, False, False, False, False, False, False, False, False, False],    # Clubs
+        [False, False, False, False, False, False, False, False, False, False, False, False, False, False]     # Spades
+        ]
+
+        # TODO account for ace high and low (high by default)
+
+        for card in card_list:
+            deck_matrix[card.suit_val - 1][card.value]
+
+        found_cards = 0
+        
+        for rank in range(14):
+            rank_count = []
+            for suit in range(4):
+                rank_count.append(deck_matrix[suit][rank])
+            found_cards += sum(rank_count)
+
+        n = 3
+        straights = []
+        tempnum = 0
+        for suit in range(4):
+            for rank in range(n, 14):
+                if len(set(deck_matrix[suit][rank-n:rank]))==1:
+                    # if straight of 3
+                    # TODO need some way to check first 4 cards in deck
+                    if rank > 3 and all(deck_matrix[suit][rank-4:rank])==1:
+                        # if straight of 4
+                        straights.append(4)
+
+        # print(deck_matrix[0][0])
+        # card = cl.Card(0,0)
+        # deck_matrix[card.suit_val][card.value] = True
+        # print(deck_matrix)
 
 def start_game():
     game = GinRummy()
@@ -191,6 +219,10 @@ def start_game():
             # player.add_card_to_hand(cl.Card(2,3))
             # player.add_card_to_hand(cl.Card(2,4))
             # player.add_card_to_hand(cl.Card(2,5))
+
+            
+
+            
 
             game.player_turn(player)
             if game.check_win(player):
