@@ -2,6 +2,7 @@ import random
 
 from CardLib import Hand
 
+
 class Player:
     def __init__(self, label, is_ai=False):
         self.is_ai = is_ai
@@ -11,7 +12,7 @@ class Player:
 
     def __str__(self):
         return self.label + ': ' + str(self.hand)
-        
+
     def get_label(self):
         return self.label
 
@@ -29,14 +30,14 @@ class Player:
 
     def add_cards_to_hand(self, cards):
         for card in cards:
-            self.add_card(card)
+            self.hand.add_card(card)
 
-    def play_card(self, number =-1):
+    def play_card(self, number=-1):
         if self.is_ai:
             number = random.randint(0, len(self.hand) - 1)
-        tempcard = self.hand.get_card_at(number)
-        self.hand.rem_card(tempcard)
-        return tempcard
+        temp_card = self.hand.get_card_at(number)
+        self.hand.rem_card(temp_card)
+        return temp_card
 
     def clear_hand(self):
         self.hand.rem_all_cards()

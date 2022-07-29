@@ -1,8 +1,9 @@
 import itertools
 
+
 def calculate_all_possible_scores(scoring_rules, cards):
     cards_values = [scoring_rules[card] for card in cards]
-    
+
     score = sum([value for value in cards_values if type(value) is int])
     poss_perms = [value for value in cards_values if type(value) is tuple]
 
@@ -11,15 +12,14 @@ def calculate_all_possible_scores(scoring_rules, cards):
     return list(set(result))
 
 
-if __name__ == '__main__':    
-
-    #based on the 1-13 value for the cards, and the rules following blackjack rules.
-    #gives a full list of all the possible score permutations
+if __name__ == '__main__':
+    # based on the 1-13 value for the cards, and the rules following blackjack rules.
+    # gives a full list of all the possible score permutations
 
     test_cards = [1, 11]
 
     rules = {
-        1: (1,11),
+        1: (1, 11),
         2: (2),
         3: (3),
         4: (4),
@@ -34,4 +34,4 @@ if __name__ == '__main__':
         13: (10)
     }
 
-    print("All Scores: ", CalcAllScoresFaster(rules, test_cards))
+    print("All Scores: ", calculate_all_possible_scores(rules, test_cards))

@@ -4,27 +4,30 @@ from .cardlists.CardList import CardList
 from .cardlists.Hand import Hand
 from .cardlists.Draw import Draw
 from .cardlists.Discard import Discard
-from .cardlists.Pot import Pot
 
 from .Player import Player
 from .UserInput import get_user_input
 from .CalcAllScores import calculate_all_possible_scores
 
-
 __all__ = [
+    "DIAMOND",
+    "HEART",
+    "CLUB",
+    "SPADE",
+    "JOKER",
     "Card",
     "CardList",
     "Hand",
     "Draw",
     "Discard",
-    "Pot",
     "Player",
     "get_user_input",
     "calculate_all_possible_scores",
     "print_test",
     "deal_to_players",
     "fill_deck_standard_52",
-    "fill_deck_standard_54"
+    "fill_deck_standard_54",
+    "get_highest_card"
 ]
 
 DIAMOND = '\u2666'
@@ -48,7 +51,7 @@ def deal_to_players(cards, players, deal_count):
 
 def fill_deck_standard_52(deck, ace_high=False):
     rank_start, rank_end = 1, 14
-    if ace_high :
+    if ace_high:
         rank_start += 1
         rank_end += 1
 
@@ -63,3 +66,7 @@ def fill_deck_standard_54(deck, ace_high=False):
     deck.add_card(Card(0, 15))
     deck.add_card(Card(0, 16))
     return deck
+
+
+def get_highest_card(card_list):
+    return max(card_list)

@@ -1,25 +1,11 @@
 import CardLib
 from random import randint
 
-from CardLib.cardlists import Pot
 from CardLib.cardlists import CardList
 from CardLib.cardlists import Hand
 from CardLib import Card, Player
 
 WINNING_SCORE = 100
-
-
-class Round(CardLib.Pot):
-    def get_winning_card(self):
-        lead_suit = self.get_card_at(0).suit
-        lead_suit_cards = CardLib.Pot(
-            [card for card in self.card_list if card.suit == lead_suit])
-        spades = CardLib.Pot(
-            [card for card in self.card_list if card.suit == CardLib.SPADE or card.suit == CardLib.JOKER])
-        if spades.num_cards_left() == 0:
-            return lead_suit_cards.get_highest_card()
-        else:
-            return spades.get_highest_card()
 
 
 def start_game():
@@ -99,7 +85,7 @@ def get_strength(card: Card) -> float:
 
 
 def do_hand(leader: int, player_list: [Player], player_count: int, spades_broken: bool) -> [int]:
-    tricks = [0 for player in range(player_count)]
+    tricks = [0 for _ in range(player_count)]
     while player_list[0].hand.num_cards_left() > 0:
         print("----Tricks---: " + str(tricks))
         leader, player_list, spades_broken = do_round(leader, player_list, player_count, spades_broken)
@@ -108,12 +94,12 @@ def do_hand(leader: int, player_list: [Player], player_count: int, spades_broken
 
 
 def do_round(leader: int, player_list: [Player], player_count: int, spades_broken: bool) -> (int, [Player], bool):
-    pot = Round([])
+    pot = CardLib.CardList([])
     while pot.num_cards_left() < player_count:
         pot, player_list[leader], spades_broken = get_play(pot, player_list[leader], spades_broken)
         print("---Player " + str(leader + 1) + "--: Played " + str(pot.get_card_at(-1)))
         leader = next_player(leader, player_count)
-    winning_card = pot.get_winning_card()
+    winning_card = get_winning_card(pot.card_list)
     leader = pot.get_card_list().index(winning_card) + leader
     if leader >= player_count:
         leader -= player_count
@@ -121,7 +107,7 @@ def do_round(leader: int, player_list: [Player], player_count: int, spades_broke
     return leader, player_list, spades_broken
 
 
-def get_play(pot: Round, player: Player, spades_broken: bool):
+def get_play(pot: CardList, player: Player, spades_broken: bool):
     valid_plays = get_valid_plays(pot, player.hand, spades_broken)
     if player.is_ai:
         play = get_ai_play(pot, valid_plays)
@@ -140,7 +126,7 @@ def get_play(pot: Round, player: Player, spades_broken: bool):
     return pot, player, spades_broken
 
 
-def get_valid_plays(pot: Round, hand: Hand, spades_broken: bool) -> Hand:
+def get_valid_plays(pot: CardList, hand: Hand, spades_broken: bool) -> Hand:
     cards = CardLib.Hand([])
     if pot.num_cards_left() == 0:
         if spades_broken:
@@ -155,7 +141,7 @@ def get_valid_plays(pot: Round, hand: Hand, spades_broken: bool) -> Hand:
     return cards
 
 
-def get_ai_play(pot: Round, valid_plays: CardList) -> Card:
+def get_ai_play(pot: CardList, valid_plays: CardList) -> Card:
     return valid_plays.get_card_at(randint(0, valid_plays.num_cards_left() - 1))
 
 
@@ -166,16 +152,22 @@ def next_player(leader: int, player_count: int) -> int:
         return leader + 1
 
 
+def get_winning_card(card_list):
+    lead_suit = card_list[0].suit
+    spades = [card for card in card_list if card.suit == CardLib.SPADE or card.suit == CardLib.JOKER]
+    if len(spades) == 0:
+        return CardLib.get_highest_card(
+            [card for card in card_list if card.suit == lead_suit])
+    else:
+        return CardLib.get_highest_card(spades)
+
+
 def get_scores(bids: [int], tricks: [int]) -> [int]:
-    return [score(bid, trick) for (bid, trick) in zip(bids, tricks)]
+    return [calc_score(bid, trick) for (bid, trick) in zip(bids, tricks)]
 
 
-def score(bid: int, trick: int) -> int:
+def calc_score(bid: int, trick: int) -> int:
     if bid <= trick:
         return bid * 10 + (trick - bid)
     else:
         return 0
-
-
-
-
