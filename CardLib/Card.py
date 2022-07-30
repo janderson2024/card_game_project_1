@@ -53,7 +53,7 @@ class Card:
         elif self.suit == '\u2663' or self.suit == '\u2660' or self.rank == 'H':
             return 'Black'
         else:
-            return None
+            return color
 
     def update_face_image(self) -> str:
         if self.rank == 'J':
