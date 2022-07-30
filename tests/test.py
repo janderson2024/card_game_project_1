@@ -1,3 +1,9 @@
+
+#CODE TO GO BACK UP A LAYER TO USE CARDLIB
+import sys
+sys.path.insert(0, '..')
+
+
 import CardLib
 from CardLib import Card
 
