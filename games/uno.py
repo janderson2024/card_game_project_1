@@ -33,14 +33,17 @@ class Uno:
     direction = 1
 
     def __init__(self):
+        self.stock = CardLib.Draw([])
+        self.discard = CardLib.Discard([])
+        
         self.setup_decks()
 
     def setup_decks(self):
-        self.stock = CardLib.Draw([])
+        self.stock.rem_all_cards()
         self.stock = self.setup_uno_deck(self.stock)
         self.stock.shuffle()
 
-        self.discard = CardLib.Discard([])
+        self.discard.rem_all_cards()
         self.discard.add_card(self.stock.pop_card())
         while self.discard.get_top_card().has_action:
             self.stock.add_card(self.discard.get_top_card())
