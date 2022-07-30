@@ -3,10 +3,10 @@ from CardLib import CardList
 
 class Hand(CardList):
 
-    def sort_suit(self):
+    def sort_by_suit(self):
         self.card_list = sorted(self.card_list, key=lambda card: (card.suit, 0 - card.value))
 
-    def sort_rank(self):
+    def sort_by_rank(self):
         self.card_list = sorted(self.card_list, key=lambda card: (0 - card.value, card.suit))
 
     def get_all_valid_cards(self, game_valid_cards):

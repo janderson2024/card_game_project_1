@@ -50,7 +50,7 @@ def setup_hand(player_list: [Player], player_count: int) -> [Player]:
         pack.get_card_at(-2).suit = CardLib.SPADE
     pack.shuffle()
     pack, player_list = CardLib.deal_to_players(pack, player_list, pack.num_cards_left() // player_count)
-    [player.hand.sort_suit() for player in player_list]
+    [player.hand.sort_by_suit() for player in player_list]
     return player_list
 
 
