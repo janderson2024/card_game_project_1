@@ -19,6 +19,9 @@ class Card:
 
     def __str__(self):
         return f"[{self.rank}{self.suit}]" if self.displayable else Card.string_card_back
+    
+    def __repr__(self) -> str:
+        return str(self)
 
     def __eq__(self, other):
         if isinstance(other, Card):
