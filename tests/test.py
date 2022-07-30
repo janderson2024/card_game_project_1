@@ -1,3 +1,9 @@
+
+#CODE TO GO BACK UP A LAYER TO USE CARDLIB
+import sys
+sys.path.insert(0, '..')
+
+
 import CardLib
 from CardLib import Card
 
@@ -30,9 +36,9 @@ if __name__ == '__main__':
     hand.add_card(draw.pop_card())
     hand.add_card(draw.pop_card())
     print(hand)
-    hand.sort_suit()
+    hand.sort_by_suit()
     print(hand)
-    hand.sort_rank()
+    hand.sort_by_rank()
     print(hand)
 
     # Discard

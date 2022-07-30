@@ -1,9 +1,14 @@
+#CODE TO GO BACK UP A LAYER TO USE CARDLIB
+import sys
+sys.path.insert(0, '..')
+
+
 import tkinter
 import CardLib.Card
 from tkinter import *
 from PIL import Image, ImageTk
 
-BASE_IMG_PATH = "CardLib/card_images/standard/"
+BASE_IMG_PATH = "../CardLib/card_images/standard/"
 
 def flip_card(card):
     card.set_display()

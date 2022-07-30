@@ -88,7 +88,7 @@ class GinRummy():
     # Helper functions
 
     def sort_hand(self, player):
-        player.hand.sort_suit()
+        player.hand.sort_by_suit()
         player.hand.card_list.reverse()
         return player
 
