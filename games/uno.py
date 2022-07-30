@@ -35,10 +35,10 @@ class Uno:
     def __init__(self):
         self.stock = CardLib.Draw([])
         self.discard = CardLib.Discard([])
-        
-        self.setup_decks()
 
-    def setup_decks(self):
+        self._setup_decks()
+
+    def _setup_decks(self):
         self.stock.rem_all_cards()
         self.stock = self.setup_uno_deck(self.stock)
         self.stock.shuffle()
@@ -93,7 +93,7 @@ class Uno:
     def on_round_won(self, player):
         player.round_winner()
 
-        self.setup_decks()
+        self._setup_decks()
         self.direction = 1
 
     def on_card_played(self, card, player):
