@@ -7,14 +7,17 @@ class Crazy8:
     PLAYER_COUNT = 4
 
     def __init__(self):
-        self.setup_decks()
-
-    def setup_decks(self):
         self.stock = CardLib.Draw([])
+        self.discard = CardLib.Discard([])
+
+        self._setup_decks()
+
+    def _setup_decks(self):
+        self.stock.rem_all_cards()
         self.stock = CardLib.fill_deck_standard_52(self.stock)
         self.stock.shuffle()
 
-        self.discard = CardLib.Discard([])
+        self.discard.rem_all_cards()
         self.discard.add_card(self.stock.pop_card())
 
     def draw_card(self):
@@ -33,7 +36,7 @@ class Crazy8:
     def on_round_won(self, player):
         player.round_winner()
 
-        self.setup_decks()
+        self._setup_decks()
 
     def on_card_played(self, card):
         self.discard.add_card(card)

@@ -1,7 +1,7 @@
 import CardLib as cl
 import random
 import time
-
+import numpy as np
 
 class GinRummy():
     PLAYER_COUNT = 4
@@ -153,7 +153,7 @@ class GinRummy():
 
         if not player.is_ai:
             time.sleep(1)
-            print((f"\n{player.label}'s turn:"))
+            print(f"\n{player.label}'s turn:")
             time.sleep(1)
             print(f"\nDeck: {self.shown_card}")
             time.sleep(1)
@@ -170,46 +170,51 @@ class GinRummy():
         return True if not card_list else False
 
     def check_win2(self, card_list):
-        deck_matrix = [
-            #       A(lo)   2      3      4      5      6      7      8      9      10     J      Q      K      A(hi)
-            [False, False, False, False, False, False, False, False, False, False, False, False, False, False],
-            # Diamonds
-            [False, False, False, False, False, False, False, False, False, False, False, False, False, False],
-            # Hearts
-            [False, False, False, False, False, False, False, False, False, False, False, False, False, False],  # Clubs
-            [False, False, False, False, False, False, False, False, False, False, False, False, False, False]  # Spades
-        ]
+        deck_matrix = np.array([
+        #   A      2      3      4      5      6      7      8      9      10     J      Q      K      
+            [False, False, False, False, False, False, False, False, False, False, False, False, False], # Diamonds
+            [False, False, False, False, False, False, False, False, False, False, False, False, False], # Hearts
+            [False, False, False, False, False, False, False, False, False, False, False, False, False], # Clubs
+            [False, False, False, False, False, False, False, False, False, False, False, False, False]  # Spades
+        ])
 
         # TODO account for ace high and low (high by default)
 
         for card in card_list:
-            deck_matrix[card.suit_val - 1][card.value]
+            deck_matrix[card.suit_val][card.value] = True
 
-        found_cards = 0
+        # for row in deck_matrix:
+        #     print(row)
 
-        for rank in range(14):
+        print(card_list)
+        matches = []
+        for rank in range(13):
+
+            # TODO fix this to get if there are 3+ cards in the column, and get which cards and add to "matches"
+
             rank_count = []
-            for suit in range(4):
-                rank_count.append(deck_matrix[suit][rank])
-            found_cards += sum(rank_count)
+            rank_count.append(deck_matrix[0:3][rank])
+            matches.append(cl.Card(suit, rank))
+        print(f"matches: {matches}")
 
         n = 3
+        straight_count = 0
         straights = []
-        tempnum = 0
         for suit in range(4):
-            for rank in range(n, 14):
-                if len(set(deck_matrix[suit][rank - n:rank])) == 1:
-                    # if straight of 3
-                    # TODO need some way to check first 4 cards in deck
-                    if rank > 3 and all(deck_matrix[suit][rank - 4:rank]) == 1:
-                        # if straight of 4
-                        straights.append(4)
-
-        # print(deck_matrix[0][0])
-        # card = cl.Card(0,0)
-        # deck_matrix[card.suit_val][card.value] = True
-        # print(deck_matrix)
-
+            for rank in range(13):
+                if straight_count != 0:
+                    straight_count -= 1
+                    continue
+                if all(deck_matrix[suit].take(range(rank, rank + n), mode='wrap')) == 1:
+                    for num in range(rank, rank + n):
+                        straights.append(cl.Card(suit, num))
+                    print("found 3!")
+                    straight_count = 3
+                    if all(deck_matrix[suit].take(range(rank, rank + n + 1), mode='wrap')) == 1:
+                        straights.append(cl.Card(suit, rank + n))
+                        print("found 4!")
+                        straight_count += 1
+        print(straights)
 
 def start_game():
     game = GinRummy()
@@ -217,6 +222,17 @@ def start_game():
     print(f"Have fun and type 'help' if you need to reread these rules at any time!")
     while True:
         for player in game.player_list:
+
+            # arr = np.array([[1, 2, 3, 4, 5], [5, 4, 3, 2, 1]])
+            # print(arr[1])
+            # arr[1][1] = 3
+            # print(arr[1])
+            # newArr = arr[0].take(range(1, 7), mode='wrap')
+            # print(newArr)
+            # newArr = arr[1].take(range(1, 7), mode='wrap')
+            # print(newArr)
+
+            # game.check_win2([cl.Card(1,1), cl.Card(1,2), cl.Card(1,3), cl.Card(1,4)])
 
             # player.clear_hand()
             # player.add_card_to_hand(cl.Card(1,1))

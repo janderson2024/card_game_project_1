@@ -1,4 +1,8 @@
+#CODE TO GO BACK UP A LAYER TO USE CARDLIB
 import sys
+sys.path.insert(0, '..')
+
+
 import pygame
 from CardLib.Card import Card as Card
 
@@ -21,8 +25,10 @@ pygame.display.set_caption('Card Tester')
 
 font = pygame.font.SysFont('Arial', 20)
 
+BASE_IMG_PATH = "../CardLib/card_images/standard/"
 
-card_image = pygame.image.load(f'CardLib/card_images/standard/{card1.image}')
+
+card_image = pygame.image.load(f'{BASE_IMG_PATH + card1.image}')
 DEFAULT_IMAGE_SIZE = (250, 363)
 card_image = pygame.transform.scale(card_image, DEFAULT_IMAGE_SIZE)
 
@@ -78,7 +84,7 @@ class Button():
 def flip_card():
     global card_image, rank, suit, suit_text, color, image_display, displayable, str_display
     card1.set_display()
-    card_image = pygame.image.load(f'CardLib/card_images/standard/{card1.image}')
+    card_image = pygame.image.load(f'{BASE_IMG_PATH + card1.image}')
     DEFAULT_IMAGE_SIZE = (250, 363)
     card_image = pygame.transform.scale(card_image, DEFAULT_IMAGE_SIZE)
     rank = font.render(f"Card Rank: {card1.rank}", True, white)
