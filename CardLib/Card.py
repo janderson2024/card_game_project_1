@@ -17,18 +17,18 @@ class Card:
         if self.rank == 'L' or self.rank == 'H':
             self.suit = '*'
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"[{self.rank}{self.suit}]" if self.displayable else Card.string_card_back
     
     def __repr__(self) -> str:
         return str(self)
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         if isinstance(other, Card):
             return self.suit == other.suit and self.rank == other.rank
         return False
 
-    def __lt__(self, other):
+    def __lt__(self, other) -> bool:
         return self.value < other.value
 
     def set_display(self):
@@ -50,7 +50,7 @@ class Card:
         else:
             return None
 
-    def update_color(self, color):
+    def update_color(self, color: str) -> str:
         if self.suit == '\u2666' or self.suit == '\u2665' or self.rank == 'L':
             return 'Red'
         elif self.suit == '\u2663' or self.suit == '\u2660' or self.rank == 'H':
