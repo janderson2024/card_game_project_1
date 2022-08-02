@@ -19,10 +19,10 @@ if __name__ == '__main__':
     card = Card(1, 2)
     card_list.rem_card(card)
     print(card_list)
-    cards = CardLib.CardList([Card(3, x) for x in range(2, 15)])
-    card_list.rem_cards(cards)
+    card_list.rem_cards([Card(3, x) for x in range(2, 15)])
     print(card_list)
     print(len(card_list), card_list.num_cards_left())
+    cards = CardLib.CardList([])
     cards.add_cards(card_list.get_card_list())
     print(cards)
 

@@ -28,8 +28,8 @@ class CardList:
     def rem_card(self, card: Card):
         self.card_list.remove(card)
 
-    def rem_cards(self, cards: 'CardList'):
-        for card in cards.card_list:
+    def rem_cards(self, cards: [Card]):
+        for card in cards:
             self.card_list.remove(card)
 
     def rem_all_cards(self):
