@@ -68,5 +68,5 @@ def fill_deck_standard_54(deck, ace_high=False):
     return deck
 
 
-def get_highest_card(card_list):
+def get_highest_card(card_list: CardList):
     return max(card_list)
