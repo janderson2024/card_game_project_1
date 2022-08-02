@@ -1,11 +1,10 @@
-
-#CODE TO GO BACK UP A LAYER TO USE CARDLIB
-import sys
-sys.path.insert(0, '..')
-
-
 import CardLib
 from CardLib import Card
+
+# CODE TO GO BACK UP A LAYER TO USE CARDLIB
+import sys
+
+sys.path.insert(0, '..')
 
 if __name__ == '__main__':
     # Card List
@@ -54,3 +53,10 @@ if __name__ == '__main__':
     print(discard.get_top_card())
     discard.add_card(draw.pop_card())
     print(discard)
+
+    # Mutable test.
+    a = CardLib.CardList()
+    a.add_card(Card(1, 1))
+    print(a)
+    b = CardLib.CardList()
+    print(b)
