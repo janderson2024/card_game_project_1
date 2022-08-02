@@ -163,58 +163,61 @@ class GinRummy():
             time.sleep(1)
             self.pick_up_card(player)
 
-    def check_win(self, player):
+    def check_win2(self, player):
         card_list = player.hand.card_list
         card_list = self.rem_straight_matches(card_list)
         card_list = self.rem_rank_matches(card_list)
         return True if not card_list else False
 
-    def check_win2(self, card_list):
-        deck_matrix = np.array([
-        #   A      2      3      4      5      6      7      8      9      10     J      Q      K      
+    def check_win(self, player):
+        return CardMatrix(player.hand.card_list).check_win()
+        
+class CardMatrix:
+    deck_matrix = np.array([
+        #    A      2      3      4      5      6      7      8      9      10     J      Q      K      
             [False, False, False, False, False, False, False, False, False, False, False, False, False], # Diamonds
             [False, False, False, False, False, False, False, False, False, False, False, False, False], # Hearts
             [False, False, False, False, False, False, False, False, False, False, False, False, False], # Clubs
             [False, False, False, False, False, False, False, False, False, False, False, False, False]  # Spades
-        ])
+    ])
 
-        # TODO account for ace high and low (high by default)
-
+    def __init__(self, card_list):
         for card in card_list:
-            deck_matrix[card.suit_val][card.value] = True
+            self.deck_matrix[card.suit_val - 1][card.value - 1] = True
+        
+    def check_win(self):
+        matches = 0
+        
+        # gets number of nonzero items in each column, then makes that into a list of the numbered column if it has over 2 non zeros
+        rank_count = np.count_nonzero(self.deck_matrix, axis=0)
+        # makes sure there is a match
+        if any([item for item in rank_count if item > 2]):
+            # adds number of found cards to matches
+            matches += sum([item for item in rank_count if item > 2])
+            indicies = np.array([[index for index, item in enumerate(rank_count) if item > 2]])
+            # gets indicies of each set of cards over 3 then resets those found matches to False in deck_matrix
+            np.put_along_axis(self.deck_matrix, indicies, [False], axis=1)
 
-        # for row in deck_matrix:
-        #     print(row)
-
-        print(card_list)
-        matches = []
-        for rank in range(13):
-
-            # TODO fix this to get if there are 3+ cards in the column, and get which cards and add to "matches"
-
-            rank_count = []
-            rank_count.append(deck_matrix[0:3][rank])
-            matches.append(cl.Card(suit, rank))
-        print(f"matches: {matches}")
-
-        n = 3
         straight_count = 0
-        straights = []
+        
         for suit in range(4):
             for rank in range(13):
+                # keeps loop from counting already found cards
                 if straight_count != 0:
                     straight_count -= 1
                     continue
-                if all(deck_matrix[suit].take(range(rank, rank + n), mode='wrap')) == 1:
-                    for num in range(rank, rank + n):
-                        straights.append(cl.Card(suit, num))
-                    print("found 3!")
+                # if the next three cards are true
+                if all(self.deck_matrix[suit].take(range(rank, rank + 3), mode='wrap')) == 1:
                     straight_count = 3
-                    if all(deck_matrix[suit].take(range(rank, rank + n + 1), mode='wrap')) == 1:
-                        straights.append(cl.Card(suit, rank + n))
-                        print("found 4!")
+                    # change found values to false
+                    np.put(self.deck_matrix[suit], [range(rank, rank + 3)], [False], mode='wrap')
+                    # if the fourth card is true
+                    if self.deck_matrix[suit][(rank + 3) % 13] == True:
                         straight_count += 1
-        print(straights)
+                        self.deck_matrix[suit][(rank + 3) % 13] = False
+
+        return True if np.all(self.deck_matrix == False) else False
+        
 
 def start_game():
     game = GinRummy()
@@ -232,16 +235,17 @@ def start_game():
             # newArr = arr[1].take(range(1, 7), mode='wrap')
             # print(newArr)
 
-            # game.check_win2([cl.Card(1,1), cl.Card(1,2), cl.Card(1,3), cl.Card(1,4)])
+            
+            # game.check_win2([cl.Card(1,1), cl.Card(2,1), cl.Card(3,1), cl.Card(1,3), cl.Card(2,3), cl.Card(3,3)])
 
-            # player.clear_hand()
-            # player.add_card_to_hand(cl.Card(1,1))
-            # player.add_card_to_hand(cl.Card(2,1))
-            # player.add_card_to_hand(cl.Card(3,1))
-            # player.add_card_to_hand(cl.Card(2,2))
-            # player.add_card_to_hand(cl.Card(2,3))
-            # player.add_card_to_hand(cl.Card(2,4))
-            # player.add_card_to_hand(cl.Card(2,5))
+            player.clear_hand()
+            player.add_card_to_hand(cl.Card(1,1))
+            player.add_card_to_hand(cl.Card(2,1))
+            player.add_card_to_hand(cl.Card(3,1))
+            player.add_card_to_hand(cl.Card(2,2))
+            player.add_card_to_hand(cl.Card(2,3))
+            player.add_card_to_hand(cl.Card(2,4))
+            player.add_card_to_hand(cl.Card(2,5))
 
             game.player_turn(player)
             if game.check_win(player):
