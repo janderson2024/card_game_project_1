@@ -1,10 +1,10 @@
-import CardLib
-from CardLib import Card
-
 # CODE TO GO BACK UP A LAYER TO USE CARDLIB
 import sys
 
 sys.path.insert(0, '..')
+
+import CardLib
+from CardLib import Card
 
 if __name__ == '__main__':
     # Card List
