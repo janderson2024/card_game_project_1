@@ -1,7 +1,6 @@
 import itertools
 from typing import Union
 
-from CardLib import Card
 
 
 def calculate_all_possible_scores(scoring_rules: dict[Union[int, tuple]], cards: [int]) -> list[int]:
