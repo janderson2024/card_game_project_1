@@ -1,7 +1,7 @@
 import itertools
 
 
-def calculate_all_possible_scores(scoring_rules, cards):
+def calculate_all_possible_scores(scoring_rules: dict(int | tuple), cards: [Card]):
     cards_values = [scoring_rules[card] for card in cards]
 
     score = sum([value for value in cards_values if type(value) is int])
