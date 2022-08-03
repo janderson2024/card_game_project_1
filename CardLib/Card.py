@@ -40,13 +40,13 @@ class Card:
 
     def update_suit_text(self):
         if self.suit == '\u2666':
-            return "Diamonds"
+            return "diamonds"
         elif self.suit == '\u2665':
-            return "Hearts"
+            return "hearts"
         elif self.suit == '\u2663':
-            return "Clubs"
+            return "clubs"
         elif self.suit == '\u2660':
-            return "Spades"
+            return "spades"
         else:
             return None
 
