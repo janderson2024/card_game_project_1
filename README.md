@@ -1,7 +1,7 @@
 # Team 8 Card Game Library
 
 ## Description
-A library that provides helpful functionality in creating a card game. CardLib handles all of the smaller things like "players" and "cards" so you only have to worry about making the game! For a full list of features, check out the [wiki](/-/wikis/docs/CardLib).
+A library that provides helpful functionality in creating a card game. CardLib handles all of the smaller things like "players" and "cards" so you only have to worry about making the game! For a full list of features, check out the [wiki](https://gitlab.com/janderson2024/card_game_project_1/-/wikis/home).
 This project has reached its Minimal Viable Product, and will now be improved through future strech goals.
 
 ## Installation
@@ -16,7 +16,7 @@ If you are using this to create a game:
 * import CardLib.
 * define a function called `start_game()` for main to call.
 * run `python main.py` and pick your game from the list.
-* look through the [wiki](/-/wikis/docs/CardLib) to lean about all that CardLib has to offer!
+* look through the [wiki](https://gitlab.com/janderson2024/card_game_project_1/-/wikis/home) to lean about all that CardLib has to offer!
 
 ## Support
 For any bugs, issues, or wanted features: please create an Issue using the Gitlab issue tracker!
