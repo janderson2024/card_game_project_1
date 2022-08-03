@@ -1,4 +1,7 @@
-def get_user_input(possible_inputs, start_prompt):
+from typing import Optional
+
+
+def get_user_input(possible_inputs: [str], start_prompt: str) -> (str, Optional[str]):
     possible_inputs = [str(p_input) for p_input in possible_inputs]
     help_response = "Valid Inputs are: " + str(possible_inputs)
 

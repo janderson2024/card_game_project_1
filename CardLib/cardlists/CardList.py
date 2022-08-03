@@ -4,7 +4,9 @@ from CardLib import Card
 
 
 class CardList:
-    def __init__(self, cards: [Card] = []):
+    def __init__(self, cards=None):
+        if cards is None:
+            cards = []
         self.card_list = cards
 
     def __len__(self) -> int:
@@ -29,8 +31,8 @@ class CardList:
     def rem_card(self, card: Card):
         self.card_list.remove(card)
 
-    def rem_cards(self, cards: 'CardList'):
-        for card in cards.card_list:
+    def rem_cards(self, cards: [Card]):
+        for card in cards:
             self.card_list.remove(card)
 
     def rem_all_cards(self):

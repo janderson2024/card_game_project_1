@@ -1,3 +1,6 @@
+from typing import Optional
+
+
 class Card:
     displayable = True
     suits = [None, '\u2666', '\u2665', '\u2663', '\u2660']
@@ -38,7 +41,7 @@ class Card:
         else:
             self.image = 'card_back.png'
 
-    def update_suit_text(self):
+    def update_suit_text(self) -> Optional[str]:
         if self.suit == '\u2666':
             return "diamonds"
         elif self.suit == '\u2665':
