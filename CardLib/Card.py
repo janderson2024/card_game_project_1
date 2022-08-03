@@ -8,7 +8,7 @@ class Card:
     suit_text = [None, 'diamonds', 'hearts', 'clubs', 'spades']
     string_card_back = "[;°Д°]"
 
-    def __init__(self, suit, rank, color='red', displayable=True):
+    def __init__(self, suit, rank, color='Red', displayable=True):
         self.suit = self.suits[int(suit)]
         self.rank = self.ranks[int(rank)]
         self.suit_val = suit
