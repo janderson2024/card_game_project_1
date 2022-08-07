@@ -86,17 +86,18 @@ def get_strength(card: Card) -> float:
 
 def do_hand(leader: int, player_list: [Player], player_count: int, spades_broken: bool) -> [int]:
     tricks = [0 for _ in range(player_count)]
+    discard = CardLib.CardList()
     while player_list[0].hand.num_cards_left() > 0:
         print("----Tricks---: " + str(tricks))
-        leader, player_list, spades_broken = do_round(leader, player_list, player_count, spades_broken)
+        leader, player_list, spades_broken, discard = do_round(leader, player_list, player_count, spades_broken)
         tricks[leader] += 1
     return tricks
 
 
-def do_round(leader: int, player_list: [Player], player_count: int, spades_broken: bool) -> (int, [Player], bool):
-    pot = CardLib.CardList([])
+def do_round(leader: int, player_list: [Player], player_count: int, spades_broken: bool, discard: CardList) -> (int, [Player], bool):
+    pot = CardLib.CardList()
     while pot.num_cards_left() < player_count:
-        pot, player_list[leader], spades_broken = get_play(pot, player_list[leader], spades_broken)
+        pot, player_list[leader], spades_broken = get_play(pot, player_list[leader], spades_broken, discard)
         print("---Player " + str(leader + 1) + "--: Played " + str(pot.get_card_at(-1)))
         leader = next_player(leader, player_count)
     winning_card = get_winning_card(pot.card_list)
@@ -104,13 +105,14 @@ def do_round(leader: int, player_list: [Player], player_count: int, spades_broke
     if leader >= player_count:
         leader -= player_count
     print("---Player " + str(leader + 1) + "--: Takes the trick ")
+    discard.append(pot)
     return leader, player_list, spades_broken
 
 
-def get_play(pot: CardList, player: Player, spades_broken: bool):
+def get_play(pot: CardList, player: Player, spades_broken: bool, discard: CardList):
     valid_plays = get_valid_plays(pot, player.hand, spades_broken)
     if player.is_ai:
-        play = get_ai_play(pot, valid_plays)
+        play = get_ai_play(pot, valid_plays, discard)
     else:
         play = valid_plays.get_card_at(
             int(CardLib.get_user_input([str(num + 1) for num in range(valid_plays.num_cards_left())],
@@ -141,7 +143,7 @@ def get_valid_plays(pot: CardList, hand: Hand, spades_broken: bool) -> Hand:
     return cards
 
 
-def get_ai_play(pot: CardList, valid_plays: CardList) -> Card:
+def get_ai_play(pot: CardList, valid_plays: CardList, discard: CardList) -> Card:
     return valid_plays.get_card_at(randint(0, valid_plays.num_cards_left() - 1))
 
 
@@ -152,14 +154,13 @@ def next_player(leader: int, player_count: int) -> int:
         return leader + 1
 
 
-def get_winning_card(card_list):
+def get_winning_card(card_list: [Card]) -> Card:
     lead_suit = card_list[0].suit
     spades = [card for card in card_list if card.suit == CardLib.SPADE or card.suit == CardLib.JOKER]
     if len(spades) == 0:
-        return CardLib.get_highest_card(
-            [card for card in card_list if card.suit == lead_suit])
+        return CardLib.get_highest_card(CardLib.CardList([card for card in card_list if card.suit == lead_suit]))
     else:
-        return CardLib.get_highest_card(spades)
+        return CardLib.get_highest_card(CardLib.CardList(spades))
 
 
 def get_scores(bids: [int], tricks: [int]) -> [int]:
