@@ -61,13 +61,15 @@ def loss_count(card: Card, cards: Hand, card_to_beat: Card) -> Decimal:
         cards.sort_by_suit()
         card_index = Decimal(cards.card_list.index(card))
         card_to_beat_index = Decimal(cards.card_list.index(card_to_beat))
+        cards.rem_cards([card, card_to_beat])
         if card_to_beat_index < card_index:
-            return Decimal(0)
+            return Decimal(cards.num_cards_left())
         else:
             return card_index
     else:
         same_suit = CardLib.Hand([c for c in cards if c.suit == card.suit])
-        same_suit.sort_by_suit()
+        same_suit.sort_by_rank()
+        cards.rem_card(card)
         return Decimal(same_suit.card_list.index(card))
 
 
@@ -89,7 +91,7 @@ class Spades:
         self.leader = None
         self.bids = None
         self.spades_broken = None
-        self.discard = CardLib.CardList()
+        self.discard = CardLib.Discard()
 
     def setup_game(self):
         count, none = CardLib.get_user_input(["4", "6"], "How many players?")
