@@ -1,3 +1,4 @@
+import CardLib
 from typing import Optional
 
 
@@ -8,7 +9,7 @@ class Card:
     suit_text = [None, 'diamonds', 'hearts', 'clubs', 'spades']
     string_card_back = "[;°Д°]"
 
-    def __init__(self, suit, rank, color='Red', displayable=True):
+    def __init__(self, suit, rank, x=0, y=0, color='Red', displayable=True):
         self.suit = self.suits[int(suit)]
         self.rank = self.ranks[int(rank)]
         self.suit_val = suit
@@ -19,6 +20,17 @@ class Card:
         self.displayable = displayable
         if self.rank == 'L' or self.rank == 'H':
             self.suit = '*'
+
+        self._init_gui(x, y)
+
+    def _init_gui(self, x, y):
+        self.x = x
+        self.y = y
+        self.width = 20
+        self.height = 40
+
+        self.rect = CardLib.gui.create_rect(self.x, self.y, self.width, self.height)
+
 
     def __str__(self) -> str:
         return f"[{self.rank}{self.suit}]" if self.displayable else Card.string_card_back
@@ -79,3 +91,10 @@ class Card:
             return "black_joker.png"
 
         return f"{rank}_of_{self.suit_text}.png"
+
+    def draw(self):
+        if self.displayable:
+            color = (255, 255, 255)
+        else:
+            color = (0, 0, 0)
+        CardLib.gui.draw_rect(color, self.rect)

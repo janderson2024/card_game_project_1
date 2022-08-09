@@ -35,6 +35,15 @@ class Gui:
 
 	def add_obj_to_be_drawn(self, obj):
 		self.objects_to_draw.append(obj)
+		self.redraw()
 
 	def remove_obj_from_being_drawn(self, obj):
 		self.objects_to_draw.remove(obj)
+		self.redraw()
+
+	def remove_all_obj(self):
+		self.objects_to_draw.clear()
+		self.redraw()
+
+	def draw_rect(self, color, rect):
+		pygame.draw.rect(self.screen, color, rect)
