@@ -29,8 +29,6 @@ class Card:
         self.width = 20
         self.height = 40
 
-        self.rect = CardLib.gui.create_rect(self.x, self.y, self.width, self.height)
-
 
     def __str__(self) -> str:
         return f"[{self.rank}{self.suit}]" if self.displayable else Card.string_card_back
@@ -93,8 +91,9 @@ class Card:
         return f"{rank}_of_{self.suit_text}.png"
 
     def draw(self):
+        rect = CardLib.gui.create_rect(self.x, self.y, self.width, self.height)
         if self.displayable:
             color = (255, 255, 255)
         else:
             color = (0, 0, 0)
-        CardLib.gui.draw_rect(color, self.rect)
+        CardLib.gui.draw_rect(color, rect)

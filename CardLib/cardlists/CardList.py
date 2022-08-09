@@ -1,13 +1,21 @@
 import random
 
+import CardLib
 from CardLib import Card
 
 
 class CardList:
-    def __init__(self, cards=None):
+    def __init__(self, x=0, y=0, cards=None):
         if cards is None:
             cards = []
         self.card_list = cards
+
+        self._init_gui(x, y)
+
+    def _init_gui(self, x, y):
+        self.x = x
+        self.y = y
+        self.card_offset = 5
 
     def __len__(self) -> int:
         return len(self.card_list)
@@ -19,6 +27,9 @@ class CardList:
         yield from self.card_list
 
     def add_card(self, card: Card):
+        card.x = self.x + self.card_offset
+        card.y = self.y
+        self.card_offset += card.width + 5
         self.card_list.append(card)
 
     def get_card_at(self, index: int) -> Card:
@@ -26,14 +37,14 @@ class CardList:
 
     def add_cards(self, cards: [Card]):
         for card in cards:
-            self.card_list.append(card)
+            self.add_card(card)
 
     def rem_card(self, card: Card):
         self.card_list.remove(card)
 
     def rem_cards(self, cards: [Card]):
         for card in cards:
-            self.card_list.remove(card)
+            self.rem_card(card)
 
     def rem_all_cards(self):
         self.card_list = []
@@ -49,3 +60,11 @@ class CardList:
 
     def contains(self, card) -> bool:
         return card in self.card_list
+
+
+    def draw(self):
+        background_rect = CardLib.gui.create_rect(self.x, self.y, self.card_offset, 60)
+        CardLib.gui.draw_rect((100,100,100), background_rect)
+
+        for card in self.card_list:
+            card.draw()

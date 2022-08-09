@@ -24,21 +24,33 @@ def main_loop(game, player_list):
 
 
         playing_round = True
-        while playing_round:
 
+        test_card_list = CardLib.CardList(x=100, y=100)
+        CardLib.gui.add_obj_to_be_drawn(test_card_list)
+
+        while playing_round:
             x, y = CardLib.gui.get_gui_user_input()
             test_card = CardLib.Card(2, 7, x=x, y=y)
-            if randint(0, 10) > 5:
-                test_card.set_display()
-                print("flipped")
 
-            CardLib.gui.add_obj_to_be_drawn(test_card)
+            test_card_list.add_card(test_card)
             CardLib.gui.redraw()
 
-            if randint(0,10) > 5:
-                CardLib.gui.remove_all_obj()
+
+            #x, y = CardLib.gui.get_gui_user_input()
+            #test_card = CardLib.Card(2, 7, x=x, y=y)
+            #if randint(0, 10) > 5:
+            #    test_card.set_display()
+            #    print("flipped")
+
+            #CardLib.gui.add_obj_to_be_drawn(test_card)
+            #CardLib.gui.redraw()
+
+            #if randint(0,10) > 5:
+                #CardLib.gui.remove_all_obj()
             #time.sleep(3) #acts like AI turn
             #print("Done with sleep")
+
+
             
             
 
