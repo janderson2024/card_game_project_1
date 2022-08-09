@@ -170,22 +170,54 @@ class GinRummy():
         return True if not card_list else False
 
     def check_win(self, player):
-        return CardMatrix(player.hand.card_list).check_win()
+        return CardMatrix(player.hand.card_list).assign_values()
         
+# TODO get card value of card on the table (see notes)
+# maybe use cards garunteed left in deck to choose to draw or take the card on the table
+
 class CardMatrix:
-    deck_matrix = np.array([
-        #    A      2      3      4      5      6      7      8      9      10     J      Q      K      
-            [False, False, False, False, False, False, False, False, False, False, False, False, False], # Diamonds
-            [False, False, False, False, False, False, False, False, False, False, False, False, False], # Hearts
-            [False, False, False, False, False, False, False, False, False, False, False, False, False], # Clubs
-            [False, False, False, False, False, False, False, False, False, False, False, False, False]  # Spades
-    ])
 
     def __init__(self, card_list):
-        for card in card_list:
-            self.deck_matrix[card.suit_val - 1][card.value - 1] = True
-        
+        self.cards = card_list
+    
+    def assign_cards(self):
+        self.deck_matrix = np.array([
+        #    A  2  3  4  5  6  7  8  9  10 J  Q  K      
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], # Diamonds
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], # Hearts
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], # Clubs
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # Spades
+        ])
+        for card in self.cards:
+            self.deck_matrix[card.suit_val - 1][card.value - 1] = -1
+
+    def assign_values(self):
+        self.assign_cards()
+        print(self.deck_matrix)
+
+        # working for rank matches
+        for rank in range(13):
+            values = [0, 1, 5, 6]
+
+            column = self.deck_matrix[:, rank]
+            num_cards = len([num for num in column if num == -1])
+            
+            for suit in range(4):
+                if self.deck_matrix[suit][rank] != -1:
+                    self.deck_matrix[suit][rank] += values[num_cards]
+        print(self.deck_matrix)
+
+        # need to check for straights to assign correct values
+        for card in self.cards:
+            for num, value in zip((-2, -1, 0, 2, 3, 4), (1, 2, 3, 3, 2, 1)):
+                if self.deck_matrix[card.suit_val - 1][(card.value - num) % 13] > -1:
+                    self.deck_matrix[card.suit_val - 1][(card.value - num) % 13] += value
+            
+        print(self.deck_matrix)
+        return
+
     def check_win(self):
+        self.assign_cards()
         matches = 0
         
         # gets number of nonzero items in each column, then makes that into a list of the numbered column if it has over 2 non zeros
@@ -206,8 +238,11 @@ class CardMatrix:
                 if straight_count != 0:
                     straight_count -= 1
                     continue
+                # checking for 7 card straight
+                if all(self.deck_matrix[suit].take(range(rank, rank + 7), mode='wrap')) == True:
+                        return True
                 # if the next three cards are true
-                if all(self.deck_matrix[suit].take(range(rank, rank + 3), mode='wrap')) == 1:
+                if all(self.deck_matrix[suit].take(range(rank, rank + 3), mode='wrap')) == True:
                     straight_count = 3
                     # change found values to false
                     np.put(self.deck_matrix[suit], [range(rank, rank + 3)], [False], mode='wrap')
@@ -215,8 +250,8 @@ class CardMatrix:
                     if self.deck_matrix[suit][(rank + 3) % 13] == True:
                         straight_count += 1
                         self.deck_matrix[suit][(rank + 3) % 13] = False
-
-        return True if np.all(self.deck_matrix == False) else False
+                    
+        return np.all(self.deck_matrix == False)
         
 
 def start_game():
@@ -225,7 +260,6 @@ def start_game():
     print(f"Have fun and type 'help' if you need to reread these rules at any time!")
     while True:
         for player in game.player_list:
-
             # arr = np.array([[1, 2, 3, 4, 5], [5, 4, 3, 2, 1]])
             # print(arr[1])
             # arr[1][1] = 3
@@ -244,8 +278,17 @@ def start_game():
             player.add_card_to_hand(cl.Card(3,1))
             player.add_card_to_hand(cl.Card(2,2))
             player.add_card_to_hand(cl.Card(2,3))
-            player.add_card_to_hand(cl.Card(2,4))
-            player.add_card_to_hand(cl.Card(2,5))
+            player.add_card_to_hand(cl.Card(3,3))
+            player.add_card_to_hand(cl.Card(2,12))
+
+            # player.clear_hand()
+            # player.add_card_to_hand(cl.Card(1,1))
+            # player.add_card_to_hand(cl.Card(1,2))
+            # player.add_card_to_hand(cl.Card(1,3))
+            # player.add_card_to_hand(cl.Card(1,4))
+            # player.add_card_to_hand(cl.Card(1,5))
+            # player.add_card_to_hand(cl.Card(1,6))
+            # player.add_card_to_hand(cl.Card(1,7))
 
             game.player_turn(player)
             if game.check_win(player):
