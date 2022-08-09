@@ -1,5 +1,6 @@
 import CardLib
 from random import randint
+import time
 
 class test_draw:
 
@@ -29,7 +30,9 @@ def main_loop(game, player_list):
             test = test_draw(x, y)
             CardLib.gui.add_obj_to_be_drawn(test)
             CardLib.gui.redraw()
-
+            #time.sleep(3) #acts like AI turn
+            #print("Done with sleep")
+            
             
 
         action, _ = CardLib.get_user_input(["yes", "no"], "Do you want to play again?")

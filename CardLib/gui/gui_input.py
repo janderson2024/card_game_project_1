@@ -3,6 +3,7 @@ import pygame
 
 def get_gui_user_input():
 	got_input = False
+	pygame.event.clear()
 	while not got_input:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
