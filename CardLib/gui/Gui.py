@@ -15,6 +15,9 @@ class Gui:
 	def get_pygame(self):
 		return self.pygame_mod
 
+	def get_screen(self):
+		return self.screen
+
 	def start_gui(self, game_title):
 		print("GUI start")
 		pygame.init()
@@ -35,9 +38,3 @@ class Gui:
 
 	def remove_obj_from_being_drawn(self, obj):
 		self.objects_to_draw.remove(obj)
-
-	def create_rect(self, x, y, width, height):
-		return pygame.Rect(x, y, width, height)
-
-	def draw_rect(self, color, rect):
-		pygame.draw.rect(self.screen, color, rect)

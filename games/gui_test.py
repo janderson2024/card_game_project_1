@@ -10,10 +10,10 @@ class test_draw:
 		self.height = 40
 		self.color = (255,0,0)
 
-		self.rect = CardLib.Gui.create_rect(self.x, self.y, self.width, self.height)
+		self.rect = CardLib.gui.create_rect(self.x, self.y, self.width, self.height)
 
 	def draw(self):
-		CardLib.Gui.draw_rect(self.color, self.rect)
+		CardLib.gui.draw_rect(CardLib.gui.get_screen(), self.color, self.rect)
 
 
 
@@ -25,10 +25,10 @@ def main_loop(game, player_list):
         playing_round = True
         while playing_round:
 
-            x, y = CardLib.GUI.get_gui_user_input()
+            x, y = CardLib.gui.get_gui_user_input()
             test = test_draw(x, y)
-            CardLib.Gui.add_obj_to_be_drawn(test)
-            CardLib.Gui.redraw()
+            CardLib.gui.add_obj_to_be_drawn(test)
+            CardLib.gui.redraw()
 
             
 
@@ -43,8 +43,8 @@ def main_loop(game, player_list):
 def start_game():
 
     print("GUI TEST")
-    CardLib.Gui.start_gui("GUI test screen")
-    print(CardLib.Gui)
+    CardLib.gui.start_gui("GUI test screen")
+    print(CardLib.gui)
 
     player_list = [CardLib.Player("Player")]
 

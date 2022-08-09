@@ -9,7 +9,7 @@ from .Player import Player
 from .UserInput import get_user_input
 from .CalcAllScores import calculate_all_possible_scores
 
-from . import gui as GUI
+from . import gui
 
 __all__ = [
     "DIAMOND",
@@ -30,11 +30,9 @@ __all__ = [
     "fill_deck_standard_52",
     "fill_deck_standard_54",
     "get_highest_card",
-    "GUI",
-    "Gui"
+    "gui"
 ]
 
-Gui = GUI.Gui()
 
 DIAMOND = '\u2666'
 HEART = '\u2665'
