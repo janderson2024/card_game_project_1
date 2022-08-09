@@ -25,7 +25,7 @@ def main_loop(game, player_list):
 
         playing_round = True
 
-        test_card_list = CardLib.CardList(x=100, y=100)
+        test_card_list = CardLib.CardList(x=10, y=400)
         CardLib.gui.add_obj_to_be_drawn(test_card_list)
 
         while playing_round:

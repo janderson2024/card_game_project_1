@@ -47,3 +47,6 @@ class Gui:
 
 	def draw_rect(self, color, rect):
 		pygame.draw.rect(self.screen, color, rect)
+
+	def draw_img(self, img, x, y):
+		self.screen.blit(img, (x,y))

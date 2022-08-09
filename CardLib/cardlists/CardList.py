@@ -16,6 +16,7 @@ class CardList:
         self.x = x
         self.y = y
         self.card_offset = 5
+        self.card_height = 70
 
     def __len__(self) -> int:
         return len(self.card_list)
@@ -28,7 +29,7 @@ class CardList:
 
     def add_card(self, card: Card):
         card.x = self.x + self.card_offset
-        card.y = self.y
+        card.y = self.y + 5
         self.card_offset += card.width + 5
         self.card_list.append(card)
 
@@ -63,7 +64,7 @@ class CardList:
 
 
     def draw(self):
-        background_rect = CardLib.gui.create_rect(self.x, self.y, self.card_offset, 60)
+        background_rect = CardLib.gui.create_rect(self.x, self.y, self.card_offset, self.card_height+10)
         CardLib.gui.draw_rect((100,100,100), background_rect)
 
         for card in self.card_list:

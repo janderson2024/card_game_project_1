@@ -9,6 +9,8 @@ class Card:
     suit_text = [None, 'diamonds', 'hearts', 'clubs', 'spades']
     string_card_back = "[;°Д°]"
 
+    PATH_TO_IMG_DIR = "CardLib/card_images/standard/"
+
     def __init__(self, suit, rank, x=0, y=0, color='Red', displayable=True):
         self.suit = self.suits[int(suit)]
         self.rank = self.ranks[int(rank)]
@@ -26,8 +28,12 @@ class Card:
     def _init_gui(self, x, y):
         self.x = x
         self.y = y
-        self.width = 20
-        self.height = 40
+        self.width = 50
+        self.height = 70
+
+        img_path = self.PATH_TO_IMG_DIR + self.image
+
+        self.py_img = CardLib.gui.create_img(img_path, self.x, self.y, self.width, self.height)
 
 
     def __str__(self) -> str:
@@ -91,9 +97,10 @@ class Card:
         return f"{rank}_of_{self.suit_text}.png"
 
     def draw(self):
-        rect = CardLib.gui.create_rect(self.x, self.y, self.width, self.height)
-        if self.displayable:
-            color = (255, 255, 255)
-        else:
-            color = (0, 0, 0)
-        CardLib.gui.draw_rect(color, rect)
+        CardLib.gui.draw_img(self.py_img, self.x, self.y)
+        #rect = CardLib.gui.create_rect(self.x, self.y, self.width, self.height)
+        #f self.displayable:
+            #color = (255, 255, 255)
+        #else:
+            #color = (0, 0, 0)
+        #CardLib.gui.draw_rect(color, rect)

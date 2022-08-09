@@ -26,3 +26,5 @@ remove_obj_from_being_drawn = _gui.remove_obj_from_being_drawn
 remove_all_obj = _gui.remove_all_obj
 
 draw_rect = _gui.draw_rect
+
+draw_img = _gui.draw_img
