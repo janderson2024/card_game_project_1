@@ -42,4 +42,4 @@ For any bugs, issues, or wanted features: please create an Issue using the Gitla
 (Future License will go here. Im thinking GPLv3 will work)
 
 ### Project status
-This project has reached its minimal viable product. It will continued to be developed til stretch goals are met, and til the end of the Techwise Project 1 deadline. After that work on this project may halt.
+This project has reached its minimal viable product (MVP). It will continued to be developed til stretch goals are met, and til the end of the Techwise Project 1 deadline. After that work on this project may halt.
