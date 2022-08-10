@@ -5,11 +5,11 @@ from CardLib import Card
 
 
 class CardList:
-    def __init__(self, x=0, y=0, cards=None):
+    def __init__(self, cards=None, x=0, y=0):
         if cards is None:
             cards = []
         self.card_list = cards
-
+        
         self._init_gui(x, y)
 
     def _init_gui(self, x, y):
