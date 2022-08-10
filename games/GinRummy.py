@@ -170,17 +170,36 @@ class GinRummy():
         return True if not card_list else False
 
     def check_win(self, player):
-        return CardMatrix(player.hand.card_list).assign_values()
-        
-# TODO get card value of card on the table (see notes)
-# maybe use cards garunteed left in deck to choose to draw or take the card on the table
+        matrix = CardMatrix(player.hand.card_list)
+        matrix.assign_values()
+        return matrix.check_win()
+
+# for dropping a card: 
+# use checkwin to keep cards in matching from being discarded
+# use the remaining cards to determine which to drop
+
+# ISSUE: when cards are lined up like
+# 0 1 1 1 0
+# 0 1 0 0 0
+# 0 1 0 0 0
+# 0 1 0 0 0
+
+# they get valued at: 
+# 6 1 1 1 6
+# 0 1 0 0 0
+# 0 1 0 0 0
+# 0 6 0 0 0
+
+# should be valued at something like: 
+# 5 1 1 1 6
+# 0 1 0 0 0
+# 0 1 0 0 0
+# 0 6 0 0 0
 
 class CardMatrix:
 
     def __init__(self, card_list):
         self.cards = card_list
-    
-    def assign_cards(self):
         self.deck_matrix = np.array([
         #    A  2  3  4  5  6  7  8  9  10 J  Q  K      
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], # Diamonds
@@ -189,69 +208,88 @@ class CardMatrix:
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]  # Spades
         ])
         for card in self.cards:
-            self.deck_matrix[card.suit_val - 1][card.value - 1] = -1
+            self.deck_matrix[card.suit_val - 1][card.value - 1] = -1   
+
 
     def assign_values(self):
-        self.assign_cards()
-        print(self.deck_matrix)
+        # need to check for straights to assign correct values
+        for card in self.cards:
+            # idea: choose card, then check to the right to see if there is another
+            # if there is up the added value by x, repeat until open spot and ramp it up so 4 in a row counts for a lot 
 
-        # working for rank matches
+            # idea 2: electric boogaloo
+            # look for straights of 3 and add value to cards immediatly around it to make straights of 4 more valuable
+
+            for num in (-2, -1, 0, 2, 3, 4):
+                if self.deck_matrix[card.suit_val - 1][(card.value - num) % 13] != -1:
+                    self.deck_matrix[card.suit_val - 1][(card.value - num) % 13] += 2
+
+
+        # rank matches
+
         for rank in range(13):
-            values = [0, 1, 5, 6]
 
             column = self.deck_matrix[:, rank]
             num_cards = len([num for num in column if num == -1])
             
             for suit in range(4):
                 if self.deck_matrix[suit][rank] != -1:
-                    self.deck_matrix[suit][rank] += values[num_cards]
-        print(self.deck_matrix)
+                    # add less if its already been modified, make sure card to complete 3 is less than card to complete 4
+                    if self.deck_matrix[suit][rank] > 0:
+                        self.deck_matrix[suit][rank] += num_cards
+                    else:
+                        self.deck_matrix[suit][rank] += (num_cards * 2)
 
-        # need to check for straights to assign correct values
-        for card in self.cards:
-            for num, value in zip((-2, -1, 0, 2, 3, 4), (1, 2, 3, 3, 2, 1)):
-                if self.deck_matrix[card.suit_val - 1][(card.value - num) % 13] > -1:
-                    self.deck_matrix[card.suit_val - 1][(card.value - num) % 13] += value
-            
-        print(self.deck_matrix)
-        return
 
     def check_win(self):
-        self.assign_cards()
-        matches = 0
+        found_cards = 0
         
-        # gets number of nonzero items in each column, then makes that into a list of the numbered column if it has over 2 non zeros
-        rank_count = np.count_nonzero(self.deck_matrix, axis=0)
+
+        # Rank matches
+
+        # gets number of -1s in each column
+        rank_count = np.count_nonzero(self.deck_matrix == -1, axis=0)
+
         # makes sure there is a match
         if any([item for item in rank_count if item > 2]):
-            # adds number of found cards to matches
-            matches += sum([item for item in rank_count if item > 2])
+
+            # adds number of found cards
+            found_cards += sum([item for item in rank_count if item > 2])
+
+            # gets column of found cards, then sets them back to 0 to prevent double counting
             indicies = np.array([[index for index, item in enumerate(rank_count) if item > 2]])
-            # gets indicies of each set of cards over 3 then resets those found matches to False in deck_matrix
-            np.put_along_axis(self.deck_matrix, indicies, [False], axis=1)
+            np.put_along_axis(self.deck_matrix, indicies, [0], axis=1)
+
+
+        # Straight matches
 
         straight_count = 0
-        
+
         for suit in range(4):
             for rank in range(13):
+
                 # keeps loop from counting already found cards
                 if straight_count != 0:
                     straight_count -= 1
                     continue
+
                 # checking for 7 card straight
-                if all(self.deck_matrix[suit].take(range(rank, rank + 7), mode='wrap')) == True:
-                        return True
-                # if the next three cards are true
-                if all(self.deck_matrix[suit].take(range(rank, rank + 3), mode='wrap')) == True:
+                seven_cards = set(self.deck_matrix[suit].take(range(rank, rank + 7), mode='wrap'))
+                if len(seven_cards) == 1 and -1 in seven_cards:
+                    return True
+
+                # checking for 3 card straight
+                three_cards = set(self.deck_matrix[suit].take(range(rank, rank + 3), mode='wrap'))
+                if len(three_cards) == 1 and -1 in three_cards:
                     straight_count = 3
-                    # change found values to false
-                    np.put(self.deck_matrix[suit], [range(rank, rank + 3)], [False], mode='wrap')
-                    # if the fourth card is true
-                    if self.deck_matrix[suit][(rank + 3) % 13] == True:
+                    found_cards += 3
+
+                    # check the 4th card
+                    if self.deck_matrix[suit][(rank + 3) % 13] == -1:
                         straight_count += 1
-                        self.deck_matrix[suit][(rank + 3) % 13] = False
+                        found_cards += 1
                     
-        return np.all(self.deck_matrix == False)
+        return True if found_cards == 7 else False
         
 
 def start_game():
@@ -260,8 +298,13 @@ def start_game():
     print(f"Have fun and type 'help' if you need to reread these rules at any time!")
     while True:
         for player in game.player_list:
-            # arr = np.array([[1, 2, 3, 4, 5], [5, 4, 3, 2, 1]])
-            # print(arr[1])
+            # arr = np.array([-1, -1, -1, -1, -1])
+            # print(arr)
+            # set_arr = set(arr)
+            # print(set_arr)
+            # if len(set_arr) == 1 and -1 in set_arr:
+            #     print("POGGERS")
+
             # arr[1][1] = 3
             # print(arr[1])
             # newArr = arr[0].take(range(1, 7), mode='wrap')
@@ -272,23 +315,23 @@ def start_game():
             
             # game.check_win2([cl.Card(1,1), cl.Card(2,1), cl.Card(3,1), cl.Card(1,3), cl.Card(2,3), cl.Card(3,3)])
 
-            player.clear_hand()
-            player.add_card_to_hand(cl.Card(1,1))
-            player.add_card_to_hand(cl.Card(2,1))
-            player.add_card_to_hand(cl.Card(3,1))
-            player.add_card_to_hand(cl.Card(2,2))
-            player.add_card_to_hand(cl.Card(2,3))
-            player.add_card_to_hand(cl.Card(3,3))
-            player.add_card_to_hand(cl.Card(2,12))
-
             # player.clear_hand()
             # player.add_card_to_hand(cl.Card(1,1))
-            # player.add_card_to_hand(cl.Card(1,2))
-            # player.add_card_to_hand(cl.Card(1,3))
-            # player.add_card_to_hand(cl.Card(1,4))
-            # player.add_card_to_hand(cl.Card(1,5))
-            # player.add_card_to_hand(cl.Card(1,6))
-            # player.add_card_to_hand(cl.Card(1,7))
+            # player.add_card_to_hand(cl.Card(2,1))
+            # player.add_card_to_hand(cl.Card(3,1))
+            # player.add_card_to_hand(cl.Card(4,2))
+            # player.add_card_to_hand(cl.Card(4,3))
+            # player.add_card_to_hand(cl.Card(3,3))
+            # player.add_card_to_hand(cl.Card(2,12))
+
+            player.clear_hand()
+            player.add_card_to_hand(cl.Card(1,1))
+            player.add_card_to_hand(cl.Card(1,2))
+            player.add_card_to_hand(cl.Card(1,3))
+            player.add_card_to_hand(cl.Card(1,4))
+            player.add_card_to_hand(cl.Card(2,4))
+            player.add_card_to_hand(cl.Card(3,4))
+            player.add_card_to_hand(cl.Card(4,4))
 
             game.player_turn(player)
             if game.check_win(player):
