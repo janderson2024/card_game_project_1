@@ -1,3 +1,5 @@
+from .defaults import *
+
 from .Card import Card
 
 from .cardlists.CardList import CardList
@@ -10,11 +12,6 @@ from .UserInput import get_user_input
 from .CalcAllScores import calculate_all_possible_scores
 
 __all__ = [
-    "DIAMOND",
-    "HEART",
-    "CLUB",
-    "SPADE",
-    "JOKER",
     "Card",
     "CardList",
     "Hand",
@@ -23,23 +20,13 @@ __all__ = [
     "Player",
     "get_user_input",
     "calculate_all_possible_scores",
-    "print_test",
     "deal_to_players",
-    "fill_deck_standard_52",
-    "fill_deck_standard_54",
+    "change_rank_list",
+    "change_suit_list",
+    "fill_deck",
     "get_highest_card"
 ]
-
-DIAMOND = '\u2666'
-HEART = '\u2665'
-CLUB = '\u2663'
-SPADE = '\u2660'
-
-JOKER = '*'
-
-
-def print_test():
-    print("Hello World")
+#MAYBE add defaults to this all list
 
 
 def deal_to_players(cards, players, deal_count):
@@ -49,24 +36,22 @@ def deal_to_players(cards, players, deal_count):
     return (cards, players)
 
 
-def fill_deck_standard_52(deck, ace_high=False):
-    rank_start, rank_end = 1, 14
-    if ace_high:
-        rank_start += 1
-        rank_end += 1
+def change_rank_list(rank_list):
+    global RANKS
+    RANKS = rank_list
 
-    for suit in range(1, 5):
-        for rank in range(rank_start, rank_end):
+def change_suit_list(suit_list):
+    global SUITS
+    SUITS = suit_list
+
+    global SUIT_TEXT
+    SUIT_TEXT = [suit_to_text(suit) for suit in suit_list]
+
+def fill_deck(deck):
+    for suit in range(len(SUITS)):
+        for rank in range(len(RANKS)):
             deck.add_card(Card(suit, rank))
     return deck
-
-
-def fill_deck_standard_54(deck, ace_high=False):
-    deck = fill_deck_standard_52(deck, ace_high)
-    deck.add_card(Card(0, 15))
-    deck.add_card(Card(0, 16))
-    return deck
-
 
 def get_highest_card(card_list: CardList):
     return max(card_list)
