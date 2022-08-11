@@ -68,7 +68,7 @@ def main_loop(game, player_list):
 def start_game():
 
     print("GUI TEST")
-    CardLib.gui.start_gui("GUI test screen")
+    CardLib.gui.start_gui("GUI test screen", 700, 700)
     print(CardLib.gui)
 
     player_list = [CardLib.Player("Player")]

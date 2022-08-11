@@ -1,10 +1,6 @@
 import pygame
 
 class Gui:
-	size = (width, height) = (500, 500)
-	background_color = (53, 101, 77)
-
-
 
 	def __init__(self):
 		self.objects_to_draw = []
@@ -17,11 +13,16 @@ class Gui:
 	def get_screen(self):
 		return self.screen
 
-	def start_gui(self, game_title):
+	def start_gui(self, game_title, width=500, height=500, background_color = (0,132,64)):
+		self.size = (width, height)
+		self.background_color = background_color
+
 		print("GUI start")
+
 		pygame.init()
 		self.screen = pygame.display.set_mode(self.size)
 		pygame.display.set_caption(game_title)
+
 		self.redraw()
 
 	def redraw(self):
