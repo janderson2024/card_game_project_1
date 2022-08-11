@@ -9,7 +9,7 @@ class Hand(CardList):
     def sort_by_rank(self):
         self.card_list = sorted(self.card_list, key=lambda card: (0 - card.value, card.suit))
 
-    def get_all_valid_cards(self, game_valid_cards: [Card]) -> CardList:
+    def get_all_valid_cards(self, game_valid_cards) -> CardList: #game_valid_cards is a function!
         return CardList(list(filter(game_valid_cards, self.card_list)))
 
     def __str__(self) -> str:
