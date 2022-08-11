@@ -1,24 +1,23 @@
 from typing import Optional
 
+import CardLib
 
 class Card:
-    displayable = True
-    suits = [None, '\u2666', '\u2665', '\u2663', '\u2660']
-    ranks = [None, "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "L", "H"]
-    suit_text = [None, 'diamonds', 'hearts', 'clubs', 'spades']
     string_card_back = "[;°Д°]"
+    card_back_file_name = "card_back.png"
 
-    def __init__(self, suit, rank, color='Red', displayable=True):
-        self.suit = self.suits[int(suit)]
-        self.rank = self.ranks[int(rank)]
+    def __init__(self, suit, rank, displayable=True):
+        self.suit = CardLib.SUITS[suit]
+        self.rank = CardLib.RANKS[rank]
+
         self.suit_val = suit
         self.value = rank
-        self.suit_text = self.suit_text[int(suit)]
-        self.color = self.update_color(color)
-        self.image = self.update_face_image()
+
+        self.suit_text = CardLib.suit_to_text(suit)
+
+        self.img_file_name = self.get_img_file_name()
+
         self.displayable = displayable
-        if self.rank == 'L' or self.rank == 'H':
-            self.suit = '*'
 
     def __str__(self) -> str:
         return f"[{self.rank}{self.suit}]" if self.displayable else Card.string_card_back
@@ -34,48 +33,15 @@ class Card:
     def __lt__(self, other) -> bool:
         return self.value < other.value
 
-    def set_display(self):
+    def flip_card(self):
         self.displayable = not self.displayable
-        if self.displayable:
-            self.image = self.update_face_image()
-        else:
-            self.image = 'card_back.png'
 
-    def update_suit_text(self) -> Optional[str]:
-        if self.suit == '\u2666':
-            return "diamonds"
-        elif self.suit == '\u2665':
-            return "hearts"
-        elif self.suit == '\u2663':
-            return "clubs"
-        elif self.suit == '\u2660':
-            return "spades"
-        else:
-            return None
-
-    def update_color(self, color: str) -> str:
-        if self.suit == '\u2666' or self.suit == '\u2665' or self.rank == 'L':
-            return 'Red'
-        elif self.suit == '\u2663' or self.suit == '\u2660' or self.rank == 'H':
-            return 'Black'
-        else:
-            return color
-
-    def update_face_image(self) -> str:
-        if self.rank == 'J':
-            rank = 'jack'
-        elif self.rank == 'Q':
-            rank = 'queen'
-        elif self.rank == 'K':
-            rank = 'king'
-        elif self.rank == 'A':
-            rank = 'ace'
-        else:
-            rank = self.rank
+    def get_img_file_name(self) -> str:
+        rank = CardLib.rank_to_text(self.rank)
 
         if self.rank == 'L':
-            return "red_joker.png"
+            return "low_Joker.png"
         if self.rank == 'H':
-            return "black_joker.png"
+            return "high_Joker.png"
 
         return f"{rank}_of_{self.suit_text}.png"
