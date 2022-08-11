@@ -32,7 +32,10 @@ def main_loop(game, player_list):
             x, y = CardLib.gui.get_gui_user_input()
             test_card = CardLib.Card(2, 7, x=x, y=y)
 
-            test_card_list.add_card(test_card)
+            if y > 400:
+                test_card_list.add_card(test_card)
+            else:
+                CardLib.gui.add_obj_to_be_drawn(test_card)
             CardLib.gui.redraw()
 
 

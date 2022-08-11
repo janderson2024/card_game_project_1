@@ -9,8 +9,7 @@ class Gui:
 	def __init__(self):
 		self.objects_to_draw = []
 		self.pygame_mod = pygame
-		print("GUI init")
-		
+		print("GUI init")	
 
 	def get_pygame(self):
 		return self.pygame_mod

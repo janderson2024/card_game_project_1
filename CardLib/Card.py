@@ -33,7 +33,7 @@ class Card:
 
         img_path = self.PATH_TO_IMG_DIR + self.image
 
-        self.py_img = CardLib.gui.create_img(img_path, self.x, self.y, self.width, self.height)
+        self.py_img = CardLib.gui.create_img(img_path, self.width, self.height)
 
 
     def __str__(self) -> str:
