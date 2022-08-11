@@ -11,7 +11,7 @@ class Card:
         self.rank = CardLib.RANKS[rank]
 
         self.suit_val = suit
-        self.value = rank
+        self.rank_val = rank
 
         self.suit_text = CardLib.suit_to_text(suit)
 
