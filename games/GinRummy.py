@@ -11,7 +11,7 @@ class GinRummy():
     shown_card = None
     player_list = []
 
-    def __init__(self, player_number=1):
+    def __init__(self, player_number=0):
         self.deck = cl.fill_deck_standard_52(cl.Draw())
         self.deck.shuffle()
 
@@ -69,19 +69,53 @@ class GinRummy():
         else:
             print("That was not a valid option, try again!")
             return self.remove_card(player)
+        
+
+    def ai_turn(self, player):
+        cards = player.hand.card_list
+        matrix = CardMatrix(cards)
+        print(player)
+
+        hand_values = matrix.assign_hand_values()
+
+        matrix.assign_values()
+        shown_val = matrix.deck_matrix[self.shown_card.suit_val - 1][self.shown_card.value - 1]
+
+        if min(hand_values) < shown_val:
+            # if the shown card is better than what is in hand
+            picked_up_card = self.shown_card
+            player.add_card_to_hand(picked_up_card)
+
+            # remove lowest card in hand and update shown card
+            new_shown_card = player.play_card(hand_values.index(min(hand_values)))
+            self.shown_card = new_shown_card
+            print(f"{player.label} picked up {picked_up_card} and put down {new_shown_card}")
+            del matrix
+        else:
+            # draw card
+            drawn_card = self.deck.pop_card()
+            player.add_card_to_hand(drawn_card)
+
+            # gets hand values of new hand
+            temp_matrix = CardMatrix(player.hand.card_list)
+            temp_hand_values = temp_matrix.assign_hand_values()
+            del temp_matrix
+
+            # removes lowest value card
+            new_shown_card = player.play_card(temp_hand_values.index(min(temp_hand_values)))
+            self.shown_card = new_shown_card
+            print(f"{player.label} drew {drawn_card} and put down {new_shown_card}")
+
 
     def pick_up_card(self, player):
         picked_up_card = self.shown_card
         player.add_card_to_hand(picked_up_card)
-        if not player.is_ai:
-            print(player)
-            print("Choose a card to remove:")
-            player_in = int(input(">>"))
-            self.remove_card(player, player_in)
-        else:
-            new_shown_card = player.play_card()
-            print(f"{player.label} picked up {picked_up_card} and put down {new_shown_card}")
-            self.shown_card = new_shown_card
+
+        print(player)
+        print("Choose a card to remove:")
+        player_in = int(input(">>"))
+        self.remove_card(player, player_in)
+            
 
     PLAY_OPTIONS['take card'] = pick_up_card
 
@@ -102,6 +136,7 @@ class GinRummy():
         return self.get_choice(header, options)
 
     def reshuffle_deck(self):
+        self.deck = cl.fill_deck_standard_52(cl.Draw())
         for user in self.player_list:
             self.deck.card_list = [card for card in self.deck.card_list if card not in user.hand.card_list]
         self.deck.shuffle()
@@ -141,10 +176,6 @@ class GinRummy():
                 counter = 1
         return card_list
 
-    def ai_turn(self, player):
-        # assign weight to each possible option ex: picking up a 3 has a weight of 2 when 2 3s are in hand already
-        return
-
     # Called directly by main loop
 
     def player_turn(self, player):
@@ -160,8 +191,8 @@ class GinRummy():
             player_input = self.get_choice(f"\n{self.sort_hand(player)}", self.PLAY_OPTIONS)
             self.PLAY_OPTIONS[player_input](self, player)
         else:
-            time.sleep(1)
-            self.pick_up_card(player)
+            # time.sleep(1)
+            self.ai_turn(player)
 
     def check_win2(self, player):
         card_list = player.hand.card_list
@@ -171,7 +202,6 @@ class GinRummy():
 
     def check_win(self, player):
         matrix = CardMatrix(player.hand.card_list)
-        matrix.assign_values()
         return matrix.check_win()
 
 # for dropping a card: 
@@ -196,6 +226,8 @@ class GinRummy():
 # 0 1 0 0 0
 # 0 6 0 0 0
 
+# create class to value cards in hand to determine which to discard
+
 class CardMatrix:
 
     def __init__(self, card_list):
@@ -212,7 +244,7 @@ class CardMatrix:
 
 
     def assign_values(self):
-        # need to check for straights to assign correct values
+        # maybe need to check for straights to assign correct values
         for card in self.cards:
             # idea: choose card, then check to the right to see if there is another
             # if there is up the added value by x, repeat until open spot and ramp it up so 4 in a row counts for a lot 
@@ -239,7 +271,33 @@ class CardMatrix:
                         self.deck_matrix[suit][rank] += num_cards
                     else:
                         self.deck_matrix[suit][rank] += (num_cards * 2)
+        # print(self.deck_matrix)
 
+        # hand = CardMatrix(self.cards)
+
+
+
+        # assign values for cards in hand
+
+        # IDEA!!! take cards out of the matrix one at a time and calculate the score for that spot, then add x to it if it is higher than the number required to have 2 in a row
+        # add card back to matrix and repeat for entire hand
+
+        # cards in a matching should be UBER high, otherwise should be valued
+
+    def assign_hand_values(self):
+        matrix = CardMatrix(self.cards)
+        hand_values = []
+        for card in matrix.cards:
+            matrix.deck_matrix[card.suit_val - 1][card.value - 1] = 0
+            # print("pre assigning")
+            # print(self.deck_matrix)
+            matrix.assign_values()
+            # print("post assigning")
+            # print(self.deck_matrix)
+            hand_values.append(matrix.deck_matrix[card.suit_val - 1][card.value - 1] + 1)
+            matrix.deck_matrix[card.suit_val - 1][card.value - 1] = -1
+        del matrix
+        return hand_values
 
     def check_win(self):
         found_cards = 0
@@ -284,8 +342,15 @@ class CardMatrix:
                     straight_count = 3
                     found_cards += 3
 
+                    # edge case of if it goes K A 2 3
+                    if self.deck_matrix[suit][(rank - 1) % 13] == -1:
+                        found_cards += 1
+                        self.deck_matrix[suit][rank : (rank + 3) % 13] = [0, 0, 0]
+                        self.deck_matrix[suit][(rank - 1) % 13] = 0
+
                     # check the 4th card
                     if self.deck_matrix[suit][(rank + 3) % 13] == -1:
+                        # print((suit, rank))
                         straight_count += 1
                         found_cards += 1
                     
@@ -296,23 +361,10 @@ def start_game():
     game = GinRummy()
     game.rules()
     print(f"Have fun and type 'help' if you need to reread these rules at any time!")
+    turn_count = 0
     while True:
         for player in game.player_list:
-            # arr = np.array([-1, -1, -1, -1, -1])
-            # print(arr)
-            # set_arr = set(arr)
-            # print(set_arr)
-            # if len(set_arr) == 1 and -1 in set_arr:
-            #     print("POGGERS")
-
-            # arr[1][1] = 3
-            # print(arr[1])
-            # newArr = arr[0].take(range(1, 7), mode='wrap')
-            # print(newArr)
-            # newArr = arr[1].take(range(1, 7), mode='wrap')
-            # print(newArr)
-
-            
+            turn_count += 1
             # game.check_win2([cl.Card(1,1), cl.Card(2,1), cl.Card(3,1), cl.Card(1,3), cl.Card(2,3), cl.Card(3,3)])
 
             # player.clear_hand()
@@ -324,16 +376,17 @@ def start_game():
             # player.add_card_to_hand(cl.Card(3,3))
             # player.add_card_to_hand(cl.Card(2,12))
 
-            player.clear_hand()
-            player.add_card_to_hand(cl.Card(1,1))
-            player.add_card_to_hand(cl.Card(1,2))
-            player.add_card_to_hand(cl.Card(1,3))
-            player.add_card_to_hand(cl.Card(1,4))
-            player.add_card_to_hand(cl.Card(2,4))
-            player.add_card_to_hand(cl.Card(3,4))
-            player.add_card_to_hand(cl.Card(4,4))
+            # player.clear_hand()
+            # player.add_card_to_hand(cl.Card(1,1))
+            # player.add_card_to_hand(cl.Card(1,2))
+            # player.add_card_to_hand(cl.Card(1,3))
+            # player.add_card_to_hand(cl.Card(1,4))
+            # player.add_card_to_hand(cl.Card(2,4))
+            # player.add_card_to_hand(cl.Card(3,4))
+            # player.add_card_to_hand(cl.Card(4,4))
 
             game.player_turn(player)
             if game.check_win(player):
-                print(f"you won!")
+                print(f"{player.label} won!")
+                print(f"Turns it took: {turn_count}")
                 exit()
