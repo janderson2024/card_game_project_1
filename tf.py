@@ -13,19 +13,26 @@ import h5py
 infile = 'indata.h5'
 outfile = 'outdata.h5'
 
-# printable dataset
-i = tables.open_file(infile, mode = 'r')
-if len(i.root.data) == 4:
-    print(i.root.data[0: 4])
-for index in range(4, len(i.root.data), 4):
-    print(i.root.data[index - 4: index])
 
-# printable dataset
+i = tables.open_file(infile, mode = 'r')
+h = tf.placeholder(tf.int32, [None, 52], name="hand")
+hand_dataset = tf.data.Dataset.from_tensor_slices(i.root.hand)
+
+
 o = tables.open_file(outfile, mode = 'r')
-if len(o.root.data) == 4:
-    print(o.root.data[0: 4])
-for index in range(4, len(o.root.data), 4):
-    print(o.root.data[index - 4: index])
+d = tf.placeholder(tf.int32, [None, 52], name="deck_value")
+value_dataset = tf.data.Dataset.from_tensor_slices(o.root.deck_value)
+
+W = tf.Variable(tf.random_normal([52, 52], stddev=0.35))
+
+linear_model = tf.matmul(h, W)
+
+loss = tf.reduce_sum(tf.square(linear_model - d))
+
+optimizer = tf.train.GradientDescentOptimizer(0.0001)
+train = optimizer.minimize(loss)
+
+print(W)
 
 # print("TensorFlow version:", tf.__version__)
 

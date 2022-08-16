@@ -22,12 +22,13 @@ with h5py.File('outdata.h5',  "a") as f:
 
 infile = 'indata.h5'
 outfile = 'outdata.h5'
-ROW_SIZE = 13
-NUM_COLUMNS = 4
+ROW_SIZE = 52
+NUM_COLUMNS = 1
 atom = tables.Int32Atom()
 
 input = tables.open_file(infile, mode = 'w')
 in_array = input.create_earray(input.root, 'hand', atom, (0, ROW_SIZE))
+print(in_array.shape)
 
 output = tables.open_file(outfile, mode = 'w')
 out_array = output.create_earray(output.root, 'deck_value', atom, (0, ROW_SIZE))
@@ -242,7 +243,7 @@ class CardMatrix:
         hand_values = []
 
         # writing to file
-        in_array.append(self.deck_matrix)
+        in_array.append(self.deck_matrix.reshape(1, 52))
 
         # remove cards one by one and assigns a value to them based on the cards around them
         for card in matrix.cards:
@@ -259,7 +260,7 @@ class CardMatrix:
             self.deck_matrix[card.suit_val - 1][card.value - 1] = hand_values[index]
         
         # writing to file
-        out_array.append(self.deck_matrix)
+        out_array.append(self.deck_matrix.reshape(1, 52))
 
         return hand_values
 
