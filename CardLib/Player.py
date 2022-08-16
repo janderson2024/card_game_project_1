@@ -33,7 +33,7 @@ class Player:
             self.hand.add_card(card)
 
     def play_card(self, number: int = -1) -> Card:
-        if self.is_ai:
+        if self.is_ai and number == -1:
             number = random.randint(0, len(self.hand) - 1)
         temp_card = self.hand.get_card_at(number)
         self.hand.rem_card(temp_card)
