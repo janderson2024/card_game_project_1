@@ -3,6 +3,34 @@ import sys, os
 import numpy as np
 from tqdm import tqdm
 import CardLib as cl
+import tables
+import os
+import h5py
+
+# to delete files
+# https://stackoverflow.com/questions/30376581/save-numpy-array-in-append-mode
+
+with h5py.File('indata.h5',  "a") as f:
+    del f['hand']
+with h5py.File('outdata.h5',  "a") as f:
+    del f['deck_value']
+
+# file initialization for hand valuation storage
+
+# os.remove('indata.h5')
+# os.remove('outdata.h5')
+
+infile = 'indata.h5'
+outfile = 'outdata.h5'
+ROW_SIZE = 13
+NUM_COLUMNS = 4
+atom = tables.Int32Atom()
+
+input = tables.open_file(infile, mode = 'w')
+in_array = input.create_earray(input.root, 'hand', atom, (0, ROW_SIZE))
+
+output = tables.open_file(outfile, mode = 'w')
+out_array = output.create_earray(output.root, 'deck_value', atom, (0, ROW_SIZE))
 
 
 class GinRummy():
@@ -37,8 +65,7 @@ class GinRummy():
         print(
             "You must have at least 3 Cards in each grouping, the typical winning hand will have some combination of:")
         print("Three of one rank, four of one rank, three in a straight, or four in a straight")
-        print(
-            "Cards can only be used in one grouping, and it is possible to have a 7 card straight (but very unlikely)")
+        print("Cards can only be used in one grouping, and it is possible to have a 7 card straight (but very unlikely)")
         print(
             "An example winning hand would be: 1) [J\u2666], 2) [Q\u2666], 3) [K\u2666], 4) [3\u2666], 5) [3\u2665], "
             "6) [3\u2663], 7) [3\u2660] \n")
@@ -179,7 +206,7 @@ class CardMatrix:
     def __init__(self, card_list):
         self.cards = card_list
         self.deck_matrix = np.array([
-            #    A  2  3  4  5  6  7  8  9  10 J  Q  K
+        #    A  2  3  4  5  6  7  8  9  10 J  Q  K
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # Diamonds
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # Hearts
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # Clubs
@@ -214,6 +241,9 @@ class CardMatrix:
         matrix = CardMatrix(self.cards)
         hand_values = []
 
+        # writing to file
+        in_array.append(self.deck_matrix)
+
         # remove cards one by one and assigns a value to them based on the cards around them
         for card in matrix.cards:
             matrix.deck_matrix[card.suit_val - 1][card.value - 1] = 0
@@ -221,6 +251,16 @@ class CardMatrix:
             hand_values.append(matrix.deck_matrix[card.suit_val - 1][card.value - 1] + 1)
             matrix.deck_matrix[card.suit_val - 1][card.value - 1] = -1
         del matrix
+
+        # resets matrix with new values
+
+        self.deck_matrix.fill(0)
+        for index, card in enumerate(self.cards):
+            self.deck_matrix[card.suit_val - 1][card.value - 1] = hand_values[index]
+        
+        # writing to file
+        out_array.append(self.deck_matrix)
+
         return hand_values
 
     def check_win(self):
@@ -313,8 +353,10 @@ def test_ai(runs):
 
 
 def start_game():
-    # test_ai(10000)
-    # exit()
+    test_ai(10)
+    input.close()
+    output.close()
+    exit()
     game = GinRummy(1, 4)
     game.rules()
     print("Have fun and type 'help' if you need to reread these rules at any time!")
