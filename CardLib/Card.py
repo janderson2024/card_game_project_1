@@ -11,7 +11,7 @@ class Card:
 
     PATH_TO_IMG_DIR = "CardLib/card_images/standard/"
 
-    def __init__(self, suit, rank, x=0, y=0, color='Red', displayable=True):
+    def __init__(self, suit, rank, x=-1, y=-1, color='Red', displayable=True):
         self.suit = self.suits[int(suit)]
         self.rank = self.ranks[int(rank)]
         self.suit_val = suit
@@ -26,15 +26,16 @@ class Card:
         self._init_gui(x, y)
 
     def _init_gui(self, x, y):
-        self.x = x
-        self.y = y
-        self.width = 50
-        self.height = 70
+        if x == -1 or y == -1:
+            self.gui_obj = None
+            return
+
+        self.gui_obj = CardLib.gui.GuiObject(x, y, 50, 70, self.draw)
 
         img_path = self.PATH_TO_IMG_DIR + self.image
-
-        self.py_img = CardLib.gui.create_img(img_path, self.width, self.height)
-
+        self.front_img = CardLib.gui.create_img(img_path, self.gui_obj.width, self.gui_obj.height)
+        back_img = self.PATH_TO_IMG_DIR + "card_back.png";
+        self.back_img = CardLib.gui.create_img(back_img, self.gui_obj.width, self.gui_obj.height)
 
     def __str__(self) -> str:
         return f"[{self.rank}{self.suit}]" if self.displayable else Card.string_card_back
@@ -97,7 +98,10 @@ class Card:
         return f"{rank}_of_{self.suit_text}.png"
 
     def draw(self):
-        CardLib.gui.draw_img(self.py_img, self.x, self.y)
+        if self.displayable:
+            CardLib.gui.draw_img(self.front_img, self.gui_obj.x, self.gui_obj.y)
+        else:
+            CardLib.gui.draw_img(self.back_img, self.gui_obj.x, self.gui_obj.y)
         #rect = CardLib.gui.create_rect(self.x, self.y, self.width, self.height)
         #f self.displayable:
             #color = (255, 255, 255)

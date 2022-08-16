@@ -29,13 +29,14 @@ class Gui:
 		self.screen.fill(self.background_color)
 
 		for obj in self.objects_to_draw:
-			obj.draw()
+			obj.gui_obj.draw()
 
 		pygame.display.update()
 
 	def add_obj_to_be_drawn(self, obj):
-		self.objects_to_draw.append(obj)
-		self.redraw()
+		if hasattr(obj, "gui_obj"):
+			self.objects_to_draw.append(obj)
+			self.redraw()
 
 	def remove_obj_from_being_drawn(self, obj):
 		self.objects_to_draw.remove(obj)
@@ -45,8 +46,8 @@ class Gui:
 		self.objects_to_draw.clear()
 		self.redraw()
 
-	def draw_rect(self, color, rect):
-		pygame.draw.rect(self.screen, color, rect)
+	def draw_rect(self, color, rect, width=0):
+		pygame.draw.rect(self.screen, color, rect, width)
 
 	def draw_img(self, img, x, y):
 		self.screen.blit(img, (x,y))

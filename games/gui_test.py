@@ -26,16 +26,21 @@ def main_loop(game, player_list):
         playing_round = True
 
         test_card_list = CardLib.CardList(x=10, y=400)
+        test_card = CardLib.Card(2, 7, x=50, y=50)
+        test_card2 = CardLib.Card(3, 13, x=130, y=50)
+        test_card3 = CardLib.Card(1, 3, x=200, y=50)
+        test_card4 = CardLib.Card(0, 15, x=280, y=50)
+
+        test_card_list.add_card(test_card)
+        test_card_list.add_card(test_card2)
+        test_card_list.add_card(test_card3)
+        test_card_list.add_card(test_card4)
+
         CardLib.gui.add_obj_to_be_drawn(test_card_list)
 
         while playing_round:
-            x, y = CardLib.gui.get_gui_user_input()
-            test_card = CardLib.Card(2, 7, x=x, y=y)
-
-            if y > 400:
-                test_card_list.add_card(test_card)
-            else:
-                CardLib.gui.add_obj_to_be_drawn(test_card)
+            obj = CardLib.gui.get_gui_user_input([card for card in test_card_list])
+            print(obj)
             CardLib.gui.redraw()
 
 

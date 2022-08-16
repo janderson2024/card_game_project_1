@@ -5,6 +5,7 @@ environ['PYGAME_HIDE_SUPPORT_PROMPT'] = '1'
 from .Gui import Gui
 from .gui_input import get_gui_user_input
 from .gui_statics import *
+from .GuiObject import GuiObject
 
 __all__ = [
 	"Gui",
