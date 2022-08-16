@@ -26,11 +26,7 @@ class Card:
         self._init_gui(x, y)
 
     def _init_gui(self, x, y):
-        if x == -1 or y == -1:
-            self.gui_obj = None
-            return
-
-        self.gui_obj = CardLib.gui.GuiObject(x, y, 50, 70, self.draw)
+        self.gui_obj = CardLib.gui.GuiObject(x, y, 70, 90, self.gui_draw)
 
         img_path = self.PATH_TO_IMG_DIR + self.image
         self.front_img = CardLib.gui.create_img(img_path, self.gui_obj.width, self.gui_obj.height)
@@ -97,7 +93,7 @@ class Card:
 
         return f"{rank}_of_{self.suit_text}.png"
 
-    def draw(self):
+    def gui_draw(self):
         if self.displayable:
             CardLib.gui.draw_img(self.front_img, self.gui_obj.x, self.gui_obj.y)
         else:

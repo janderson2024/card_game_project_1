@@ -10,15 +10,14 @@ def coords_in_obj(x, y, obj):
 
 
 def get_gui_user_input(possible_inputs):
-	#get all of the inputs that have a gui_obj
-	possible_inputs = [obj for obj in possible_inputs if hasattr(obj, "gui_obj")]
 	hovered_obj = None
 	got_input = False
+
 	pygame.event.clear()
 	while not got_input:
 		hovered_obj = None
-
 		(mx,my) = pygame.mouse.get_pos()
+
 		for obj in possible_inputs:
 			obj.gui_obj.has_border = True
 			obj.gui_obj.has_highlight = False
@@ -34,6 +33,7 @@ def get_gui_user_input(possible_inputs):
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				exit()
+
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if hovered_obj is not None:
 					hovered_obj.gui_obj.has_highlight = False
@@ -41,10 +41,3 @@ def get_gui_user_input(possible_inputs):
 						obj.gui_obj.has_border = False
 					got_input = True	
 					return hovered_obj
-				pass
-				#set highlight to false
-				#return object
-				#print(event.pos)
-				#got_input = True
-				#return event.pos
-				## NOT FINAL. just for testing

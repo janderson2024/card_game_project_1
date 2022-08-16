@@ -2,22 +2,6 @@ import CardLib
 from random import randint
 import time
 
-class test_draw:
-
-	def __init__(self, x, y):
-		self.x = x
-		self.y = y
-		self.width = 20
-		self.height = 40
-		self.color = (255,0,0)
-
-		self.rect = CardLib.gui.create_rect(self.x, self.y, self.width, self.height)
-
-	def draw(self):
-		CardLib.gui.draw_rect(self.color, self.rect)
-
-
-
 def main_loop(game, player_list):
     playing = True
     while playing:
@@ -38,9 +22,18 @@ def main_loop(game, player_list):
 
         CardLib.gui.add_obj_to_be_drawn(test_card_list)
 
+        test_discard = CardLib.Discard(x=50, y=50)
+        #CardLib.fill_deck_standard_52(test_discard)
+        test_discard.shuffle()
+
+        CardLib.gui.add_obj_to_be_drawn(test_card_list)
+        CardLib.gui.add_obj_to_be_drawn(test_discard)
+        print(test_discard)
+
         while playing_round:
             obj = CardLib.gui.get_gui_user_input([card for card in test_card_list])
-            print(obj)
+            test_card_list.rem_card(obj)
+            test_discard.add_card(obj)
             CardLib.gui.redraw()
 
 

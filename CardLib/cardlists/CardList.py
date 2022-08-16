@@ -13,11 +13,7 @@ class CardList:
         self._init_gui(x, y)
 
     def _init_gui(self, x, y):
-        if x == -1 or y == -1:
-            self.gui_obj = None
-            return
-
-        self.gui_obj = CardLib.gui.GuiObject(x, y, 5, 70, self.draw)
+        self.gui_obj = CardLib.gui.GuiObject(x, y, 5, 90, self.gui_draw)
 
     def __len__(self) -> int:
         return len(self.card_list)
@@ -33,9 +29,8 @@ class CardList:
         self.card_list.append(card)
 
     def add_card_gui(self, card: Card):
-        if hasattr(card, "gui_obj"):
-            card.gui_obj.move(self.gui_obj.x + self.gui_obj.width, self.gui_obj.y+5)
-            self.gui_obj.width += card.gui_obj.width + 5
+        card.gui_obj.move(self.gui_obj.x + self.gui_obj.width, self.gui_obj.y+5)
+        self.gui_obj.width += card.gui_obj.width + 5
 
     def get_card_at(self, index: int) -> Card:
         return self.card_list[index]
@@ -67,7 +62,7 @@ class CardList:
         return card in self.card_list
 
 
-    def draw(self):
+    def gui_draw(self):
         background_rect = CardLib.gui.create_rect(self.gui_obj.x, self.gui_obj.y, self.gui_obj.width, self.gui_obj.height+10)
         CardLib.gui.draw_rect((100,100,100), background_rect)
 
