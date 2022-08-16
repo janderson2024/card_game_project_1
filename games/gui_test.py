@@ -30,6 +30,9 @@ def main_loop(game, player_list):
         CardLib.gui.add_obj_to_be_drawn(test_discard)
         print(test_discard)
 
+        test_label = CardLib.gui.GuiLabel(0,0,"Hello World")
+        CardLib.gui.add_obj_to_be_drawn(test_label)
+
         while playing_round:
             obj = CardLib.gui.get_gui_user_input([card for card in test_card_list])
             test_card_list.rem_card(obj)

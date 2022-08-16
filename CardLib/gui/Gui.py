@@ -5,6 +5,8 @@ class Gui:
 	def __init__(self):
 		self.objects_to_draw = []
 		self.pygame_mod = pygame
+		pygame.font.init()
+		self.font = pygame.font.SysFont('Comic Sans MS', 30)
 		print("GUI init")	
 
 	def get_pygame(self):
@@ -50,3 +52,6 @@ class Gui:
 
 	def draw_img(self, img, x, y):
 		self.screen.blit(img, (x,y))
+
+	def create_label(self, string, color):
+		return self.font.render(string, True, color)

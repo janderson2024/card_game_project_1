@@ -6,6 +6,7 @@ from .Gui import Gui
 from .gui_input import get_gui_user_input
 from .gui_statics import *
 from .GuiObject import GuiObject
+from .GuiLabel import GuiLabel
 
 __all__ = [
 	"Gui",
@@ -25,3 +26,4 @@ remove_obj_from_being_drawn = _gui.remove_obj_from_being_drawn
 remove_all_obj = _gui.remove_all_obj
 draw_rect = _gui.draw_rect
 draw_img = _gui.draw_img
+create_label = _gui.create_label
