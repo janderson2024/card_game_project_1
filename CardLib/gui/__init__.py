@@ -7,6 +7,7 @@ from .gui_input import get_gui_user_input
 from .gui_statics import *
 from .GuiObject import GuiObject
 from .GuiLabel import GuiLabel
+from .GuiButton import GuiButton
 
 __all__ = [
 	"Gui",

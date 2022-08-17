@@ -53,5 +53,5 @@ class Gui:
 	def draw_img(self, img, x, y):
 		self.screen.blit(img, (x,y))
 
-	def create_label(self, string, color):
-		return self.font.render(string, True, color)
+	def create_label(self, string, text_color, background_color=None):
+		return self.font.render(string, True, text_color, background_color)

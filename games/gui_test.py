@@ -33,11 +33,17 @@ def main_loop(game, player_list):
         test_label = CardLib.gui.GuiLabel(0,0,"Hello World")
         CardLib.gui.add_obj_to_be_drawn(test_label)
 
+        test_button = CardLib.gui.GuiButton(300,300,"Click Me")
+        CardLib.gui.add_obj_to_be_drawn(test_button)
+
         while playing_round:
-            obj = CardLib.gui.get_gui_user_input([card for card in test_card_list])
-            test_card_list.rem_card(obj)
-            test_discard.add_card(obj)
-            CardLib.gui.redraw()
+            obj = CardLib.gui.get_gui_user_input([card for card in test_card_list] + [test_button])
+            if obj is test_button:
+                print("Clicked!")
+            else:
+                test_card_list.rem_card(obj)
+                test_discard.add_card(obj)
+                CardLib.gui.redraw()
 
 
             #x, y = CardLib.gui.get_gui_user_input()
