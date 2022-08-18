@@ -30,6 +30,11 @@ class GuiObject:
 		self.y = new_y
 		self.border = pygame.Rect(self.x, self.y, self.width, self.height)
 
+	def resize(self, next_width, next_height):
+		self.width = next_width
+		self.height = next_height
+		self.setup_effects()
+
 	def draw(self):
 		self.obj_draw_method()
 
