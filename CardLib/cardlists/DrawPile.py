@@ -1,7 +1,7 @@
 from CardLib import CardList, Card
 
 
-class Draw(CardList):
+class DrawPile(CardList):
 
     def pop_card(self, display: bool = True) -> Card:
         card = self.card_list.pop()

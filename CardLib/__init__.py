@@ -2,7 +2,7 @@ from .Card import Card
 
 from .cardlists.CardList import CardList
 from .cardlists.Hand import Hand
-from .cardlists.Draw import Draw
+from .cardlists.DrawPile import DrawPile
 from .cardlists.Discard import Discard
 
 from .Player import Player
@@ -20,7 +20,7 @@ __all__ = [
     "Card",
     "CardList",
     "Hand",
-    "Draw",
+    "DrawPile",
     "Discard",
     "Player",
     "get_user_input",
