@@ -4,6 +4,8 @@ import tables
 import numpy as np
 import h5py
 
+tf.compat.v1.disable_eager_execution()
+
 # TODO
 # Data set works and can be made
 # Need to figure out how to input that into the algorithm
@@ -15,22 +17,36 @@ outfile = 'outdata.h5'
 
 
 i = tables.open_file(infile, mode = 'r')
-h = tf.placeholder(tf.int32, [None, 52], name="hand")
-hand_dataset = tf.data.Dataset.from_tensor_slices(i.root.hand)
+# creates holder variable for hand
+h = tf.compat.v1.placeholder(tf.float32, shape=[None, 52], name="hand")
+# hand_dataset = tf.data.Dataset.from_tensor_slices(i.root.hand)
 
 
 o = tables.open_file(outfile, mode = 'r')
-d = tf.placeholder(tf.int32, [None, 52], name="deck_value")
-value_dataset = tf.data.Dataset.from_tensor_slices(o.root.deck_value)
+# creates holder variable for deck_value
+d = tf.compat.v1.placeholder(tf.float32, shape=[None, 52], name="deck_value")
+# d = tf.keras.Input(shape=[None, 52], name="deck_value", dtype=tf.float32)
+# value_dataset = tf.data.Dataset.from_tensor_slices(o.root.deck_value)
 
-W = tf.Variable(tf.random_normal([52, 52], stddev=0.35))
+# creates array 52x52 with random seeded floats filling it
+W = tf.Variable(tf.random.normal([52, 52], stddev=0.35))
 
+# print(W)
+
+# multiplies hand and the random 52x52 array. explanation:
+# https://img-blog.csdnimg.cn/20190304160103735.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3UwMTIzODg5OTM=,size_16,color_FFFFFF,t_70
+
+# FIGURE OUT HOW WORK
 linear_model = tf.matmul(h, W)
 
+# adds up all floats in all rows of the random 52x52 array - the deck_value
 loss = tf.reduce_sum(tf.square(linear_model - d))
+print(loss)
 
-optimizer = tf.train.GradientDescentOptimizer(0.0001)
-train = optimizer.minimize(loss)
+optimizer = tf.keras.optimizers.SGD(learning_rate=0.0001)
+
+# issue is once again here, no gradients provided?
+train = optimizer.minimize(loss, var_list=[h, d], tape=tf.GradientTape())
 
 print(W)
 
