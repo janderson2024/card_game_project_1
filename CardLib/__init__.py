@@ -4,6 +4,7 @@ from .cardlists.CardList import CardList
 from .cardlists.Hand import Hand
 from .cardlists.DrawPile import DrawPile
 from .cardlists.Discard import Discard
+from .cardlists.Draw import Draw
 
 from .Player import Player
 from .UserInput import get_user_input
