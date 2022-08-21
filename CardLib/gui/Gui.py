@@ -15,7 +15,7 @@ class Gui:
 	def get_screen(self):
 		return self.screen
 
-	def start_gui(self, game_title, width=500, height=500, background_color = (0,132,64)):
+	def start_gui(self, game_title, width=500, height=500, background_color=(0, 132, 64)):
 		self.size = (width, height)
 		self.background_color = background_color
 
