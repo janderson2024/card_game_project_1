@@ -4,9 +4,6 @@ import CardLib
 
 class Hand(CardList):
 
-    def _init_gui(self, x, y):
-        self.gui_obj = CardLib.gui.GuiObject(x, y, 5, 90, self.gui_draw)
-
     def sort_by_suit(self):
         self.card_list = sorted(self.card_list, key=lambda card: (card.suit, 0 - card.value))
 
@@ -15,6 +12,14 @@ class Hand(CardList):
 
     def get_all_valid_cards(self, game_valid_cards: [Card]) -> CardList:
         return CardList(list(filter(game_valid_cards, self.card_list)))
+
+    def gui_draw(self):
+        if len(self) > 0:
+            temp_card = self.card_list[-1]
+            temp_card.gui_obj.draw()
+        else:
+            background_rect = CardLib.gui.create_rect(self.gui_obj.x, self.gui_obj.y, 70, self.gui_obj.height)
+            CardLib.gui.draw_rect((100, 100, 100), background_rect)
 
     def __str__(self) -> str:
         return ", ".join([f"{str(num)}) {str(card)}" for num, card in enumerate(self.card_list, start=1)])
