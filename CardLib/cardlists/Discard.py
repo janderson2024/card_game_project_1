@@ -3,7 +3,7 @@ import CardLib
 
 class Discard(CardLib.CardList):
     def _init_gui(self, x, y):
-        self.gui_obj = CardLib.gui.GuiObject(x, y, 5, 90, self.gui_draw)
+        self.gui_obj = CardLib.gui.GuiObject(x, y, 70, 90, self.gui_draw)
 
     def get_top_card(self) -> CardLib.Card:
         if self.card_list:
@@ -17,5 +17,5 @@ class Discard(CardLib.CardList):
             temp_card = self.card_list[-1]
             temp_card.gui_obj.draw()
         else:
-            background_rect = CardLib.gui.create_rect(self.gui_obj.x, self.gui_obj.y, 70, self.gui_obj.height)
+            background_rect = CardLib.gui.create_rect(self.gui_obj.x, self.gui_obj.y, self.gui_obj.width, self.gui_obj.height)
             CardLib.gui.draw_rect((100, 100, 100), background_rect)
