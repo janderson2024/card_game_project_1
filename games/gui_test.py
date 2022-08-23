@@ -25,8 +25,8 @@ def main_loop(game, player_list):
         test_discard = CardLib.Discard(x=50, y=50)
         test_discard.shuffle()
 
-        test_draw = CardLib.Draw(x=300, y=50)
-        CardLib.fill_deck_standard_52(test_draw)
+        test_draw = CardLib.DrawPile(x=500,y=500)
+        test_draw = CardLib.fill_deck_standard_52(test_draw)
 
 
 
@@ -41,11 +41,9 @@ def main_loop(game, player_list):
         CardLib.gui.add_obj_to_be_drawn(test_button)
 
         while playing_round:
-            obj = CardLib.gui.get_gui_user_input([card for card in test_card_list] + [test_button] + [test_draw])
+            obj = CardLib.gui.get_gui_user_input([card for card in test_card_list] + [test_button])
             if obj is test_button:
                 print("Clicked!")
-            elif obj is test_draw:
-                test_card_list.add_card(test_draw.pop_card())
             else:
                 test_card_list.rem_card(obj)
                 test_discard.add_card(obj)
