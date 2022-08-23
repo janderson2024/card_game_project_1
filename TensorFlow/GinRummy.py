@@ -3,6 +3,35 @@ import sys, os
 import numpy as np
 from tqdm import tqdm
 import CardLib as cl
+import tables
+import os
+import h5py
+
+# to delete files
+# https://stackoverflow.com/questions/30376581/save-numpy-array-in-append-mode
+
+with h5py.File('indata.h5',  "a") as f:
+    del f['hand']
+with h5py.File('outdata.h5',  "a") as f:
+    del f['deck_value']
+
+# file initialization for hand valuation storage
+
+# os.remove('indata.h5')
+# os.remove('outdata.h5')
+
+infile = 'indata.h5'
+outfile = 'outdata.h5'
+ROW_SIZE = 52
+NUM_COLUMNS = 1
+atom = tables.Int32Atom()
+
+input = tables.open_file(infile, mode = 'w')
+in_array = input.create_earray(input.root, 'hand', atom, (0, ROW_SIZE))
+print(in_array.shape)
+
+output = tables.open_file(outfile, mode = 'w')
+out_array = output.create_earray(output.root, 'deck_value', atom, (0, ROW_SIZE))
 
 
 class GinRummy():
@@ -117,6 +146,7 @@ class GinRummy():
 
     def ai_turn(self, player):
         matrix = CardMatrix(player.hand.card_list)
+        # print(player)
 
         hand_values = matrix.assign_hand_values()
 
@@ -153,6 +183,25 @@ class GinRummy():
         matrix = CardMatrix(player.hand.card_list)
         return matrix.check_win()
 
+
+# ISSUE: when cards are lined up like
+# 0 1 1 1 0
+# 0 1 0 0 0
+# 0 1 0 0 0
+# 0 1 0 0 0
+
+# they get valued at: 
+# 6 1 1 1 6
+# 0 1 0 0 0
+# 0 1 0 0 0
+# 0 6 0 0 0
+
+# should be valued at something like: 
+# 5 1 1 1 6
+# 0 1 0 0 0
+# 0 1 0 0 0
+# 0 6 0 0 0
+
 class CardMatrix:
 
     def __init__(self, card_list):
@@ -174,6 +223,7 @@ class CardMatrix:
                     self.deck_matrix[card.suit_val - 1][(card.value - num) % 13] += 2
 
         # rank matches
+
         for rank in range(13):
 
             column = self.deck_matrix[:, rank]
@@ -192,6 +242,9 @@ class CardMatrix:
         matrix = CardMatrix(self.cards)
         hand_values = []
 
+        # writing to file
+        in_array.append(self.deck_matrix.reshape(1, 52))
+
         # remove cards one by one and assigns a value to them based on the cards around them
         for card in matrix.cards:
             matrix.deck_matrix[card.suit_val - 1][card.value - 1] = 0
@@ -201,9 +254,13 @@ class CardMatrix:
         del matrix
 
         # resets matrix with new values
+
         self.deck_matrix.fill(0)
         for index, card in enumerate(self.cards):
             self.deck_matrix[card.suit_val - 1][card.value - 1] = hand_values[index]
+        
+        # writing to file
+        out_array.append(self.deck_matrix.reshape(1, 52))
 
         return hand_values
 
@@ -297,7 +354,9 @@ def test_ai(runs):
 
 
 def start_game():
-    test_ai(100)
+    test_ai(10)
+    input.close()
+    output.close()
     exit()
     game = GinRummy(1, 4)
     game.rules()
