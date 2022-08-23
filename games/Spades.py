@@ -73,10 +73,7 @@ def loss_count(card: Card, cards: Hand, card_to_beat: Card) -> Decimal:
         return Decimal(same_suit.card_list.index(card))
 
 
-def get_ratio(card: Card, cards: CardList, card_to_beat: Card) -> Decimal:
-    losses = loss_count(card, cards, card_to_beat)
-    total = Decimal(cards.num_cards_left())
-    return (total - losses) / total
+
 
 
 class Spades:
@@ -202,7 +199,7 @@ class Spades:
         else:
             card_to_beat = None
         ratios = self.winning_ratios(card_to_beat, valid_plays, hand)
-        return random.choices(valid_plays.card_list, weights=ratios)[0]
+        return self.get_choice(valid_plays.card_list, ratios)
 
     def winning_ratios(self, card_to_beat: Card, plays: CardList, hand: Hand) -> [Decimal]:
         pack = self.get_pack()
@@ -215,7 +212,7 @@ class Spades:
                 [card for card in pack.card_list if card.suit == CardLib.SPADE or card.suit == lead_suit])
         else:
             possible_losses = CardLib.Hand(pack.card_list)
-        ratios = [get_ratio(card, possible_losses, card_to_beat) for card in plays]
+        ratios = [self.get_ratio(card, possible_losses, card_to_beat) for card in plays]
         remaining_plays = (self.player_count - self.pot.num_cards_left()) - 1
         output = []
         for ratio in ratios:
@@ -224,6 +221,25 @@ class Spades:
             except InvalidOperation:
                 output.append(0)
         return output
+
+    def get_ratio(self, card: Card, cards: CardList, card_to_beat: Card) -> Decimal:
+        losses = loss_count(card, cards, card_to_beat)
+        total = Decimal(cards.num_cards_left())
+        return (total - losses) / total
+
+    def get_choice(self, plays: CardList, ratios: [float]):
+        non_zeros = [num for num in ratios if num != 0]
+        if non_zeros:
+            if len(set(non_zeros)) == 1:
+                good_plays = []
+                for i, card in enumerate(plays.card_list):
+                    if ratios[i] != 0:
+                        good_plays.append(card)
+                return min(good_plays)
+            else:
+                return random.choices(plays, weights=ratios)[0]
+        else:
+            return min(plays)
 
     def next_player(self, leader: int) -> int:
         if leader >= self.player_count - 1:
