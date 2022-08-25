@@ -5,7 +5,6 @@ from .cardlists.Hand import Hand
 from .cardlists.DrawPile import DrawPile
 from .cardlists.Discard import Discard
 
-
 from .Player import Player
 from .UserInput import get_user_input
 from .CalcAllScores import calculate_all_possible_scores

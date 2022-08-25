@@ -3,9 +3,17 @@ import CardLib
 
 class DrawPile(CardList):
     def _init_gui(self, x, y):
-        self.gui_obj = CardLib.gui.GuiObject(x, y, 5, 90, self.gui_draw)
+        self.gui_obj = CardLib.gui.GuiObject(x, y, 70, 90, self.gui_draw)
+        self.background_rect = CardLib.gui.create_rect(self.gui_obj.x, self.gui_obj.y, self.gui_obj.width, self.gui_obj.height)
 
     def pop_card(self, display: bool = True) -> Card:
         card = self.card_list.pop()
         card.displayable = display
         return card
+
+    def add_card_gui(self, card: CardLib.Card):
+        card.gui_obj.move(self.gui_obj.x,self.gui_obj.y)
+
+    def gui_draw(self):
+        CardLib.gui.draw_rect((0,0,0), self.background_rect)
+        #whatever should be drawn on top of the background rect should go here
