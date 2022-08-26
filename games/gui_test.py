@@ -48,6 +48,7 @@ def main_loop(game, player_list):
                  selectable_objects += [test_draw]
 
             obj = CardLib.gui.get_gui_user_input(selectable_objects)
+            
             if obj is test_button:
                 print("Clicked!")
             elif obj is test_draw:
@@ -87,9 +88,9 @@ def main_loop(game, player_list):
 
 def start_game():
 
-    print("GUI TEST")
+    #print("GUI TEST")
     CardLib.gui.start_gui("GUI test screen", 700, 700)
-    print(CardLib.gui)
+    #print(CardLib.gui)
 
     player_list = [CardLib.Player("Player")]
 

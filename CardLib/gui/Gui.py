@@ -7,7 +7,7 @@ class Gui:
 		self.pygame_mod = pygame
 		pygame.font.init()
 		self.font = pygame.font.SysFont('Comic Sans MS', 30)
-		print("GUI init")	
+		#print("GUI init")	
 
 	def get_pygame(self):
 		return self.pygame_mod
@@ -19,7 +19,7 @@ class Gui:
 		self.size = (width, height)
 		self.background_color = background_color
 
-		print("GUI start")
+		#print("GUI start")
 
 		pygame.init()
 		self.screen = pygame.display.set_mode(self.size)
