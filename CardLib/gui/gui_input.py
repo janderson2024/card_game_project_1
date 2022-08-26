@@ -29,12 +29,17 @@ def get_gui_user_input(possible_inputs):
 
 		CardLib.gui.redraw()
 
+		#puts the hover obj on top
+		if hovered_obj:
+			hovered_obj.gui_obj.draw()
+
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 				exit()
 
 			if event.type == pygame.MOUSEBUTTONDOWN:
+				#print(event.pos) useful for testing positions
 				if hovered_obj is not None:
 					hovered_obj.gui_obj.has_highlight = False
 					for obj in possible_inputs:
