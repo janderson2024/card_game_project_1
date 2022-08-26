@@ -20,4 +20,3 @@ class DrawPile(CardList):
     def gui_draw(self):
         CardLib.gui.draw_rect((0,0,0), self.background_rect)
         CardLib.gui.draw_img(self.back_img, self.gui_obj.x, self.gui_obj.y)
-        #whatever should be drawn on top of the background rect should go here
