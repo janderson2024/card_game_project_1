@@ -18,5 +18,8 @@ class DrawPile(CardList):
         card.gui_obj.move(self.gui_obj.x,self.gui_obj.y)
 
     def gui_draw(self):
-        CardLib.gui.draw_rect((0,0,0), self.background_rect)
-        CardLib.gui.draw_img(self.back_img, self.gui_obj.x, self.gui_obj.y)
+        CardLib.gui.draw_rect((100,100,100), self.background_rect)
+        if len(self) > 0:
+            CardLib.gui.draw_img(self.back_img, self.gui_obj.x, self.gui_obj.y)
+        
+        

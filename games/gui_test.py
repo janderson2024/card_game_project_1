@@ -27,6 +27,7 @@ def main_loop(game, player_list):
 
         test_draw = CardLib.DrawPile(x=500,y=500)
         test_draw = CardLib.fill_deck_standard_52(test_draw)
+        test_draw.card_list = test_draw.card_list[:5]
         print(test_draw)
 
 
@@ -42,7 +43,10 @@ def main_loop(game, player_list):
         CardLib.gui.add_obj_to_be_drawn(test_button)
 
         while playing_round:
-            selectable_objects = [card for card in test_card_list] + [test_button] + [test_draw]
+            selectable_objects = [card for card in test_card_list] + [test_button]
+            if len(test_draw) > 0:
+                 selectable_objects += [test_draw]
+
             obj = CardLib.gui.get_gui_user_input(selectable_objects)
             if obj is test_button:
                 print("Clicked!")
