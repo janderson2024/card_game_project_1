@@ -199,7 +199,7 @@ class Spades:
         else:
             card_to_beat = None
         ratios = self.winning_ratios(card_to_beat, valid_plays, hand)
-        return self.get_choice(valid_plays.card_list, ratios)
+        return self.get_choice(valid_plays, ratios)
 
     def winning_ratios(self, card_to_beat: Card, plays: CardList, hand: Hand) -> [Decimal]:
         pack = self.get_pack()
@@ -237,7 +237,7 @@ class Spades:
                         good_plays.append(card)
                 return min(good_plays)
             else:
-                return random.choices(plays, weights=ratios)[0]
+                return random.choices(plays.card_list, weights=ratios)[0]
         else:
             return min(plays)
 
