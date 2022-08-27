@@ -1,5 +1,6 @@
 import CardLib
 from random import randint
+import time
 
 
 class UnoCard(CardLib.Card):
@@ -10,6 +11,8 @@ class UnoCard(CardLib.Card):
         self.value = value
         self.has_action = has_action
         self.action = action
+
+        self.gui_obj= CardLib.gui.GuiObject(0,0,0,0, self.gui_draw)
 
     def change_color(self, new_color):
         self.color = new_color
@@ -25,6 +28,9 @@ class UnoCard(CardLib.Card):
             return self.color == other.color and self.value == other.value
         return False
 
+    def gui_draw(self):
+        pass
+
 
 class Uno:
     DEAL_COUNT = 7
@@ -33,7 +39,7 @@ class Uno:
     direction = 1
 
     def __init__(self):
-        self.stock = CardLib.Draw([])
+        self.stock = CardLib.DrawPile([])
         self.discard = CardLib.Discard([])
 
         self._setup_decks()
@@ -247,6 +253,8 @@ def main_loop(game, player_list):
                 elif skipped:
                     print(player.label, ": got skipped!")
                     current_player = (current_player + game.direction) % 4
+
+                time.sleep(0.5)
 
         action, _ = CardLib.get_user_input(["yes", "no"], "Do you want to play again?")
 
