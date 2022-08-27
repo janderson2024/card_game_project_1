@@ -30,14 +30,15 @@ class GinRummy():
         exit()
 
     def rules(self, player=None):
-        print("Welcome to Gin Rummy!")
+        print("\nWelcome to Gin Rummy!")
         print(
             "The rules are simple, you have 7 cards and all of them have to be used in either a grouping of same "
             "rank, or in a straight of the same suit")
         print(
             "You must have at least 3 Cards in each grouping, the typical winning hand will have some combination of:")
         print("Three of one rank, four of one rank, three in a straight, or four in a straight")
-        print("Cards can only be used in one grouping, and it is possible to have a 7 card straight (but very unlikely)")
+        print(
+            "Cards can only be used in one grouping, and it is possible to have a 7 card straight (but very unlikely)")
         print(
             "An example winning hand would be: 1) [J\u2666], 2) [Q\u2666], 3) [K\u2666], 4) [3\u2666], 5) [3\u2665], "
             "6) [3\u2663], 7) [3\u2660] \n")
@@ -97,30 +98,12 @@ class GinRummy():
         self.shown_card = self.deck.card_list.pop()
         print("Reshuffled a new deck!")
 
-    # Called directly by main loop
-
-    def player_turn(self, player):
-        if not self.deck.card_list:
-            self.reshuffle_deck()
-
-        if not player.is_ai:
-            time.sleep(1)
-            print(f"\n{player.label}'s turn:")
-            time.sleep(1)
-            print(f"\nDeck: {self.shown_card}")
-            time.sleep(1)
-            player_input = self.get_choice(f"\n{self.sort_hand(player)}", self.play_options)
-            self.play_options[player_input](player)
-        else:
-            # time.sleep(1)
-            self.ai_turn(player)
-
     def ai_turn(self, player):
         matrix = CardMatrix(player.hand.card_list)
 
         hand_values = matrix.assign_hand_values()
 
-        matrix.assign_possible_values()
+        matrix.assign_deck_values()
         shown_val = matrix.deck_matrix[self.shown_card.suit_val - 1][self.shown_card.value - 1]
 
         if min(hand_values) < shown_val:
@@ -148,17 +131,37 @@ class GinRummy():
             self.shown_card = new_shown_card
             print(f"{player.label} drew {drawn_card} and put down {new_shown_card}")
 
+    # Called directly by main loop
+
+    def player_turn(self, player, simulate=False):
+        if not self.deck.card_list:
+            self.reshuffle_deck()
+
+        if not player.is_ai:
+            time.sleep(1)
+            print(f"\n{player.label}'s turn:")
+            time.sleep(1)
+            print(f"\nDeck: {self.shown_card}")
+            time.sleep(1)
+            player_input = self.get_choice(f"\n{self.sort_hand(player)}", self.play_options)
+            self.play_options[player_input](player)
+        else:
+            if simulate == False:
+                time.sleep(1)
+            self.ai_turn(player)
+
     @staticmethod
     def check_win(player):
         matrix = CardMatrix(player.hand.card_list)
         return matrix.check_win()
+
 
 class CardMatrix:
 
     def __init__(self, card_list):
         self.cards = card_list
         self.deck_matrix = np.array([
-        #    A  2  3  4  5  6  7  8  9  10 J  Q  K
+            #    A  2  3  4  5  6  7  8  9  10 J  Q  K
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # Diamonds
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # Hearts
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  # Clubs
@@ -167,7 +170,7 @@ class CardMatrix:
         for card in self.cards:
             self.deck_matrix[card.suit_val - 1][card.value - 1] = -1
 
-    def assign_possible_values(self):
+    def assign_deck_values(self):
         for card in self.cards:
             for num in (-2, -1, 0, 2, 3, 4):
                 if self.deck_matrix[card.suit_val - 1][(card.value - num) % 13] != -1:
@@ -195,7 +198,7 @@ class CardMatrix:
         # remove cards one by one and assigns a value to them based on the cards around them
         for card in matrix.cards:
             matrix.deck_matrix[card.suit_val - 1][card.value - 1] = 0
-            matrix.assign_possible_values()
+            matrix.assign_deck_values()
             hand_values.append(matrix.deck_matrix[card.suit_val - 1][card.value - 1] + 1)
             matrix.deck_matrix[card.suit_val - 1][card.value - 1] = -1
         del matrix
@@ -270,6 +273,8 @@ def enable_print():
 def test_ai(runs):
     turns = []
     ais = 4
+    stuck_turns = 1000
+
     block_print()
     for run in tqdm(range(runs)):
         game = GinRummy(0, ais)
@@ -280,26 +285,49 @@ def test_ai(runs):
             checker += 1
             turn_count += 1
             for player in game.player_list:
-                game.player_turn(player)
+                game.player_turn(player, True)
                 if game.check_win(player):
                     print(f"{player.label} won!")
                     turns.append(turn_count)
                     win = True
                     break
-            if checker > 1000:
+            if checker > stuck_turns:
                 enable_print()
                 print(f"AI got stuck on game {run}")
                 win = True
                 block_print()
     enable_print()
+
     print(f"After {runs} runs, the average amount of turns it took for one of {ais} ais to win was: "
           f"{sum(turns) / len(turns)}")
 
 
+def ai_input():
+    ai_runs = input('>>')
+    if ai_runs.isdigit() and int(ai_runs) > 0:
+        test_ai(int(ai_runs))
+        exit()
+    print('please enter a valid number')
+    return ai_input()
+
+
+def player_input():
+    players = input('>>')
+    if players.isdigit():
+        players = int(players)
+        if players >= 1 and players <= 4:
+            return GinRummy(players)
+        if players == 0:
+            print('enter number of simulated ai runs')
+            ai_input()
+    else:
+        print('enter valid number of players')
+    return player_input()
+
+
 def start_game():
-    test_ai(100)
-    exit()
-    game = GinRummy(1, 4)
+    print('enter number of players 0-4')
+    game = player_input()
     game.rules()
     print("Have fun and type 'help' if you need to reread these rules at any time!")
     while True:
@@ -308,32 +336,3 @@ def start_game():
             if game.check_win(player):
                 print(f"{player.label} won!")
                 exit()
-
-# AI 10000 turn test
-# AI got stuck on game 8952
-# AI got stuck on game 9509
-# 100% @ [09:39<00:00, 17.26it/s]
-# After 10000 runs, the average amount of turns it took for one of 4 ais to win was: 11.743148629725946
-
-# each game takes approximately 0.05634 seconds
-# each round of 4 turns takes approximately 0.00479769112 seconds
-
-
-# for testing purposes
-# player.clear_hand()
-# player.add_card_to_hand(cl.Card(1,1))
-# player.add_card_to_hand(cl.Card(2,1))
-# player.add_card_to_hand(cl.Card(3,1))
-# player.add_card_to_hand(cl.Card(4,2))
-# player.add_card_to_hand(cl.Card(4,3))
-# player.add_card_to_hand(cl.Card(3,3))
-# player.add_card_to_hand(cl.Card(2,12))
-
-# player.clear_hand()
-# player.add_card_to_hand(cl.Card(1,1))
-# player.add_card_to_hand(cl.Card(1,2))
-# player.add_card_to_hand(cl.Card(1,3))
-# player.add_card_to_hand(cl.Card(1,4))
-# player.add_card_to_hand(cl.Card(2,4))
-# player.add_card_to_hand(cl.Card(3,4))
-# player.add_card_to_hand(cl.Card(4,4))
