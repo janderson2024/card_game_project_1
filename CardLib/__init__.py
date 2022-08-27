@@ -40,6 +40,7 @@ CLUB = '\u2663'
 SPADE = '\u2660'
 
 JOKER = '*'
+CARD_WIDTH = 70
 
 
 def print_test():

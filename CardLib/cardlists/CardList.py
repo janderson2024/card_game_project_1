@@ -1,10 +1,10 @@
 import random
 
 import CardLib
-from CardLib import Card
 
 
 class CardList:
+    padding = 5
     def __init__(self, cards=None, x=0, y=0):
         if cards is None:
             cards = []
@@ -13,7 +13,7 @@ class CardList:
         self._init_gui(x, y)
 
     def _init_gui(self, x, y):
-        self.gui_obj = CardLib.gui.GuiObject(x, y, 5, 90, self.gui_draw)
+        self.gui_obj = CardLib.gui.GuiObject(x, y, CardLib.CARD_WIDTH, 90, self.gui_draw)
 
     def __len__(self) -> int:
         return len(self.card_list)
@@ -24,25 +24,29 @@ class CardList:
     def __iter__(self):
         yield from self.card_list
 
-    def add_card(self, card: Card):
-        self.add_card_gui(card)
+    def add_card(self, card: CardLib.Card):
         self.card_list.append(card)
+        self.update_cards_pos()
 
-    def add_card_gui(self, card: Card):
-        card.gui_obj.move(self.gui_obj.x + self.gui_obj.width, self.gui_obj.y+5)
-        self.gui_obj.width += card.gui_obj.width + 5
-
-    def get_card_at(self, index: int) -> Card:
+    def get_card_at(self, index: int) -> CardLib.Card:
         return self.card_list[index]
 
-    def add_cards(self, cards: [Card]):
+    def add_cards(self, cards: [CardLib.Card]):
         for card in cards:
             self.add_card(card)
 
-    def rem_card(self, card: Card):
+    def rem_card(self, card: CardLib.Card):
         self.card_list.remove(card)
+        self.update_cards_pos()
 
-    def rem_cards(self, cards: [Card]):
+    def update_cards_pos(self):
+        for index, card in enumerate(self.card_list):
+            card_x = index * (CardLib.CARD_WIDTH + self.padding) + self.gui_obj.x + self.padding
+            card.gui_obj.move(card_x, self.gui_obj.y+self.padding)
+        self.gui_obj.width = max((len(self) * (CardLib.CARD_WIDTH + self.padding)) + self.padding, CardLib.CARD_WIDTH)
+
+
+    def rem_cards(self, cards: [CardLib.Card]):
         for card in cards:
             self.rem_card(card)
 
@@ -55,7 +59,7 @@ class CardList:
     def shuffle(self):
         random.shuffle(self.card_list)
 
-    def get_card_list(self) -> [Card]:
+    def get_card_list(self) -> [CardLib.Card]:
         return self.card_list
 
     def contains(self, card) -> bool:
