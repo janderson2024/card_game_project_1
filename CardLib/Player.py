@@ -74,7 +74,7 @@ class Player:
         if self.is_ai:
             self.example_card.gui_obj.draw()
             card_count_x = self.example_card.gui_obj.width + self.example_card.gui_obj.x + 5
-            card_count_y = (self.example_card.gui_obj.height + self.example_card.gui_obj.y) // 2
+            card_count_y = self.example_card.gui_obj.y + (CardLib.CARD_WIDTH // 2)
             self.card_count = CardLib.gui.GuiLabel("x " + str(len(self.hand)), x=card_count_x, y=card_count_y)
             
             self.card_count.gui_obj.draw()
