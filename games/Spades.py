@@ -1,7 +1,9 @@
+
 import random
 
 import CardLib
 from decimal import *
+
 
 from CardLib.cardlists import CardList
 from CardLib.cardlists import Hand
@@ -12,7 +14,6 @@ def start_game():
     game = Spades()
     game.setup_game()
     game.main_loop()
-
 
 def get_bid(player: Player) -> int:
     hand = player.hand
@@ -28,7 +29,6 @@ def get_bid(player: Player) -> int:
         return int(CardLib.get_user_input([str(num + 1) for num in range(hand.num_cards_left())],
                                           str(hand) + "\nHow many tricks would you like to bid?")[0])
 
-
 def get_strength(card: Card) -> float:
     if card.value >= 14:
         return 1
@@ -38,7 +38,6 @@ def get_strength(card: Card) -> float:
         return .25
     else:
         return 0
-
 
 def split_trump(cards: CardList):
     lead_suit = cards.card_list[0].suit

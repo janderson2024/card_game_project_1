@@ -2,12 +2,14 @@ from .Card import Card
 
 from .cardlists.CardList import CardList
 from .cardlists.Hand import Hand
-from .cardlists.Draw import Draw
+from .cardlists.DrawPile import DrawPile
 from .cardlists.Discard import Discard
 
 from .Player import Player
 from .UserInput import get_user_input
 from .CalcAllScores import calculate_all_possible_scores
+
+from . import gui
 
 __all__ = [
     "DIAMOND",
@@ -18,7 +20,7 @@ __all__ = [
     "Card",
     "CardList",
     "Hand",
-    "Draw",
+    "DrawPile",
     "Discard",
     "Player",
     "get_user_input",
@@ -27,8 +29,10 @@ __all__ = [
     "deal_to_players",
     "fill_deck_standard_52",
     "fill_deck_standard_54",
-    "get_highest_card"
+    "get_highest_card",
+    "gui"
 ]
+
 
 DIAMOND = '\u2666'
 HEART = '\u2665'
@@ -36,6 +40,7 @@ CLUB = '\u2663'
 SPADE = '\u2660'
 
 JOKER = '*'
+CARD_WIDTH = 70
 
 
 def print_test():
