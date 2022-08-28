@@ -13,7 +13,11 @@ __all__ = [
 	"Gui",
 	"get_gui_user_input",
 	"create_rect",
-	"create_img"
+	"create_img",
+	"coords_in_obj",
+	"GuiButton",
+	"GuiLabel",
+	"GuiObject"
 ]
 
 #singleton gui instance

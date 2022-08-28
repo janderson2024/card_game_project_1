@@ -17,6 +17,7 @@ __all__ = [
     "CLUB",
     "SPADE",
     "JOKER",
+    "CARD_WIDTH",
     "Card",
     "CardList",
     "Hand",
