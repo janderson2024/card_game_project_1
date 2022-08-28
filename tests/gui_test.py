@@ -1,3 +1,9 @@
+#CODE TO GO BACK UP A LAYER TO USE CARDLIB
+import sys
+sys.path.insert(0, '..')
+
+##CURRENTLY BROKEN DUE TO IMAGES.... idk maybe figure it out later. I'm tired
+
 import CardLib
 from random import randint
 import time
@@ -104,3 +110,6 @@ def start_game():
     player_list = None
 
     main_loop(game, player_list)
+
+if __name__ == '__main__':
+    start_game()
