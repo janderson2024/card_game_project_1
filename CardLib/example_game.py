@@ -1,3 +1,8 @@
+### Author: Joshua Anderson
+### Date: 8/17/22
+### gitlab: gitlab.com/janderson2024
+### Written for the CardLib library
+
 import CardLib
 
 
