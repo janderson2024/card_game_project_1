@@ -13,6 +13,9 @@ class Player:
     def __str__(self) -> str:
         return self.label + ': ' + str(self.hand)
 
+    def __repr__(self)-> str:
+        return str(self)
+
     def get_label(self) -> str:
         return self.label
 
