@@ -55,6 +55,7 @@ def start_game():
     game = {GAME_NAME}()
 
     print("Lets play {GAME_NAME}!")
+    print("--------------------")
 
     player_list = [CardLib.Player("Player")]
 
