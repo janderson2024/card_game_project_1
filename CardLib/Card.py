@@ -30,7 +30,7 @@ class Card:
 
         img_path = self.PATH_TO_IMG_DIR + self.image
         self.front_img = CardLib.gui.create_img(img_path, self.gui_obj.width, self.gui_obj.height)
-        back_img = self.PATH_TO_IMG_DIR + "card_back.png";
+        back_img = self.PATH_TO_IMG_DIR + "card_back.png"
         self.back_img = CardLib.gui.create_img(back_img, self.gui_obj.width, self.gui_obj.height)
 
     def __str__(self) -> str:
