@@ -74,6 +74,7 @@ def loss_count(card: Card, cards: Hand, card_to_beat: Card) -> Decimal:
 
 
 def main_menu() -> str:
+    CardLib.gui.remove_all_obj()
     title = CardLib.gui.GuiLabel(" SPADES ", x=450, y=100)
     prompt = CardLib.gui.GuiLabel("Main Menu", x=450, y=260)
     play = CardLib.gui.GuiButton(" Play ", x=475, y=400)
@@ -117,6 +118,22 @@ def how_to_play():
     CardLib.gui.add_obj_to_be_drawn(title)
     for rule in rules:
         CardLib.gui.add_obj_to_be_drawn(rule)
+    CardLib.gui.add_obj_to_be_drawn(okay)
+
+    choice = CardLib.gui.get_gui_user_input([okay])
+    CardLib.gui.remove_all_obj()
+
+
+def show_winner(winner, scores):
+    CardLib.gui.remove_all_obj()
+    title = CardLib.gui.GuiLabel(str(winner) + " wins!", x=400, y=150)
+    score_label = CardLib.gui.GuiLabel("Scores", x=450, y=300)
+    score_card = CardLib.gui.GuiLabel(", ".join([str(score) for score in scores]), x=400, y=350)
+    okay = CardLib.gui.GuiButton(" Okay ", x=450, y=550)
+
+    CardLib.gui.add_obj_to_be_drawn(title)
+    CardLib.gui.add_obj_to_be_drawn(score_label)
+    CardLib.gui.add_obj_to_be_drawn(score_card)
     CardLib.gui.add_obj_to_be_drawn(okay)
 
     choice = CardLib.gui.get_gui_user_input([okay])
@@ -225,6 +242,8 @@ class Spades:
             new_scores = self.get_scores()
             self.scores = [old + new for old, new in zip(self.scores, new_scores)]
             CardLib.gui.redraw()
+        player_number = self.scores.index(max(self.scores))
+        show_winner(self.player_list[player_number], self.scores)
 
     def add_player_ui(self):
         CardLib.gui.remove_all_obj()
