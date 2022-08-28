@@ -9,6 +9,7 @@ class {GAME_NAME}:
 
     def get_ai_turn(self, player):
         #function to run if the player is an AI
+        pass
 
     def get_user_turn(self, player):
         #function to run if the player is a user
