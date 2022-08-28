@@ -45,7 +45,7 @@ def main_loop(game, player_list):
             # code for each player's turn goes here
             
             #cycles to the next player
-            current_player = (current_player + 1) % 4
+            current_player = (current_player + 1) % len(player_list)
 
         #asks the user to play the game again
         action, _ = CardLib.get_user_input(["yes", "no"], "Do you want to play again?")

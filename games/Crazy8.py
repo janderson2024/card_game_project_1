@@ -185,7 +185,7 @@ def main_loop(game, player_list):
                 game.on_round_won(player)
                 
             else:
-                current_player = (current_player + 1) % 4
+                current_player = (current_player + 1) % len(player_list)
                 CardLib.gui.redraw()
                 time.sleep(0.5)
 

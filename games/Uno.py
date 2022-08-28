@@ -246,7 +246,7 @@ def main_loop(game, player_list):
                     player.clear_hand()
 
             else:
-                current_player = (current_player + game.direction) % 4
+                current_player = (current_player + game.direction) % len(player_list)
 
                 player = player_list[current_player]
                 if cards_to_add > 0:
@@ -254,10 +254,10 @@ def main_loop(game, player_list):
                     print(player.label, ": had to pick up ", str(cards_to_add), has_s)
                     for _ in range(cards_to_add):
                         player.add_card_to_hand(game.draw_card())
-                    current_player = (current_player + game.direction) % 4
+                    current_player = (current_player + game.direction) % len(player_list)
                 elif skipped:
                     print(player.label, ": got skipped!")
-                    current_player = (current_player + game.direction) % 4
+                    current_player = (current_player + game.direction) % len(player_list)
 
                 time.sleep(0.5)
 
