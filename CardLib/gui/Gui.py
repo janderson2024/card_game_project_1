@@ -28,6 +28,7 @@ class Gui:
 		self.redraw()
 
 	def redraw(self):
+		pygame.event.clear()
 		self.screen.fill(self.background_color)
 
 		for obj in self.objects_to_draw:
