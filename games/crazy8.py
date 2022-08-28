@@ -66,7 +66,7 @@ class Crazy8:
             player.add_card_to_hand(self.stock.pop_card())
             valid_cards = self.get_valid_cards(player)
             CardLib.gui.redraw()
-            time.sleep(0.2)
+            time.sleep(1)
 
         card_num = randint(0, len(valid_cards) - 1)
         card_to_play = valid_cards.get_card_at(card_num)
@@ -166,6 +166,7 @@ def main_loop(game, player_list):
                     game.on_round_won()
 
             if game.check_player_win(player):
+                CardLib.gui.redraw()
                 playing_round = False
                 won_label = CardLib.gui.GuiLabel(player.label + " has won!", x=240, y=180)
 
@@ -174,7 +175,7 @@ def main_loop(game, player_list):
             else:
                 current_player = (current_player + 1) % 4
                 CardLib.gui.redraw()
-                time.sleep(1)
+                time.sleep(0.5)
 
 
         CardLib.gui.redraw()
