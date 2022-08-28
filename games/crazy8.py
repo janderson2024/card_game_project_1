@@ -1,3 +1,8 @@
+### Author: Joshua Anderson
+### Date: 7/19/22
+### gitlab: gitlab.com/janderson2024
+### Written for the CardLib library
+
 import CardLib
 from random import randint
 import time
