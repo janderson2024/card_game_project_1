@@ -47,4 +47,4 @@ class GuiObject:
 		CardLib.gui.draw_img(self.highlight, self.x, self.y)
 
 	def draw_with_border(self):
-		CardLib.gui.draw_rect((255,0,0), self.border, 2)
+		CardLib.gui.draw_rect((10,10,255), self.border, 2)
