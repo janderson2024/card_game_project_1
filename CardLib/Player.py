@@ -91,7 +91,8 @@ class Player:
                 hand_height = self.example_card.gui_obj.height+(3*len(self.hand))
             self.hand_img = CardLib.gui.create_img(hand_img, hand_width, hand_height)
             CardLib.gui.draw_img(self.hand_img, self.gui_obj.x, self.gui_obj.y + 40)
-            card_count_x = self.example_card.gui_obj.width + self.example_card.gui_obj.x + 5
+
+            card_count_x = hand_width + self.gui_obj.x + 5
             card_count_y = self.example_card.gui_obj.y + (CardLib.CARD_WIDTH // 2)
             self.card_count = CardLib.gui.GuiLabel("x " + str(len(self.hand)), x=card_count_x, y=card_count_y)
 

@@ -151,9 +151,10 @@ def main_loop(game, player_list):
         skip_count = 0
         while playing_round:
             player = player_list[current_player]
+
             #this icon code is jank. Do not judge
             icon_x = player.gui_label.gui_obj.x + player.gui_label.gui_obj.width + 15
-            player_turn_icon.gui_obj.move(icon_x, player.gui_obj.y+10)
+            player_turn_icon.gui_obj.move(icon_x, player.gui_obj.y+5)
             CardLib.gui.redraw()
 
             played_card = game.on_player_turn(player)
@@ -228,7 +229,7 @@ def start_game():
 
     display_rules()
 
-    player_locations = [(5, 550), (10, 250), (300, 10), (550, 250)]
+    player_locations = [(5, 550), (10, 250), (300, 10), (540, 250)]
     player_list = [CardLib.Player("Player", x=5,y=550)]
 
     for num in range(1, game.PLAYER_COUNT):
