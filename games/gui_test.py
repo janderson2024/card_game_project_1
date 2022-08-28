@@ -45,9 +45,11 @@ def main_loop(game, player_list):
 
         test_button = CardLib.gui.GuiButton("Click Me", x=300, y=300)
         CardLib.gui.add_obj_to_be_drawn(test_button)
+        test_button2 = CardLib.gui.GuiButton("Click Me2", x=320, y=320)
+        CardLib.gui.add_obj_to_be_drawn(test_button2)
 
         while playing_round:
-            selectable_objects = [card for card in test_card_list] + [test_button] + [test_player]
+            selectable_objects = [card for card in test_card_list] + [test_button, test_button2] + [test_player]
             if len(test_draw) > 0:
                 selectable_objects += [test_draw]
 

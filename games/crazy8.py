@@ -66,7 +66,7 @@ class Crazy8:
             player.add_card_to_hand(self.stock.pop_card())
             valid_cards = self.get_valid_cards(player)
             CardLib.gui.redraw()
-            time.sleep(1)
+            time.sleep(0.3)
 
         card_num = randint(0, len(valid_cards) - 1)
         card_to_play = valid_cards.get_card_at(card_num)
@@ -141,14 +141,20 @@ def main_loop(game, player_list):
         game.stock, player_list = CardLib.deal_to_players(game.stock, player_list, game.DEAL_COUNT)
         CardLib.gui.redraw()
 
+        player_turn_icon = CardLib.gui.GuiLabel("*")
+        CardLib.gui.add_obj_to_be_drawn(player_turn_icon)
+
         current_player = 0
 
         playing_round = True
 
         skip_count = 0
         while playing_round:
-            CardLib.gui.redraw()
             player = player_list[current_player]
+            #this icon code is jank. Do not judge
+            icon_x = player.gui_label.gui_obj.x + player.gui_label.gui_obj.width + 15
+            player_turn_icon.gui_obj.move(icon_x, player.gui_obj.y+10)
+            CardLib.gui.redraw()
 
             played_card = game.on_player_turn(player)
 
