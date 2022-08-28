@@ -4,6 +4,8 @@ import CardLib
 
 
 class Player:
+    PATH_TO_IMG_DIR = "CardLib/card_images/standard/"
+
     def __init__(self, label: str, is_ai: bool = False, x=0, y=0):
         self.is_ai = is_ai
         self.hand = CardLib.Hand([])
@@ -71,12 +73,28 @@ class Player:
     def gui_draw(self):
         self.gui_label.gui_obj.draw()
 
+        # if self.is_ai:
+        #     self.example_card.gui_obj.draw()
+        #     card_count_x = self.example_card.gui_obj.width + self.example_card.gui_obj.x + 5
+        #     card_count_y = self.example_card.gui_obj.y + (CardLib.CARD_WIDTH // 2)
+        #     self.card_count = CardLib.gui.GuiLabel("x " + str(len(self.hand)), x=card_count_x, y=card_count_y)
+        #
+        #     self.card_count.gui_obj.draw()
         if self.is_ai:
-            self.example_card.gui_obj.draw()
+            if len(self.hand) >= 8:
+                hand_img = self.PATH_TO_IMG_DIR + "8_card_back.png"
+                hand_width = self.example_card.gui_obj.width + 32
+                hand_height = self.example_card.gui_obj.height + 24
+            else:
+                hand_img = self.PATH_TO_IMG_DIR + f"{str(len(self.hand))}_card_back.png"
+                hand_width = self.example_card.gui_obj.width+(4*len(self.hand))
+                hand_height = self.example_card.gui_obj.height+(3*len(self.hand))
+            self.hand_img = CardLib.gui.create_img(hand_img, hand_width, hand_height)
+            CardLib.gui.draw_img(self.hand_img, self.gui_obj.x, self.gui_obj.y + 40)
             card_count_x = self.example_card.gui_obj.width + self.example_card.gui_obj.x + 5
             card_count_y = self.example_card.gui_obj.y + (CardLib.CARD_WIDTH // 2)
             self.card_count = CardLib.gui.GuiLabel("x " + str(len(self.hand)), x=card_count_x, y=card_count_y)
-            
+
             self.card_count.gui_obj.draw()
         else:
             self.hand.gui_obj.draw()

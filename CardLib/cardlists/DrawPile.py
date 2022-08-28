@@ -3,7 +3,7 @@ import CardLib
 
 class DrawPile(CardList):
     def _init_gui(self, x, y):
-        self.gui_obj = CardLib.gui.GuiObject(x, y, 70, 90, self.gui_draw)
+        self.gui_obj = CardLib.gui.GuiObject(x, y, 62, 90, self.gui_draw)
         self.background_rect = CardLib.gui.create_rect(self.gui_obj.x, self.gui_obj.y, self.gui_obj.width, self.gui_obj.height)
         
         self.PATH_TO_IMG_DIR = "CardLib/card_images/standard/"

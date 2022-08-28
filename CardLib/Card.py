@@ -7,7 +7,7 @@ class Card:
     suits = [None, '\u2666', '\u2665', '\u2663', '\u2660']
     ranks = [None, "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A", "L", "H"]
     suit_text = [None, 'diamonds', 'hearts', 'clubs', 'spades']
-    string_card_back = "[;°Д°]"
+    string_card_back = "[☼]"
 
     PATH_TO_IMG_DIR = "CardLib/card_images/standard/"
 
@@ -26,7 +26,7 @@ class Card:
         self._init_gui(x, y)
 
     def _init_gui(self, x, y):
-        self.gui_obj = CardLib.gui.GuiObject(x, y, 70, 90, self.gui_draw)
+        self.gui_obj = CardLib.gui.GuiObject(x, y, 62, 90, self.gui_draw)
 
         img_path = self.PATH_TO_IMG_DIR + self.image
         self.front_img = CardLib.gui.create_img(img_path, self.gui_obj.width, self.gui_obj.height)
