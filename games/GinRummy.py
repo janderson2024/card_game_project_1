@@ -12,7 +12,7 @@ class GinRummy():
         self.play_options = {'help': self.exit_program, 'take card': self.pick_up_card, 'exit': self.exit_program,
                              'skip': self.skip_turn, 'draw': self.draw_card}
         self.player_list = []
-        self.deck = cl.fill_deck_standard_52(cl.Draw())
+        self.deck = cl.fill_deck_standard_52(cl.DrawPile())
         self.deck.shuffle()
 
         for x in range(1, player_number + 1):

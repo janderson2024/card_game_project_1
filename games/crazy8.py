@@ -241,15 +241,3 @@ def start_game():
         player_list.append(CardLib.Player("AI #" + str(num), is_ai=True, x=player_locations[num][0], y=player_locations[num][1]))
 
     main_loop(game, player_list)
-
-# rules screen: DONE
-#shows all rules in the game setup (before main loop)
-#has a "button" with the gui.get_user_input to confirm rules read
-
-#game screen: waiting for Player class /hand
-#as normal. Pretty much set up
-#need a skip button!
-
-#play again: 
-#get the playerlabel/ "has won string and turn it into a game label"
-#add two buttons for "yes a"

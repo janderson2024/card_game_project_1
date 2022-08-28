@@ -12,7 +12,7 @@ class ThirtyOne:
         self.setup_decks()
 
     def setup_decks(self):
-        self.stock = CardLib.Draw([])
+        self.stock = CardLib.DrawPile([])
         self.stock = CardLib.fill_deck_standard_52(self.stock)
         self.stock.shuffle()
         self.discard = CardLib.Discard([])

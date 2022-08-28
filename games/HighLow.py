@@ -5,7 +5,7 @@ import CardLib
 class HighLow():
 
     def set_up_pack(self):
-        oPack = CardLib.Draw([])  # creates an object pack
+        oPack = CardLib.DrawPile([])  # creates an object pack
         CardLib.fill_deck_standard_52(oPack, ace_high=True)
         oPack.shuffle()
         return oPack

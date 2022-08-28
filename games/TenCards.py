@@ -13,7 +13,7 @@ def main_loop(game, player_list):
 def start_game():
     CardLib.print_test()
 
-    oPack = CardLib.Draw([]) # creates an object pack
+    oPack = CardLib.DrawPile([]) # creates an object pack
     CardLib.fill_deck_standard_52(oPack, ace_high=True)
     # print(pack)
 

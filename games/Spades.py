@@ -124,7 +124,7 @@ class Spades:
         [player.hand.sort_by_suit() for player in self.player_list]
 
     def get_pack(self) -> CardList:
-        pack = CardLib.Draw([])
+        pack = CardLib.DrawPile([])
         if self.player_count == 4:
             CardLib.fill_deck_standard_52(pack, ace_high=True)
         elif self.player_count == 6:

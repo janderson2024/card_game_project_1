@@ -24,7 +24,7 @@ BLACKJACK_RULES = {
 class BlackJack:
 
     def __init__(self):
-        self.deck = CardLib.Draw()
+        self.deck = CardLib.DrawPile()
         self.fill_and_shuffle()
 
 
