@@ -51,7 +51,7 @@ class Player:
         for card in cards:
             self.hand.add_card(card)
 
-    def play_card(self, number: int = -1) -> Card:
+    def play_card(self, number: int = -1) -> CardLib.Card:
         if self.is_ai and number == -1:
             number = random.randint(0, len(self.hand) - 1)
         temp_card = self.hand.get_card_at(number)
