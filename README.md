@@ -5,7 +5,12 @@ A library that provides helpful functionality in creating a card game. CardLib h
 This project has reached its Minimal Viable Product, and will now be improved through future strech goals.
 
 ## Installation
-The best way to use this library is to download a zip file of the project. Once the project is on your computer, you can create a game inside the games/ folder to start using the library. 
+The best way to use this library is to download a zip file of the project. Once the project is on your computer, you can create a game inside the games/ folder to start using the library.
+
+## Dependencies 
+**The entire library requires `pygame` to be installed. `pip install pygame`**
+
+- Gin Rummy requires `tqdm` and `numpy` to be installed to play. `pip install tqdm` `pip install numpy`
 
 ## Usage
 If you are using this just to play the games:
@@ -22,8 +27,11 @@ If you are using this to create a game:
 For any bugs, issues, or wanted features: please create an Issue using the Gitlab issue tracker!
 
 ## Roadmap
-* Creating better AI's for the included games, and creating useful Library AI tools.
-* Add GUI functionality to the Library.
+* Merging Card Refactor into version 2.0
+* Improving gui library layout
+* Upload library to PyPi
+* Full library unit testing
+* Full wiki coverage
 
 
 ## Authors
@@ -42,4 +50,4 @@ For any bugs, issues, or wanted features: please create an Issue using the Gitla
 (Future License will go here. Im thinking GPLv3 will work)
 
 ### Project status
-This project has reached its minimal viable product. It will continued to be developed til stretch goals are met, and til the end of the Techwise Project 1 deadline. After that work on this project may halt.
+This project is released with version 1.0.0. There are plans to create a version 2.0.0 in the future, with even more planned after that.
