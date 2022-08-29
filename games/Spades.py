@@ -276,6 +276,7 @@ class Spades:
             CardLib.gui.add_obj_to_be_drawn(player)
             player.hand.sort_by_suit()
             player.hand.update_cards_pos()
+            CardLib.gui.redraw()
 
     def is_no_winner(self) -> bool:
         return [score for score in self.scores if score >= self.winning_score] == []
@@ -303,6 +304,7 @@ class Spades:
 
     def do_hand(self):
         self.tricks = [0 for _ in range(self.player_count)]
+        self.add_player_ui()
         self.discard = CardLib.CardList([], -100, -100)
         while self.player_list[0].hand.num_cards_left() > 0:
             CardLib.gui.redraw()
